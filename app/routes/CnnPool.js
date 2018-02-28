@@ -1,0 +1,45 @@
+var mysql = require('mysql');
+var Validator = require('./Validator.js');
+
+// Constructor for DB connection pool
+var CnnPool = function() {
+   var poolCfg = require('./connection.json');
+   var env = process.env;
+
+   poolCfg.connectionLimit = CnnPool.PoolSize;
+   this.pool = mysql.createPool(poolCfg);
+};
+
+CnnPool.PoolSize = 4;
+
+// Conventional getConnection, drawing from the pool
+CnnPool.prototype.getConnection = function(cb) {
+   this.pool.getConnection(cb);
+};
+
+// Router function for use in auto-creating CnnPool for a request
+CnnPool.router = function(req, res, next) {
+   CnnPool.singleton.getConnection(function(err, cnn) {
+      if (err)
+         res.status(500).json('Failed to get connection');
+      else {
+         cnn.chkQry = function(qry, prms, cb) {
+            // Run real qry, checking for error
+            this.query(qry, prms, function(err, qRes, fields) {
+               if (err) {
+                  res.status(500).json('Failed query ' + qry);
+               }
+               
+               cb(err, qRes, fields);
+            });
+         };
+         req.cnn = cnn;
+         next();
+      }
+   });
+};
+
+// The one (and probably only) CnnPool object needed for the app
+CnnPool.singleton = new CnnPool();
+
+module.exports = CnnPool;

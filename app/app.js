@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var Session = require('./routes/Session.js');
+var Validator = require('./routes/Validator.js');
+var CnnPool = require('./routes/CnnPool.js');
 
 var app = express();
 
@@ -22,15 +25,39 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// Set up Session on req if available
+app.use(Session.router);
+
+// Check general login.  If OK, add Validator to |req| and continue processing,
+// otherwise respond immediately with 401 and noLogin error tag.
+app.use(function(req, res, next) {
+   console.log("Checking general login");
+   if (req.session || (req.method === 'POST' &&
+    (req.path === '/Prss' || req.path === '/Ssns'))) {
+      req.validator = new Validator(req, res);
+      next();
+   } else
+      res.status(401).end();
+});
+
+app.use(CnnPool.router);
+
 app.use('/', index);
 app.use('/users', users);
+// Load all subroutes
+app.use('/Prss', require('./routes/Account/Prss'));
+app.use('/Ssns', require('./routes/Account/Ssns'));
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+   var err = new Error('Not Found');
+   err.status = 404;
+   next(err);
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {
