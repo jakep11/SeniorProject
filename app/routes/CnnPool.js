@@ -1,10 +1,8 @@
 var mysql = require('mysql');
-var Validator = require('./Validator.js');
 
 // Constructor for DB connection pool
 var CnnPool = function() {
    var poolCfg = require('./connection.json');
-   var env = process.env;
 
    poolCfg.connectionLimit = CnnPool.PoolSize;
    this.pool = mysql.createPool(poolCfg);
