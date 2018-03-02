@@ -1,9 +1,10 @@
 var Express = require('express');
+var bcrypt = require('bcrypt');
 var Tags = require('../Validator.js').Tags;
 var ssnUtil = require('../Session.js');
 var router = Express.Router({ caseSensitive: true });
 
-router.baseURL = '/Ssns';
+router.baseURL = '/Session';
 
 router.get('/', function (req, res) {
    var body = [], ssn;
@@ -11,7 +12,7 @@ router.get('/', function (req, res) {
    if (req.validator.checkAdmin()) {
       for (var cookie in ssnUtil.sessions) {
          ssn = ssnUtil.sessions[cookie];
-         body.push({ cookie: cookie, prsId: ssn.id, loginTime: ssn.loginTime });
+         body.push({ cookie: cookie, userId: ssn.id, loginTime: ssn.loginTime });
       }
       res.status(200).json(body);
 
@@ -23,10 +24,11 @@ router.post('/', function (req, res) {
    var cookie;
    var cnn = req.cnn;
 
-   cnn.query('select * from Person where email = ?', [req.body.email],
+   cnn.query('select * from User where email = ?', [req.body.email],
       function (err, result) {
-         if (req.validator.check(result.length && result[0].password ===
-            req.body.password, Tags.badLogin)) {
+         if (req.validator.check(result.length && 
+          bcrypt.compareSync(req.body.password, result[0].passHash),
+          Tags.badLogin)) {
             cookie = ssnUtil.makeSession(result[0], res);
             res.location(router.baseURL + '/' + cookie).status(200).end();
          }
@@ -52,7 +54,7 @@ router.get('/:cookie', function (req, res) {
       vld.checkPrsOK(ssnUtil.sessions[cookie].id)) {
       var session = ssnUtil.sessions[cookie];
       res.json({
-         prsId: session.id,
+         userId: session.id,
          cookie: cookie,
          loginTime: session.loginTime
 
