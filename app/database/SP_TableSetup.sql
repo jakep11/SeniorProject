@@ -30,10 +30,10 @@ CREATE TABLE Enrollment (
     SectionId INT,
     PRIMARY KEY (Id),
     UNIQUE (UserId , SectionId),
-    FOREIGN KEY (UserId)
-        REFERENCES User (Id),
-    FOREIGN KEY (SectionId)
-        REFERENCES Section (Id)
+    FOREIGN KEY (UserId) REFERENCES User (Id) on delete cascade 
+    on update cascade,
+    FOREIGN KEY (SectionId) REFERENCES Section (Id) on delete cascade 
+    on update cascade
 );
 
 CREATE TABLE Topic (
@@ -42,7 +42,8 @@ CREATE TABLE Topic (
     SectionId INT,
 	PRIMARY KEY (Id),
 	UNIQUE (Name, SectionId),
-	FOREIGN KEY (SectionId) REFERENCES Section(Id)
+	FOREIGN KEY (SectionId) REFERENCES Section(Id) on delete cascade 
+	on update cascade
 );
 
 
@@ -50,10 +51,12 @@ CREATE TABLE Video (
 	Id INT AUTO_INCREMENT,
     Name VARCHAR(100),
 	Link VARCHAR(500),
+	DueDate DATETIME,
     TopicId INT,
 	PRIMARY KEY (Id),
 	UNIQUE (TopicId, Name, Link),
-	FOREIGN KEY (TopicId) REFERENCES Topic(Id)
+	FOREIGN KEY (TopicId) REFERENCES Topic(Id) on delete cascade 
+	on update cascade
 );
 
 
@@ -64,19 +67,23 @@ CREATE TABLE Exercise (
 	Answer VARCHAR(250),
     Type VARCHAR(50) NOT NULL,
     Points INT NOT NULL,
+    DueDate DATETIME,
     TopicId INT NOT NULL,
 	PRIMARY KEY (Id),
 	UNIQUE (TopicId, Question, Answer),
-	FOREIGN KEY (TopicId) REFERENCES Topic(Id)
+	FOREIGN KEY (TopicId) REFERENCES Topic(Id) on delete cascade 
+	on update cascade
 );
 
 CREATE TABLE Document (
 	Id INT AUTO_INCREMENT,
 	Name VARCHAR(50),
 	Content BLOB,
+	DueDate DATETIME,
     TopicId INT,
 	PRIMARY KEY (Id),
-	FOREIGN KEY (TopicId) REFERENCES Topic(Id)
+	FOREIGN KEY (TopicId) REFERENCES Topic(Id) on delete cascade 
+	on update cascade
 );
 
 CREATE TABLE Progress (
@@ -86,10 +93,11 @@ CREATE TABLE Progress (
     TopicId INT,
     Grade REAL,
     Attempted BOOLEAN,
+    WhenCompleted DATETIME,
     PRIMARY KEY (ActivityType, ActivityId),
     UNIQUE (UserId, TopicId , ActivityId),
-    FOREIGN KEY (UserId)
-        REFERENCES User(Id),
-    FOREIGN KEY (TopicId)
-        REFERENCES Topic(Id)
+    FOREIGN KEY (UserId) REFERENCES User(Id) on delete cascade 
+    on update cascade,
+    FOREIGN KEY (TopicId) REFERENCES Topic(Id) on delete cascade 
+    on update cascade
 );
