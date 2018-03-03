@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "nyc --all mocha --exit",
+    "test": "mocha --exit",
+    "test-cov": "nyc --all mocha --exit",
     "test-cov-html": "nyc --reporter=html --all mocha --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "dependencies": {
     "async": "^2.6.0",
+    "bcrypt": "^1.0.3",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
