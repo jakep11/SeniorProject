@@ -10,6 +10,9 @@ before_script:
   - cd database
   - chmod +x ./travisMysqlSetup.sh
   - mysql -uroot --password="" < SP_TableSetup.sql
+  - echo Checking if connection file created...
+  - ls ../routes/
+  - cat ../routes/connection.json
 script:
   - npm run test-cov
 after_success:
