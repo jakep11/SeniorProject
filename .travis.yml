@@ -8,7 +8,8 @@ before_script:
   - cd app
   - npm install
   - cd database
-  - chmod +x ./travisMysqlSetup.sh
+  - chmod +x travisMysqlSetup.sh
+  - ./travisMysqlSetup.sh
   - mysql -uroot --password="" < SP_TableSetup.sql
   - echo Checking if connection file created...
   - ls ../routes/
