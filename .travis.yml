@@ -8,9 +8,6 @@ before_script:
   - cd app
   - npm install
   - cd routes
-  - echo {\"host\": \"localhost\", \"user\": \"root\", \"password\": \"\", \"database\": \"SeniorProject\"} > connection.json
-  - cd ../database/
-  - mysql -uroot --password="" < SP_TableSetup.sql
 script:
   - npm run test-cov
 after_success:
