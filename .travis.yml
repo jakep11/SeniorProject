@@ -7,7 +7,9 @@ services:
 before_script:
   - cd app
   - npm install
-  - cd routes
+  - cd database
+  - chmod +x travisMysqlSetup.sh
+  - mysql -uroot --password="" < SP_TableSetup.sql
 script:
   - npm run test-cov
 after_success:
