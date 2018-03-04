@@ -6,5 +6,3 @@ cat > ../routes/connection.json << EOL
     "database": "SeniorProject"
 }
 EOL
-
-echo This file ran!!!!!
