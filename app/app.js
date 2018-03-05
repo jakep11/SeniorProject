@@ -31,13 +31,13 @@ app.use(Session.router);
 
 // Check general login.  If OK, add Validator to |req| and continue processing,
 // otherwise respond immediately with 401 and noLogin error tag.
-app.use(function(req, res, next) {
-   console.log("Checking general login");
+app.use(function (req, res, next) {
    if (req.session || (req.method === 'POST' &&
-    (req.path === '/Prss' || req.path === '/Ssns'))) {
+      (req.path === '/User' || req.path === '/Session'))) {
       req.validator = new Validator(req, res);
       next();
-   } else
+   } 
+   else
       res.status(401).end();
 });
 
@@ -46,13 +46,13 @@ app.use(CnnPool.router);
 app.use('/', index);
 app.use('/users', users);
 // Load all subroutes
-app.use('/Prss', require('./routes/Account/Prss'));
-app.use('/Ssns', require('./routes/Account/Ssns'));
+app.use('/User', require('./routes/Account/User'));
+app.use('/Session', require('./routes/Account/Sessions'));
 
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
    var err = new Error('Not Found');
    err.status = 404;
    next(err);
@@ -60,14 +60,14 @@ app.use(function(req, res, next) {
 
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(function (err, req, res) {
+   // set locals, only providing error in development
+   res.locals.message = err.message;
+   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+   // render the error page
+   res.status(err.status || 500);
+   res.render('error');
 });
 
 app.listen(process.env.PORT || 3000, () => console.log(`App listening on port ${process.env.PORT || 3000}`));

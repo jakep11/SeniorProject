@@ -2,10 +2,16 @@ language: node_js
 node_js:
   - "node"
   - "6"
+services:
+  - mysql
 before_script:
   - cd app
   - npm install
+  - cd database
+  - chmod +x travisMysqlSetup.sh
+  - ./travisMysqlSetup.sh
+  - mysql -uroot --password="" < SP_TableSetup.sql
 script:
-  - npm test
+  - npm run test-cov
 after_success:
   - npm run coverage
