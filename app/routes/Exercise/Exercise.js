@@ -1,0 +1,118 @@
+var Express = require('express');
+var Tags = require('../Validator.js').Tags;
+var router = Express.Router({caseSensitive: true});
+var async = require('async');
+
+router.baseURL = '/Exercise';
+
+/* GET --
+ * Returns all exercises. 
+ * Exercises have id, name, question, type, points, topicId
+ */
+router.get('/', function(req, res) {
+   var vld = req.validator;
+   var cnn = req.cnn;
+   
+   async.waterfall([
+      function(cb) {
+         if (vld.check(req.session, Tags.noLogin, null, cb))
+            cnn.chkQry('SELECT * FROM Exercise', cb);
+      },
+      function(exerciseArr, fields, cb) {
+         if (vld.check(exerciseArr.length, Tags.notFound, null, cb)) {
+            for (var exe in exerciseArr) {
+               delete exe.answer;
+               delete exe.dueDate;
+            }
+            res.json(exerciseArr).end();
+            cb();
+         }
+      }
+   ], function(err) {
+      cnn.release();
+   });
+});
+
+/* POST --
+ * Creates a new exercise. Requires admin. 
+ * Requires POST body to have name, question, answer, type, points, topicId
+ * ??? - Check for duplicate exercises (dupExercise tag), dueDate init. null?
+ */
+router.post('/', function(req, res) {
+   var vld = req.validator;
+   var body = req.body;
+   var cnn = req.cnn;
+   var id = parseInt(req.session.id);
+   
+   async.waterfall([
+      function(cb) {
+         if (vld.checkAdmin(cb) &&
+            vld.hasFields(body, ['name', 'question', 'answer', 'type', 'points', 'topicId'], cb))
+            cnn.chkQry('SELECT * FROM Exercise WHERE TopicId = ? AND Name = ? AND Question = ?', cb); 
+      },
+      function(existingExe, fields, cb) {
+         if (vld.check(!existingExe.length, Tags.dupExercise, null, cb)) {
+            body.dueDate = null;
+            cnn.chkQry('insert into Person set ?', body, cb);
+         }  
+      },
+      function(insRes, fields, cb) {
+         res.location(router.baseURL + '/' + insRes.insertId).end();
+         cb();
+      }
+   ], function(err) {
+      cnn.release();
+   }); 
+});
+
+/* GET --
+ * Returns the specified exercise.
+ * ??? - Same returned properties as above GET?
+ */
+router.get('/:exerciseId', function(req, res) {
+   var vld = req.validator;
+   var body = req.body;
+   var cnn = req.cnn;
+   var exerciseId = req.params.exerciseId;
+   
+   async.waterfall([
+      function(cb) {
+         if (vld.check(req.session, Tags.noLogin, null, cb))
+            cnn.chkQry('SELECT * FROM Exercise WHERE Id = ?', exerciseId, cb);
+      },
+      function(exerciseArr, fields, cb) {
+         if (vld.check(prsArr.length, Tags.notFound, null, cb))
+            delete exe.answer;
+            delete exe.dueDate;
+            
+            res.json(exerciseArr).end();
+            cb();
+      }
+   ], function(err) {
+      cnn.release();
+   });
+});
+
+/* PUT -- 
+ * Updates the specified exercise. 
+ * Can update name, question, answer, type, points, topicId.
+ */
+router.put('/:exerciseId', function(req, res) {
+
+});
+
+/* DELETE --
+ * Delete the specified exercise.
+ */
+router.delete('/:exerciseId', function(req, res) {
+
+});
+
+/* PUT --
+ * Grades an exercise. 
+ * POST body requires answer. Response body reports result of grading.
+ */
+router.put('/:exerciseId/Grade', function(req, res) {
+
+});
+
