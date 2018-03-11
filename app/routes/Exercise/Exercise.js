@@ -78,7 +78,7 @@ router.get('/:exerciseId', function(req, res) {
    async.waterfall([
       function(cb) {
          if (vld.check(req.session, Tags.noLogin, null, cb))
-            cnn.chkQry('SELECT * FROM Exercise WHERE Id = ?', exerciseId, cb);
+            cnn.chkQry('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
       },
       function(exerciseArr, fields, cb) {
          if (vld.check(prsArr.length, Tags.notFound, null, cb))
@@ -96,23 +96,81 @@ router.get('/:exerciseId', function(req, res) {
 /* PUT -- 
  * Updates the specified exercise. 
  * Can update name, question, answer, type, points, topicId.
+ * ??? - How to determine if duplicate to reject change?  Also admin-only?
  */
 router.put('/:exerciseId', function(req, res) {
-
+   var vld = req.validator;
+   var body = req.body;
+   var cnn = req.cnn;
+   var exerciseId = req.params.exerciseId;
+   
+   async.waterfall([
+      function(cb) {
+         cnn.chkQuery('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
+      },
+      function(exerciseArr, fields, cb) {
+         if (vld.check(exerciseArr.length, Tags.notFound, null, cb) &&
+            vld.checkAdmin(cb))
+            cnn.chkQry('UPDATE Exercise SET ? WHERE Id = ?', 
+               [body, exerciseId], cb);
+      }
+   ], function(err) {
+      cnn.release();
+   });
 });
 
 /* DELETE --
  * Delete the specified exercise.
  */
 router.delete('/:exerciseId', function(req, res) {
-
+   var vld = req.validator;
+   var cnvId = req.params.cnvId;
+   var cnn = req.cnn;
+   var exerciseId = req.params.exerciseId;
+   
+   async.waterfall([
+      function(cb) {
+         cnn.chkQuery('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
+      },
+      function(exerciseArr, fields, cb) {
+         if (vld.check(exerciseArr.length, Tags.notFound, null, cb) &&
+            vld.checkAdmin(cb))
+            cnn.chkQry('DELETE FROM Exercise WHERE Id = ?', [exerciseId], cb);
+      }
+   ], function (err) {
+      cnn.release();
+   });
 });
 
 /* PUT --
  * Grades an exercise. 
  * POST body requires answer. Response body reports result of grading.
+ * ??? - How to report the result of grading?
  */
 router.put('/:exerciseId/Grade', function(req, res) {
-
+   var vld = req.validator;
+   var body = req.body;
+   var cnn = req.cnn;
+   var exerciseId = req.params.exerciseId;
+   
+   async.waterfall([
+      function(cb) {
+         cnn.chkQuery('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
+      },
+      function(exerciseArr, fields, cb) {
+         if (vld.check(exerciseArr.length, Tags.notFound, null, cb) &&
+            vld.check(body.answer, Tags.missingValue, ["answer"], cb) &&
+            vld.checkAdmin(cb))
+            cnn.chkQry('UPDATE Exercise SET ? WHERE Id = ?', 
+               [body, exerciseId], cb);
+      }
+   ], function(err) {
+      if (!err) {
+         // res.body ... put result of grading here?
+      }
+      cnn.release();
+   });
 });
+
+module.exports = router;
 
