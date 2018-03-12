@@ -117,15 +117,15 @@ describe('Topic Management', () => {
       });
 
       // Admin logout
-      it('results in 200', (done) => {
-         agent
-            .delete('/Session/' + defAdminCookie)
-            .end((err, res) => {
-               res.should.have.status(200);
-               res.body.should.be.empty;
-               done();
-            });
-      });
+//       it('results in 200', (done) => {
+//          agent
+//             .delete('/Session/' + defAdminCookie)
+//             .end((err, res) => {
+//                res.should.have.status(200);
+//                res.body.should.be.empty;
+//                done();
+//             });
+//       });
 
       connection.query('insert into User set ?', adminUser);
       connection.query('insert into User set ?', studentUser);
