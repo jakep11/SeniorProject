@@ -3,13 +3,13 @@ function User(state = { isLoggedIn: false }, action) {
 
    switch(action.type) {
 
-      case 'SIGN_IN':
+      case 'LOGIN':
          return {
             isLoggedIn: true,
             username: action.username
          };
 
-      case 'SIGN_OUT':
+      case 'LOGOUT':
          return {
             isLoggedIn: false
          };

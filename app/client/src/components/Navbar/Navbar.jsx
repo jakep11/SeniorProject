@@ -8,6 +8,11 @@ class Main extends Component {
       super(props);
    }
 
+   logout() {
+      this.props.logout()
+         .then(() => this.history.push('/login'))
+   }
+
    render() {
       return (
          <nav className="navbar">
@@ -16,6 +21,7 @@ class Main extends Component {
             <a><div>Help</div></a>
             <a><div>Settings</div></a>
             <a><div>About</div></a>
+            <a onClick={() => this.logout()}><div>Logout</div></a>
          </nav>
       )
    }

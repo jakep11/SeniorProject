@@ -7,7 +7,7 @@ export default class Login extends Component {
       this.state = {
          username: '',
          password: ''
-      }
+      };
 
       this.handleChange = this.handleChange.bind(this)
    }
@@ -18,7 +18,13 @@ export default class Login extends Component {
 
    submit() {
       console.log('Submit login')
-      console.log('this.props:', this.props);
+      console.log('props:', this.props);
+      this.props.login('bshutt')
+         .then(() => this.props.history.push('/home'))
+      // this.props.login('bshutt', () => {
+      //    console.log('goin home')
+      //    this.props.history.push('/home')
+      // })
    }
 
    render() {

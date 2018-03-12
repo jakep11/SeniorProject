@@ -1,7 +1,17 @@
 
-export function signIn(username, cb) {
-   console.log("signIn action creator");
+export function login(username) {
+   console.log("login action creator");
    return (dispatch, prevState) => {
-      dispatch({ type: "SIGN_IN", username })
+      return Promise.resolve()
+         .then(() => dispatch({ type: 'LOGIN', username }))
+
+   };
+}
+
+export function logout() {
+   return (dispatch, prevState) => {
+      return Promise.resolve()
+         .then(() => dispatch({ type: 'LOGOUT' }))
+
    };
 }

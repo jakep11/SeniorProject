@@ -28,8 +28,8 @@ function AppComponent(props) {
    console.log('props:',props);
    return (
       <Switch>
-         <Route exact path="/login" component={Login} {...props} />
-         <Route path="" component={LoggedIn} {...props} />
+         <Route exact path="/login" render={() => <Login {...props} />} />
+         <Route path="" render={() => <LoggedIn {...props} />} />
          <Redirect from="*" to="/login" />
       </Switch>
    )
