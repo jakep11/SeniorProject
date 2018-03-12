@@ -103,7 +103,7 @@ describe('Topic Management', () => {
             res.body.should.be.empty;
             res.should.have.cookie('SeniorProject');
             defAdminCookie = res.header.location.replace('/Session/', '')
-            done();
+            //done();
          });
 
       // Nuke
