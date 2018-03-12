@@ -20,33 +20,6 @@ describe('Topic Management', () => {
    var studentCookie;
    var adminCookie;
 
-   let defaultAdmin = {
-      'firstName': 'Joe',
-      'lastName': 'Admin',
-      'email': 'admin@example.com',
-      'role': 1,
-      'passHash': '$2a$10$Nq2f5SyrbQL2R0e9E.cU2OSjqqORgnwwsY1vBvVhV.SGlfzpfYvyi',
-      'termsAccepted': new Date()
-   };
-
-   let adminUser = {
-      'firstName': 'UserB',
-      'lastName': 'Admin',
-      'email': 'userB@admin.com',
-      'role': 1,
-      'passHash': bcrypt.hashSync('admin', 10),
-      'termsAccepted': new Date()
-   };
-
-   let studentUser = {
-      'firstName': 'UserB',
-      'lastName': 'Student',
-      'email': 'userB@student.com',
-      'role': 0,
-      'passHash': bcrypt.hashSync('student', 10),
-      'termsAccepted': new Date()
-   };
-
    before('Nuke and add users and sections', 
     (done) => {
       connection.connect(function (err) {
@@ -55,6 +28,36 @@ describe('Topic Management', () => {
       });
 
       let defAdminCookie;
+
+      let defaultAdmin = {
+         'firstName': 'Joe',
+         'lastName': 'Admin',
+         'email': 'admin@example.com',
+         'role': 1,
+         'passHash': '$2a$10$Nq2f5SyrbQL2R0e9E.cU2OSjqqORgnwwsY1vBvVhV.SGlfzpfYvyi',
+         'termsAccepted': new Date()
+      };
+
+      // Users for testing
+      let adminUser = {
+         'firstName': 'UserB',
+         'lastName': 'Admin',
+         'email': 'userB@admin.com',
+         'role': 1,
+         'passHash': bcrypt.hashSync('admin', 10),
+         'termsAccepted': new Date()
+      };
+
+      let studentUser = {
+         'firstName': 'UserB',
+         'lastName': 'Student',
+         'email': 'userB@student.com',
+         'role': 0,
+         'passHash': bcrypt.hashSync('student', 10),
+         'termsAccepted': new Date()
+      };
+
+      // Section for testing
       let section437 = {
          'name': 'CSC437',
          'description': 'Web Dev',
@@ -73,7 +76,7 @@ describe('Topic Management', () => {
          'term': 'F17'
       }
 
-
+      // Activities for testing
       let video1 = {
          'name':'HTML Basics',
          'link':'youtube.com/HTMLBasics',
@@ -91,7 +94,10 @@ describe('Topic Management', () => {
       // admin login
       agent
          .post('/Session')
-         .send(defaultAdmin)
+         .send({
+            'email': 'admin@example.com',
+            'password': 'password'
+         })
          .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.empty;
@@ -225,7 +231,10 @@ describe('Topic Management', () => {
    describe('/POST with admin login', () => {
       agent
          .post('/Session')
-         .send(adminUser)
+         .send({
+            'email':'userB@admin.com',
+            'password':'admin'
+         })
          .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.empty;
@@ -671,7 +680,10 @@ describe('Topic Management', () => {
    describe('/POST with student login', () => {
       agent
          .post('/Session')
-         .send(studentUser)
+         .send({
+            'email':'userB@student.com',
+            'password':'student'
+         })
          .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.empty;
