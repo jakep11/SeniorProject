@@ -22,7 +22,6 @@ router.get('/', function(req, res) {
          if (vld.check(exerciseArr.length, Tags.notFound, null, cb)) {
             for (var exe in exerciseArr) {
                delete exe.answer;
-               delete exe.dueDate;
             }
             res.json(exerciseArr).end();
             cb();
@@ -83,7 +82,6 @@ router.get('/:exerciseId', function(req, res) {
       function(exerciseArr, fields, cb) {
          if (vld.check(prsArr.length, Tags.notFound, null, cb))
             delete exe.answer;
-            delete exe.dueDate;
             
             res.json(exerciseArr).end();
             cb();
@@ -145,7 +143,8 @@ router.delete('/:exerciseId', function(req, res) {
 /* PUT --
  * Grades an exercise. 
  * POST body requires answer. Response body reports result of grading.
- * ??? - How to report the result of grading?
+ * Object with single boolean property isCorrect, 
+ * indicating whether or not the submission is correct.
  */
 router.put('/:exerciseId/Grade', function(req, res) {
    var vld = req.validator;
@@ -161,13 +160,14 @@ router.put('/:exerciseId/Grade', function(req, res) {
          if (vld.check(exerciseArr.length, Tags.notFound, null, cb) &&
             vld.check(body.answer, Tags.missingValue, ["answer"], cb) &&
             vld.checkAdmin(cb))
-            cnn.chkQry('UPDATE Exercise SET ? WHERE Id = ?', 
-               [body, exerciseId], cb);
+            var correct = false;
+            // Use trim to get rid of extra whitespace at end of answer string.
+            if (body.answer.trim() === exerciseArr[0].answer.trim()) {
+               correct = true;
+            } 
+            res.json({isCorrect : correct});
       }
    ], function(err) {
-      if (!err) {
-         // res.body ... put result of grading here?
-      }
       cnn.release();
    });
 });
