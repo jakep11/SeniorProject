@@ -145,11 +145,11 @@ describe('Session Management', () => {
    });
 
    describe('/GET/:cookie invalid with AU - student', () => {
-      it('results in 403', (done) => {
+      it('results in 404', (done) => {
          agent
             .get('/Session/invalidCookie')
             .end((err, res) => {
-               res.should.have.status(403);
+               res.should.have.status(404);
                res.body.should.be.empty;
                done();
             });
@@ -228,14 +228,12 @@ describe('Session Management', () => {
    });
 
    describe('/GET/:cookie invalid with AU - admin', () => {
-      it('results in 400 and notFound tag', (done) => {
+      it('results in 404', (done) => {
          agent
             .get('/Session/invalidCookie')
             .end((err, res) => {
-               res.should.have.status(400);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('tag', 'notFound');
+               res.should.have.status(404);
+               res.body.should.be.empty;
                done();
             });
       });
@@ -274,14 +272,12 @@ describe('Session Management', () => {
    });
 
    describe('/DELETE/:cookie invalid with AU - admin', () => {
-      it('results in 400 and notFound tag', (done) => {
+      it('results in 404', (done) => {
          agent
             .delete('/Session/invalidCookie')
             .end((err, res) => {
-               res.should.have.status(400);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('tag', 'notFound');
+               res.should.have.status(404);
+               res.body.should.be.empty;
                done();
             });
       });
@@ -331,11 +327,11 @@ describe('Session Management', () => {
    });
 
    describe('/DELETE/:cookie invalid with AU - student', () => {
-      it('results in 403', (done) => {
+      it('results in 404', (done) => {
          agent
             .delete('/Session/invalidCookie')
             .end((err, res) => {
-               res.should.have.status(403);
+               res.should.have.status(404);
                res.body.should.be.empty;
                done();
             });
