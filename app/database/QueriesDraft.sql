@@ -46,7 +46,9 @@
 -- ID/Activities
 -- GET 
 	SELECT * FROM Topic WHERE Id = ? -- check if exists
-	SELECT * FROM ? WHERE TopicId = ?
+	SELECT * FROM Exercise WHERE TopicId = ?
+	SELECT * FROM Video WHERE TopicId = ?
+	SELECT * FROM Document WHERE TopicId = ?
 -------------------------------------------------------------------------------
 -- Exercise Management
 -- GET
