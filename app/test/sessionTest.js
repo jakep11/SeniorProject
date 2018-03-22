@@ -40,29 +40,19 @@ describe('Session Management', () => {
          'termsAccepted': new Date()
       };
 
-      connection.query('insert into User set ?', adminUser);
-      connection.query('insert into User set ?', studentUser, function() {
-         done();
-      });
-   });
-
-   after('remove Users and reset auto_increment', (done) => {
-      let defaultAdmin = {
-         'firstName': 'Joe',
-         'lastName': 'Admin',
-         'email': 'admin@example.com',
-         'role': 1,
-         'passHash': '$2a$10$Nq2f5SyrbQL2R0e9E.cU2OSjqqORgnwwsY1vBvVhV.SGlfzpfYvyi',
-         'termsAccepted': new Date()
-      };
-
-      connection.query('delete from User');
-      connection.query('alter table User auto_increment=1');
-      connection.query('insert into User set ?', defaultAdmin, function (err) {
-         if (err) throw err;
-
-         done();
-      });
+      agent
+         .post('/Session')
+         .send({'email': 'admin@example.com', 'password': 'password'})
+         .end(() => {
+            agent
+               .delete('/DB')
+               .end(() => {
+                  connection.query('insert into User set ?', adminUser);
+                  connection.query('insert into User set ?', studentUser, function() {
+                     done();
+                  });
+               });
+         });
    });
 
    describe('/POST with invalid login', () => {
