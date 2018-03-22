@@ -17,14 +17,9 @@ export default class Login extends Component {
    }
 
    submit() {
-      console.log('Submit login')
+      console.log('Submit login');
       console.log('props:', this.props);
-      this.props.login('bshutt')
-         .then(() => this.props.history.push('/home'))
-      // this.props.login('bshutt', () => {
-      //    console.log('goin home')
-      //    this.props.history.push('/home')
-      // })
+      this.props.login('bshutt');
    }
 
    render() {
