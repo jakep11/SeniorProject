@@ -42,8 +42,8 @@ router.post('/', (req, res) => {
    const body = req.body;
 
    const postTopicFields = ['name', 'sectionId'];
-   const getSectionQuery = '';
-   const insertTopicQuery = '';
+   const getSectionQuery = 'SELECT * FROM Topic WHERE SectionId = ?';
+   const insertTopicQuery = 'INSERT INTO Topic SET ?';
 
    async.waterfall([
       function checkSectionExists(cb) { // validate input and check section exists
@@ -77,7 +77,7 @@ router.get('/:id', (req, res) => {
    const cnn = req.cnn;
    const topicId = req.params.id;
 
-   const getTopicQuery = '';
+   const getTopicQuery = 'SELECT * FROM Topic WHERE Id = ?';
 
    async.waterfall([
       function checkTopicExists(cb) { // validate input and check section exists
@@ -110,8 +110,8 @@ router.put('/:id', (req, res) => {
    const topicId = req.params.id;
 
    const putTopicFields = ['name', 'sectionId'];
-   const getTopicQuery = '';
-   const updateTopicQuery = '';
+   const getTopicQuery = 'SELECT * FROM Topic WHERE Id = ?';
+   const updateTopicQuery = 'UPDATE Topic SET ? WHERE Id = ?';
 
    async.waterfall([
       function checkTopicExists(cb) { // validate input and check section exists
@@ -128,7 +128,7 @@ router.put('/:id', (req, res) => {
 
       function updateTopic(topicResults, fields, cb) { // update topic in DB
          if (vld.check(topicResults.length, Tags.notFound, null, cb)) {
-            cnn.chkQry(updateTopicQuery, body, cb);
+            cnn.chkQry(updateTopicQuery, [body, topicId], cb);
          }
       },
 
@@ -150,8 +150,8 @@ router.delete('/:id', (req, res) => {
    const cnn = req.cnn;
    const topicId = req.params.id;
 
-   const getTopicQuery = '';
-   const deleteTopicQuery = '';
+   const getTopicQuery = 'SELECT * FROM Topic WHERE Id = ?';
+   const deleteTopicQuery = 'DELETE FROM Topic WHERE Id = ?';
 
    async.waterfall([
       function checkTopicExists(cb) { // validate input and check section exists
@@ -188,8 +188,12 @@ router.get('/:id/Activities', (req, res) => {
    const cnn = req.cnn;
    const topicId = req.params.id;
 
-   const getTopicQuery = '';
-   const getTopicActivitiesQuery = '';
+   const getTopicQuery = 'SELECT * FROM Topic WHERE Id = ?';
+   const getExercisesQuery = 'SELECT * FROM Exercise WHERE TopicId = ?';
+   const getVideosQuery = 'SELECT * FROM Video WHERE TopicId = ?';
+   const getDocumentsQuery = 'SELECT * FROM Document WHERE TopicId = ?';
+
+   let activitiesResult = {};
 
    async.waterfall([
       function checkTopicExists(cb) { // validate input and check section exists
@@ -202,14 +206,25 @@ router.get('/:id/Activities', (req, res) => {
          }
       },
 
-      function getTopicActivities(topicResults, fields, cb) { // get topic's activities from DB
-         if (vld.check(topicResults.length, Tags.notFound, null, cb)) {
-            cnn.chkQry(getTopicActivitiesQuery, [topicId], cb);
+      function getExercises(topicsResult, fields, cb) { // get topic's activities from DB
+         if (vld.check(topicsResult.length, Tags.notFound, null, cb)) {
+            cnn.chkQry(getExercisesQuery, [topicId], cb);
          }
       },
 
-      function finalizeResponse(topicActivitiesResult, fields, cb) { // finalize response
-         res.json(topicActivitiesResult);
+      function getVideos(exercisesResult, fields, cb) {
+         activitiesResult.exercises = exercisesResult;
+         cnn.chkQry(getVideosQuery, [topicId], cb);
+      },
+
+      function getDocuments(videosResult, fields, cb) {
+         activitiesResult.videos = videosResult;
+         cnn.chkQry(getDocumentsQuery, [topicId], cb);
+      },
+
+      function finalizeResponse(documentsResult, fields, cb) { // finalize response
+         activitiesResult.documents = documentsResult;
+         res.json(activitiesResult);
          cb(null);
       }
       
