@@ -20,23 +20,12 @@ describe('Topic Management', () => {
    var studentCookie;
    var adminCookie;
 
-   before('Nuke and add users and sections', 
+   before('Nuke, add users and sections', 
     (done) => {
       connection.connect(function (err) {
          if (err)
             throw new Error('Unable to connect to database!');
       });
-
-      let defAdminCookie;
-
-      let defaultAdmin = {
-         'firstName': 'Joe',
-         'lastName': 'Admin',
-         'email': 'admin@example.com',
-         'role': 1,
-         'passHash': '$2a$10$Nq2f5SyrbQL2R0e9E.cU2OSjqqORgnwwsY1vBvVhV.SGlfzpfYvyi',
-         'termsAccepted': new Date()
-      };
 
       // Users for testing
       let adminUser = {
@@ -76,255 +65,228 @@ describe('Topic Management', () => {
          'term': 'F17'
       }
 
-      // Activities for testing
-      let video1 = {
-         'name':'HTML Basics',
-         'link':'youtube.com/HTMLBasics',
-         'topicId': 1,
-         'dueDate': '04-12-2018'
-      }
-
-      let video2 = {
-         'name':'CSS Basics',
-         'link':'youtube.com/CSSBasics',
-         'topicId': 1,
-         'dueDate': '04-12-2018'
-      }
-
-      // admin login
+      // admin login, nuke, add test user and section
       agent
-         .post('/Session')
-         .send({
-            'email': 'admin@example.com',
-            'password': 'password'
-         })
-         .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.empty;
-            res.should.have.cookie('SeniorProject');
-            defAdminCookie = res.header.location.replace('/Session/', '')
-            //done();
-         });
+       .post('/Session')
+       .send({'email': 'admin@example.com', 'password': 'password'})
+       .end(() => {
+         agent
+          .delete('/DB')
+          .end(() => {
+            connection.query('insert into User set ?', adminUser);
+            connection.query('insert into User set ?', studentUser);
 
-      // Nuke
-      it('results in 200', (done) => {
-         agent 
-            .delete('/DB')
-            .end((err, res) => {
-               res.should.have.status(200);
+            connection.query('insert into Section set ?', section437);
+            connection.query('insert into Section set ?', section133);
+            connection.query('insert into Section set ?', section101, function() {
                done();
             });
-      });
-
-      // Admin logout
-//       it('results in 200', (done) => {
-//          agent
-//             .delete('/Session/' + defAdminCookie)
-//             .end((err, res) => {
-//                res.should.have.status(200);
-//                res.body.should.be.empty;
-//                done();
-//             });
-//       });
-
-      connection.query('insert into User set ?', adminUser);
-      connection.query('insert into User set ?', studentUser);
-
-      connection.query('insert into Section set ?', section437);
-      connection.query('insert into Section set ?', section133);
-      connection.query('insert into Section set ?', section101);
-
-      connection.query('insert into Video set ?', video1);
-      connection.query('insert into Video set ?', video2, function() {
-         done();
-      });
-   });
-
-  // No Login test cases
-   describe('/POST with no login', () => {
-      it('results in 401', (done) => {
-         let topic = {
-            'name': 'Boolean Algebra',
-            'sectionId': 2
-         }
-
-         chai.request(server)
-         .post('/Topic')
-         .send(topic)
-         .end((err, res) => {
-            res.should.have.status(401);
-            res.body.should.be.empty;
-            done();
          });
       });
    });
 
-   describe('/GET with no login', () => {
-      it('results in 401', (done) => {
-         chai.request(server)
-         .get('/Topic')
-         .end((err, res) => {
-            res.should.have.status(401);
-            res.body.should.be.empty;
-            done();
+   // No Login test cases
+   describe('No Login', () => {
+      describe('/POST with no login', () => {
+         it('results in 401', (done) => {
+            let topic = {
+               'name': 'Boolean Algebra',
+               'sectionId': 2
+            }
+
+            chai.request(server)
+             .post('/Topic')
+             .send(topic)
+             .end((err, res) => {
+               res.should.have.status(401);
+               res.body.should.be.empty;
+               done();
+            });
+         });
+      });
+
+      describe('/GET with no login', () => {
+         it('results in 401', (done) => {
+            chai.request(server)
+             .get('/Topic')
+             .end((err, res) => {
+               res.should.have.status(401);
+               res.body.should.be.empty;
+               done();
+            });
+         });
+      });
+
+      describe('/GET Id with no login', () => {
+         it('results in 401', (done) => {
+            chai.request(server)
+             .get('/Topic/' + '2')
+             .end((err, res) => {
+               res.should.have.status(401);
+               res.body.should.be.empty;
+               done();
+            });
+         });
+      });
+
+      describe('/PUT Id with no login', () => {
+         it('results in 401', (done) => {
+            let newTopic = {
+               'name': 'Algebra'
+            }
+
+            chai.request(server)
+             .put('/Topic/' + '2')
+             .send(newTopic)
+             .end((err, res) => {
+               res.should.have.status(401);
+               res.body.should.be.empty;
+               done();
+            });
+         });
+      });
+
+      describe('/DELETE Id with no login', () => {
+         it('results in 401', (done) => {
+
+            chai.request(server)
+             .put('/Topic/' + '2')
+             .end((err, res) => {
+               res.should.have.status(401);
+               res.body.should.be.empty;
+               done();
+            });
+         });
+      });
+
+      describe('/GET Id/Activities with no login', () => {
+         it('results in 401', (done) => {
+           
+            chai.request(server)
+             .get('/Topic/' + '2/Activities')
+             .end((err, res) => {
+               res.should.have.status(401);
+               res.body.should.be.empty;
+               done();
+            });
          });
       });
    });
 
-   describe('/GET Id with no login', () => {
-      it('results in 401', (done) => {
-         chai.request(server)
-         .get('/Topic/' + '2')
-         .end((err, res) => {
-            res.should.have.status(401);
-            res.body.should.be.empty;
-            done();
-         });
-      });
-   });
-
-   describe('/PUT Id with no login', () => {
-      it('results in 401', (done) => {
-         let newTopic = {
-            'name': 'Algebra'
-         }
-
-         chai.request(server)
-         .put('/Topic/' + '2')
-         .send(newTopic)
-         .end((err, res) => {
-            res.should.have.status(401);
-            res.body.should.be.empty;
-            done();
-         });
-      });
-   });
-
-   describe('/DELETE Id with no login', () => {
-      it('results in 401', (done) => {
-
-         chai.request(server)
-         .put('/Topic/' + '2')
-         .end((err, res) => {
-            res.should.have.status(401);
-            res.body.should.be.empty;
-            done();
-         });
-      });
-   });
-
-   describe('/GET Id/Activities with no login', () => {
-      it('results in 401', (done) => {
-        
-         chai.request(server)
-         .get('/Topic/' + '2/Activities')
-         .end((err, res) => {
-            res.should.have.status(401);
-            res.body.should.be.empty;
-            done();
-         });
-      });
-   });
 
    // Handle all admin login tests
    // Adding new topics
-   describe('/POST with admin login', () => {
-      agent
-         .post('/Session')
-         .send({
+   describe('Admin login', () => {
+
+      before('Login admin', (done) =>{
+         agent
+          .post('/Session')
+          .send({
             'email':'userB@admin.com',
             'password':'admin'
          })
-         .end((err, res) => {
+          .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.empty;
-            res.should.have.cookie('SeniorProject');
+            res.should.have.cookie('SPAuth');
             adminCookie = res.header.location.replace('/Session/', '')
             done();
          });
-      
-      it('results in 200', (done) => {
-         let topic1 = {
-            'name': 'HTML & CSS',
-            'sectionId': 1
-         }
+      });
 
+      after('Admin logout', (done) => {
          agent
-            .post('/Topic')
-            .send(topic1)
-            .end((err, res) => {
+          .delete('/Session/' + adminCookie)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.empty;
+            done();
+         });
+      });
+
+      describe('/POST with admin login', () => {     
+         it('results in 200', (done) => {
+            let topic1 = {
+               'name': 'HTML & CSS',
+               'sectionId': 1
+            }
+
+            agent
+             .post('/Topic')
+             .send(topic1)
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
                done();
             });
+         });
       });
-   });
 
-   describe('/POST more topics', () => {
-      it('results in 200', (done) => {
-         let topic2 = {
-            'name': 'Boolean Algebra',
-            'sectionId': 2
-         }
+      describe('/POST more topics', () => {
+         it('results in 200', (done) => {
+            let topic2 = {
+               'name': 'Boolean Algebra',
+               'sectionId': 2
+            }
 
-         agent
-            .post('/Topic')
-            .send(topic2)
-            .end((err, res) => {
+            agent
+             .post('/Topic')
+             .send(topic2)
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
                done();
             });
+         });
       });
-   });
 
-   describe('/POST more topics I', () => {
-      it('results in 200', (done) => {
-         let topic3 = {
-            'name': 'Class Inheritance',
-            'sectionId': 3
-         }
+      describe('/POST more topics I', () => {
+         it('results in 200', (done) => {
+            let topic3 = {
+               'name': 'Class Inheritance',
+               'sectionId': 3
+            }
 
-         agent
-            .post('/Topic')
-            .send(topic3)
-            .end((err, res) => {
+            agent
+             .post('/Topic')
+             .send(topic3)
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
                done();
             });
+         });
       });
-   });
 
-   describe('/POST more topics II', () => {
-      it('results in 200', (done) => {
-         let topic4 = {
-            'name': 'JSBasics',
-            'sectionId': 1
-         }
+      describe('/POST more topics II', () => {
+         it('results in 200', (done) => {
+            let topic4 = {
+               'name': 'JSBasics',
+               'sectionId': 1
+            }
 
-         agent
-            .post('/Topic')
-            .send(topic4)
-            .end((err, res) => {
+            agent
+             .post('/Topic')
+             .send(topic4)
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
                done();
             });
+         });
       });
-   });
 
-   // Adding topics different cases
-   describe('/POST with missingName', () => {
-      it('results in 400 with missingField tag', (done) => {
-         let badTopic1 = {
-            'sectionId': 2
-         }
+      // Adding topics different cases
+      describe('/POST with missingName', () => {
+         it('results in 400 with missingField tag', (done) => {
+            let badTopic1 = {
+               'sectionId': 2
+            }
 
-         agent
-            .post('/Topic')
-            .send(badTopic1)
-            .end((err, res) => {
+            agent
+             .post('/Topic')
+             .send(badTopic1)
+             .end((err, res) => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
@@ -334,19 +296,19 @@ describe('Topic Management', () => {
                res.body[0].params[0].should.equal('name');
                done();
             });
+         });
       });
-   });
-   
-   describe('/POST with missingSectionId', () => {
-      it('results in 400 with missingField tag', (done) => {
-         let badTopic2 = {
-            'name': 'Binary Operation'
-         }
+      
+      describe('/POST with missingSectionId', () => {
+         it('results in 400 with missingField tag', (done) => {
+            let badTopic2 = {
+               'name': 'Binary Operation'
+            }
 
-         agent
-            .post('/Topic')
-            .send(badTopic2)
-            .end((err, res) => {
+            agent
+             .post('/Topic')
+             .send(badTopic2)
+             .end((err, res) => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
@@ -356,20 +318,20 @@ describe('Topic Management', () => {
                res.body[0].params[0].should.equal('sectionId');
                done();
             });
+         });
       });
-   });
 
-   describe('/POST with null values', () => {
-      it('results in 400 with missingField tag', (done) => {
-         let badTopic3 = {
-            'name': '',
-            'sectionId': null
-         }
+      describe('/POST with null values', () => {
+         it('results in 400 with missingField tag', (done) => {
+            let badTopic3 = {
+               'name': '',
+               'sectionId': null
+            }
 
-         agent
-            .post('/Topic')
-            .send(badTopic3)
-            .end((err, res) => {
+            agent
+             .post('/Topic')
+             .send(badTopic3)
+             .end((err, res) => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(2);
@@ -384,21 +346,21 @@ describe('Topic Management', () => {
                res.body[1].params[0].should.equal('sectionId');
                done();
             });
+         });
       });
-   });
 
-   describe('/POST with other field', () => {
-      it('results in 400 with forbiddenField tag', (done) => {
-         let badTopic4 = {
-            'name': 'Polymorphism',
-            'sectionId': 3,
-            'other': 'Cat is a Animal'
-         }
+      describe('/POST with other field', () => {
+         it('results in 400 with forbiddenField tag', (done) => {
+            let badTopic4 = {
+               'name': 'Polymorphism',
+               'sectionId': 3,
+               'other': 'Cat is a Animal'
+            }
 
-         agent
-            .post('/Topic')
-            .send(badTopic4)
-            .end((err, res) => {
+            agent
+             .post('/Topic')
+             .send(badTopic4)
+             .end((err, res) => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
@@ -409,16 +371,16 @@ describe('Topic Management', () => {
                res.body[0].params[0].should.equal('other');
                done();
             });
+         });
       });
-   });
 
-   // getting the topics
-   // good cases
-   describe('/GET admin login with sectionId', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/' + 'sectionId=1')
-            .end((err, res) => {
+      // getting the topics
+      // good cases
+      describe('/GET admin login with sectionId', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic' + '?sectionId=1')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(2);
@@ -428,14 +390,14 @@ describe('Topic Management', () => {
                }
                done();
             });
+         });
       });
-   });
 
-   describe('/GET admin login without sectionId', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/')
-            .end((err, res) => {
+      describe('/GET admin login without sectionId', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(4);
@@ -444,15 +406,15 @@ describe('Topic Management', () => {
                }
                done();
             });
-      });
-   }); 
+         });
+      }); 
 
-   // other cases
-   describe('/GET admin login without sectionId value', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/' + 'sectionId=')
-            .end((err, res) => {
+      // other cases
+      describe('/GET admin login without sectionId value', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic' + '?sectionId=')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(4);
@@ -461,41 +423,41 @@ describe('Topic Management', () => {
                }
                done();
             });
-      });
-   }); 
+         });
+      }); 
 
-   describe('/GET admin login with sectionId value as string', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/' + 'sectionId=\'1\'')
-            .end((err, res) => {
+      describe('/GET admin login with sectionId value as string', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic' + '?sectionId=\'1\'')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(0);
                done();
             });
-      });
-   }); 
+         });
+      }); 
 
-   describe('/GET admin login with non existing sectionId', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/' + 'sectionId=10000')
-            .end((err, res) => {
+      describe('/GET admin login with non existing sectionId', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic' + '?sectionId=10000')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(0);
                done();
             });
-      });
-   }); 
+         });
+      }); 
 
-   // getting the topics with id
-   describe('/GET/:Id admin login with topicId', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/' + '1')
-            .end((err, res) => {
+      // getting the topics with id
+      describe('/GET/:Id admin login with topicId', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic/' + '1')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
@@ -505,51 +467,51 @@ describe('Topic Management', () => {
                res.body[0].sectionId.should.equal(1);
                done();
             });
-      });
-   }); 
+         });
+      }); 
 
-   describe('/GET/:Id admin login with non-existing topicId', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/' + '666')
-            .end((err, res) => {
+      describe('/GET/:Id admin login with non-existing topicId', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic/' + '666')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(0);
                done();
             });
-      });
-   }); 
+         });
+      }); 
 
 
-   // updating topics
-   describe('/PUT/:Id admin login', () => {
-      it('results in 200', (done) => {
-         let newTopic1 = {
-            'name' : 'HTML'
-         }
+      // updating topics
+      describe('/PUT/:Id admin login', () => {
+         it('results in 200', (done) => {
+            let newTopic1 = {
+               'name' : 'HTML'
+            }
 
-         agent
-            .put('/Topic/' + '1')
-            .send(newTopic1)
-            .end((err, res) => {
+            agent
+             .put('/Topic/' + '1')
+             .send(newTopic1)
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
                done();
             });
-      });
-   }); 
+         });
+      }); 
 
-   describe('/PUT/:Id admin login with other field', () => {
-      it('results in 400 with forbiddenField tag', (done) => {
-         let newTopic2 = {
-            'other' : 'CSS'
-         }
+      describe('/PUT/:Id admin login with other field', () => {
+         it('results in 400 with forbiddenField tag', (done) => {
+            let newTopic2 = {
+               'other' : 'CSS'
+            }
 
-         agent
-            .put('/Topic/' + '1')
-            .send(newTopic2)
-            .end((err, res) => {
+            agent
+             .put('/Topic/' + '1')
+             .send(newTopic2)
+             .end((err, res) => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
@@ -560,31 +522,31 @@ describe('Topic Management', () => {
                res.body[0].params[0].should.equal('other');
                done();
             });
-      });
-   }); 
+         });
+      }); 
 
-   describe('/PUT/:Id admin login with null name', () => {
-      it('results in 200', (done) => {
-         let newTopic3 = {
-            'name' : ''
-         }
+      describe('/PUT/:Id admin login with null name', () => {
+         it('results in 200', (done) => {
+            let newTopic3 = {
+               'name' : ''
+            }
 
-         agent
-            .put('/Topic/' + '1')
-            .send(newTopic3)
-            .end((err, res) => {
+            agent
+             .put('/Topic/' + '1')
+             .send(newTopic3)
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
                done();
             });
+         });
       });
-   });
 
-   describe('/GET/:Id to confirm update', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/' + '1')
-            .end((err, res) => {
+      describe('/GET/:Id to confirm update', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic/' + '1')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
@@ -594,40 +556,40 @@ describe('Topic Management', () => {
                res.body[0].sectionId.should.equal(1);
                done();
             });
-      });
-   }); 
+         });
+      }); 
 
-   // deleting the topic
-   describe('/DELETE/:Id admin login', () => {
-      it('results in 200', (done) => {
-         agent
-            .delete('/Topic/' + '4')
-            .end((err, res) => {
+      // deleting the topic
+      describe('/DELETE/:Id admin login', () => {
+         it('results in 200', (done) => {
+            agent
+             .delete('/Topic/' + '4')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
                done();
             });
+         });
       });
-   });
 
-   describe('/DELETE/:Id admin login with non-existing id', () => {
-      it('results in 200', (done) => {
-         agent
-            .delete('/Topic/' + '1000')
-            .end((err, res) => {
+      describe('/DELETE/:Id admin login with non-existing id', () => {
+         it('results in 200', (done) => {
+            agent
+             .delete('/Topic/' + '1000')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
                done();
             });
+         });
       });
-   });
 
-   // verify delete
-   describe('/GET to verify delete', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/')
-            .end((err, res) => {
+      // verify delete
+      describe('/GET to verify delete', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic/')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);
@@ -636,15 +598,45 @@ describe('Topic Management', () => {
                }
                done();
             });
+         });
       });
-   });
 
-   // Get activities
-   describe('/GET/:Id/Activities', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/1/Activities')
-            .end((err, res) => {
+      // Get activities
+      describe('/GET/:Id/Activities', () => {
+
+         before('Nuke, add users and sections', 
+          (done) => {
+            connection.connect(function (err) {
+               if (err)
+                  throw new Error('Unable to connect to database!');
+            });
+            
+            // Activities for testing
+            let video1 = {
+               'name':'HTML Basics',
+               'link':'youtube.com/HTMLBasics',
+               'topicId': 1,
+               'dueDate': '2018-12-04 20:10:10'
+            }
+
+            let video2 = {
+               'name':'CSS Basics',
+               'link':'youtube.com/CSSBasics',
+               'topicId': 1,
+               'dueDate': '2018-12-05 09:30:45'
+            }
+
+            connection.query('insert into Video set ?', video1);
+            connection.query('insert into Video set ?', video2, 
+             function() {
+               done();
+            });
+         });
+
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic/1/Activities')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);
@@ -660,61 +652,67 @@ describe('Topic Management', () => {
                res.body[2].should.have.property('videos');
                res.body[2].documents.should.be.a('array');
                res.body[0].documents.should.have.lengthOf(2);
+               done();
             });
-      });
-   });
-
-   // Admin logout
-   it('results in 200', (done) => {
-      agent
-         .delete('/Session/' + adminCookie)
-         .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.empty;
-            done();
          });
+      });
    });
 
    // Handle all student login tests
    // add new topic
-   describe('/POST with student login', () => {
-      agent
-         .post('/Session')
-         .send({
+   describe('Student login', () => {
+
+      before('student login', (done) =>{
+         agent
+          .post('/Session')
+          .send({
             'email':'userB@student.com',
             'password':'student'
          })
-         .end((err, res) => {
+          .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.empty;
-            res.should.have.cookie('SeniorProject');
+            res.should.have.cookie('SPAuth');
             studentCookie = res.header.location.replace('/Session/', '')
             done();
          });
+      });
 
-      it('results in 403', (done) => {
-         let topicA = {
-            'name': 'NodeJs',
-            'sectionId': 1
-         }
-
+      after('Student logout', (done) => {
          agent
-            .post('/Topic')
-            .send(topicA)
-            .end((err, res) => {
+          .delete('/Session/' + studentCookie)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.empty;
+            done();
+         });
+      });
+
+      describe('/POST with student login', (done) => {
+
+         it('results in 403', (done) => {
+            let topicA = {
+               'name': 'NodeJs',
+               'sectionId': 1
+            }
+
+            agent
+             .post('/Topic')
+             .send(topicA)
+             .end((err, res) => {
                res.should.have.status(403);
                res.body.should.be.empty;
                done();
             });
+         });
       });
-   });
 
-   // get topics
-   describe('/GET with student login', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic')
-            .end((err, res) => {
+      // get topics
+      describe('/GET with student login', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);
@@ -723,14 +721,14 @@ describe('Topic Management', () => {
                }
                done();
             });
+         });
       });
-   });
 
-   describe('/GET student login with sectionId', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/' + '1')
-            .end((err, res) => {
+      describe('/GET student login with sectionId', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic/' + '1')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
@@ -738,14 +736,14 @@ describe('Topic Management', () => {
                res.body[0].sectionId.should.equal(1);
                done();
             });
+         });
       });
-   });
 
-   describe('/GET/:Id student login with topicId', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/' + '1')
-            .end((err, res) => {
+      describe('/GET/:Id student login with topicId', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic/' + '1')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
@@ -755,43 +753,43 @@ describe('Topic Management', () => {
                res.body[0].sectionId.should.equal(1);
                done();
             });
-      });
-   }); 
+         });
+      }); 
 
-   describe('/PUT/:Id with student login', () => {
-      it('results in 403', (done) => {
-         let newTopicA = {
-            'sectionId': 3
-         }
+      describe('/PUT/:Id with student login', () => {
+         it('results in 403', (done) => {
+            let newTopicA = {
+               'sectionId': 3
+            }
 
-         agent
-            .put('/Topic/' + '1')
-            .send(newTopicA)
-            .end((err, res) => {
+            agent
+             .put('/Topic/' + '1')
+             .send(newTopicA)
+             .end((err, res) => {
                res.should.have.status(403);
                res.body.should.be.empty;
                done();
             });
+         });
       });
-   });
 
-   describe('/DELETE/:Id with student login', () => {
-      it('results in 403', (done) => {
-         agent
-            .delete('/Topic/' + '1')
-            .end((err, res) => {
+      describe('/DELETE/:Id with student login', () => {
+         it('results in 403', (done) => {
+            agent
+             .delete('/Topic/' + '1')
+             .end((err, res) => {
                res.should.have.status(403);
                res.body.should.be.empty;
                done();
             });
-      });
-   })
+         });
+      })
 
-   describe('/GET to confirm no update', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic')
-            .end((err, res) => {
+      describe('/GET to confirm no update', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);
@@ -802,14 +800,15 @@ describe('Topic Management', () => {
                res.body[0].name.should.equal('HTML');
                done();
             });
+         });
       });
-   });
 
-   describe('/GET/:Id/Activities', () => {
-      it('results in 200', (done) => {
-         agent
-            .get('/Topic/1/Activities')
-            .end((err, res) => {
+      describe('/GET/:Id/Activities', () => {
+
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic/1/Activities')
+             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);
@@ -826,17 +825,7 @@ describe('Topic Management', () => {
                res.body[2].documents.should.be.a('array');
                res.body[0].documents.should.have.lengthOf(2);
             });
-      });
-   });
-
-   // Student logout
-   it('results in 200', (done) => {
-      agent
-         .delete('/Session/' + studentCookie)
-         .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.empty;
-            done();
          });
+      });
    });
 });
