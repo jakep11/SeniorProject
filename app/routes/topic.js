@@ -28,10 +28,8 @@ router.get('/', (req, res) => {
          cb(null);
       }
 
-   ], function callback(err) {
-      if (err) 
-         res.json(err);
-      
+   ], 
+   function callback(err) {
       cnn.release();
    });
 });
@@ -42,7 +40,7 @@ router.post('/', (req, res) => {
    const body = req.body;
 
    const postTopicFields = ['name', 'sectionId'];
-   const getSectionQuery = 'SELECT * FROM Topic WHERE SectionId = ?';
+   const getSectionQuery = 'SELECT * FROM Section WHERE id = ?';
    const insertTopicQuery = 'INSERT INTO Topic SET ?';
 
    async.waterfall([
@@ -65,10 +63,8 @@ router.post('/', (req, res) => {
          cb(null);
       }
       
-   ], function callback(err) {
-      if (err) 
-         res.json(err);
-      
+   ], 
+   function callback(err) {
       cnn.release();
    });
 });
@@ -95,10 +91,8 @@ router.get('/:id', (req, res) => {
          cb(null);
       }
       
-   ], function callback(err) {
-      if (err) 
-         res.json(err);
-      
+   ], 
+   function callback(err) {
       cnn.release();
    });
 });
@@ -137,10 +131,8 @@ router.put('/:id', (req, res) => {
          cb(null);
       }
       
-   ], function callback(err) {
-      if (err) 
-         res.json(err);
-      
+   ], 
+   function callback(err) {
       cnn.release();
    });
 });
@@ -175,10 +167,8 @@ router.delete('/:id', (req, res) => {
          cb(null);
       }
       
-   ], function callback(err) {
-      if (err) 
-         res.json(err);
-      
+   ], 
+   function callback(err) {
       cnn.release();
    });
 });
@@ -228,10 +218,8 @@ router.get('/:id/Activities', (req, res) => {
          cb(null);
       }
       
-   ], function callback(err) {
-      if (err) 
-         res.json(err);
-      
+   ], 
+   function callback(err) {
       cnn.release();
    });
 });
