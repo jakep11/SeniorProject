@@ -82,7 +82,7 @@ Validator.prototype.hasFields = function (obj, fieldList, cb) {
    var self = this;
 
    fieldList.forEach(function (name) {
-      self.chain(obj.hasOwnProperty(name) && obj[name] !== '',
+      self.chain(obj.hasOwnProperty(name) && obj[name],
          Validator.Tags.missingField, [name]);
    });
 

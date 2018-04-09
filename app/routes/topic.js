@@ -10,17 +10,11 @@ router.get('/', (req, res) => {
    const cnn = req.cnn;
 
    const where = sectionId ? `WHERE sectionId = ${sectionId}` : '';
-   const query = `SELECT id, departmentId, name, sectionId FROM Topic ${where}`;
+   const query = `SELECT * FROM Topic ${where}`;
 
    async.waterfall([
       function validateAndQuery(cb) { 
-         if (isNaN(sectionId)) { // query sectionId is not a number
-            res.status(400).end();
-            cb(true);
-         }
-         else {
-            cnn.chkQry(query, null, cb);
-         }
+         cnn.chkQry(query, null, cb);
       },
 
       function checkResults(topicResults, fields, cb) {
@@ -38,17 +32,21 @@ router.post('/', (req, res) => {
    const vld = req.validator;
    const cnn = req.cnn;
    const body = req.body;
+   const sectionId = parseInt(body.sectionId);
 
    const postTopicFields = ['name', 'sectionId'];
-   const getSectionQuery = 'SELECT * FROM Section WHERE id = ?';
-   const insertTopicQuery = 'INSERT INTO Topic SET ?';
+   let getSectionQuery = 'SELECT * FROM Section WHERE id = ?';
+   let insertTopicQuery = 'INSERT INTO Topic SET ?';
 
    async.waterfall([
       function checkSectionExists(cb) { // validate input and check section exists
-         if (vld.hasFields(body, postTopicFields, cb) && 
-            vld.hasOnlyFields(body, postTopicFields, cb)) { // validate input
+         if (vld.checkAdmin(cb) &&
+            vld.hasFields(body, postTopicFields, cb) && 
+            vld.hasOnlyFields(body, postTopicFields, cb) &&
+            vld.chain(body.name, Tags.missingField, ['name']) // should hasFields check for falsey?
+               .check(body.sectionId, Tags.missingField, ['sectionId'], cb)) { // validate input
 
-            cnn.chkQry(getSectionQuery, [body.sectionId], cb);
+            cnn.chkQry(getSectionQuery, [sectionId], cb);
          }
       },
 
@@ -114,7 +112,9 @@ router.put('/:id', (req, res) => {
             cb(true);
          }
          else if (vld.checkAdmin(cb) &&
-            vld.hasOnlyFields(body, putTopicFields, cb)) { // validate input
+            vld.hasOnlyFields(body, putTopicFields, cb) &&
+            vld.chain(!('name' in body) || body.name, Tags.badValue, ['name'])
+               .check(!('sectionId' in body) || body.sectionId, Tags.badValue, ['sectionId'], cb)) { // validate input
 
             cnn.chkQry(getTopicQuery, [topicId], cb);
          }
