@@ -27,6 +27,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function(req, res, next) {
+   console.log("Handling " + req.path + '/' + req.method);
+   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+   res.header("Access-Control-Allow-Credentials", true);
+   res.header("Access-Control-Allow-Headers", "Location, Content-Type, Authorization, Accept, X-HTTP-Method-Override, X-Requested-With");
+   res.header("Access-Control-Allow-Methods", 'POST, GET, PUT, DELETE, OPTIONS');
+   res.header("Access-Control-Expose-Headers", 'Location');
+   res.header("Access-Control-Allow-Request-Headers", 'Location');
+
+
+   if (req.method === 'OPTIONS')
+      res.sendStatus(200);
+   else
+      next();
+});
+
 
 // Set up Session on req if available
 app.use(Session.router);
