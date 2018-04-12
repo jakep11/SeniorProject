@@ -335,15 +335,15 @@ describe('Topic Management', () => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(2);
-               for (erro in res.body) {
-                  erro.should.have.property('tag', 'missingField');
-                  erro.should.have.property('params');
-                  erro.params.should.be.a('array');
-                  erro.params.should.have.lengthOf(1);
+               for (var i in res.body) {
+                  (res.body)[i].should.have.property('tag', 'missingField');
+                  (res.body)[i].should.have.property('params');
+                  (res.body)[i].params.should.be.a('array');
+                  (res.body)[i].params.should.have.lengthOf(1);
                }
 
-               res.body[0].params[0].should.equal('name');
-               res.body[1].params[0].should.equal('sectionId');
+               (res.body)[0].params[0].should.equal('name');
+               (res.body)[1].params[0].should.equal('sectionId');
                done();
             });
          });
@@ -384,9 +384,9 @@ describe('Topic Management', () => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(2);
-               for (ans in res.body) {
-                  ans.should.have.property('id, name, sectionId');
-                  ans.sectionId.should.equal(1);
+               for (var i in res.body) {
+                  (res.body)[i].should.have.property('id', 'name', 'sectionId');
+                  (res.body)[i].sectionId.should.equal(1);
                }
                done();
             });
@@ -401,8 +401,8 @@ describe('Topic Management', () => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(4);
-               for (ans in res.body) {
-                  ans.should.have.property('id, name, sectionId');
+               for (var i in res.body) {
+                  (res.body)[i].should.have.property('id', 'name', 'sectionId');
                }
                done();
             });
@@ -418,8 +418,8 @@ describe('Topic Management', () => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(4);
-               for (ans in res.body) {
-                  ans.should.have.property('id, name, sectionId');
+               for (var i in res.body) {
+                  (res.body)[i].should.have.property('id', 'name', 'sectionId');
                }
                done();
             });
@@ -593,8 +593,8 @@ describe('Topic Management', () => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);
-               for (ans in res.body) {
-                  ans.should.have.property('id, name, sectionId');
+               for (var i in res.body) {
+                  (res.body)[i].should.have.property('id, name, sectionId');
                }
                done();
             });
@@ -716,8 +716,8 @@ describe('Topic Management', () => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);
-               for (tpc in res.body) {
-                  tpc.should.have.property('id', 'name', 'sectionId');
+               for (var i in res.body) {
+                  (res.body)[i].should.have.property('id', 'name', 'sectionId');
                }
                done();
             });
@@ -793,8 +793,8 @@ describe('Topic Management', () => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);
-               for (tpc in res.body) {
-                  tpc.should.have.property('id', 'name', 'sectionId');
+               for (var i in res.body) {
+                  (res.body)[i].should.have.property('id', 'name', 'sectionId');
                }
 
                res.body[0].name.should.equal('HTML');
