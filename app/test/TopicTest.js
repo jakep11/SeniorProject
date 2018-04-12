@@ -335,13 +335,13 @@ describe('Topic Management', () => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(2);
-               for (erro in res.body) {
+               for (erro in res.body) { 
                   erro.should.have.property('tag', 'missingField');
                   erro.should.have.property('params');
                   erro.params.should.be.a('array');
                   erro.params.should.have.lengthOf(1);
                }
-
+               
                res.body[0].params[0].should.equal('name');
                res.body[1].params[0].should.equal('sectionId');
                done();
@@ -550,7 +550,7 @@ describe('Topic Management', () => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('id', 'name', 'sectionId');
+               res.body[0].should.have.property('id', 'name', 'sectionId'); 
                res.body[0].id.should.equal(1);
                res.body[0].name.should.equal('HTML');
                res.body[0].sectionId.should.equal(1);
