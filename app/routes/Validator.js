@@ -22,6 +22,7 @@ Validator.Tags = {
    oldPwdMismatch: 'oldPwdMismatch',// Old passwords don't match 
    dupTitle: 'dupTitle',            // Title duplicates an existing Conversation title
    dupEnrollment: 'dupEnrollment',  // Duplicate enrollment
+   dupVideoLink: 'dupVideoLink',            // Duplicate Video link
    forbiddenField: 'forbiddenField',// Forbidden field supplied as a parameter
    queryFailed: 'queryFailed'       // Query failed in the database
 };
