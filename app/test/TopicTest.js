@@ -550,8 +550,6 @@ describe('Topic Management', () => {
                res.body[0].should.have.property('params');
                res.body[0].params.should.be.a('array');
                res.body[0].params.should.have.lengthOf(1);
-               }
-
                done();
             });
          });
