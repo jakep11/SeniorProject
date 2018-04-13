@@ -290,7 +290,8 @@ describe('Topic Management', () => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('tag', 'missingField');
+               res.body[0].should.have.property('tag');
+               res.body[0].should.have.property('missingField');
                res.body[0].should.have.property('params');
                res.body[0].params.should.have.lengthOf(1);
                res.body[0].params[0].should.equal('name');
@@ -312,7 +313,8 @@ describe('Topic Management', () => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('tag', 'missingField');
+               res.body[0].should.have.property('tag'); 
+               res.body[0].should.have.property('missingField');
                res.body[0].should.have.property('params');
                res.body[0].params.should.have.lengthOf(1);
                res.body[0].params[0].should.equal('sectionId');
@@ -336,7 +338,8 @@ describe('Topic Management', () => {
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(2);
                for (var i in res.body) {
-                  (res.body)[i].should.have.property('tag', 'missingField');
+                  (res.body)[i].should.have.property('tag');
+                  (res.body)[i].should.have.property('missingField');
                   (res.body)[i].should.have.property('params');
                   (res.body)[i].params.should.be.a('array');
                   (res.body)[i].params.should.have.lengthOf(1);
@@ -364,7 +367,8 @@ describe('Topic Management', () => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('tag', 'forbiddenField');
+               res.body[0].should.have.property('tag'); 
+               res.body[0].should.have.property('forbiddenField');
                res.body[0].should.have.property('params');
                res.body[0].params.should.be.a('array');
                res.body[0].params.should.have.lengthOf(1);
@@ -385,7 +389,9 @@ describe('Topic Management', () => {
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(2);
                for (var i in res.body) {
-                  (res.body)[i].should.have.property('id', 'name', 'sectionId');
+                  (res.body)[i].should.have.property('id');
+                  (res.body)[i].should.have.property('name');
+                  (res.body)[i].should.have.property('sectionId');
                   (res.body)[i].sectionId.should.equal(1);
                }
                done();
@@ -402,7 +408,9 @@ describe('Topic Management', () => {
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(4);
                for (var i in res.body) {
-                  (res.body)[i].should.have.property('id', 'name', 'sectionId');
+                  (res.body)[i].should.have.property('id');
+                  (res.body)[i].should.have.property('name');
+                  (res.body)[i].should.have.property('sectionId');
                }
                done();
             });
@@ -419,7 +427,9 @@ describe('Topic Management', () => {
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(4);
                for (var i in res.body) {
-                  (res.body)[i].should.have.property('id', 'name', 'sectionId');
+                  (res.body)[i].should.have.property('id');
+                  (res.body)[i].should.have.property('name');
+                  (res.body)[i].should.have.property('sectionId');
                }
                done();
             });
@@ -461,7 +471,9 @@ describe('Topic Management', () => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('id', 'name', 'sectionId');
+               res.body[0].should.have.property('id');
+               (res.body)[0].should.have.property('name');
+               (res.body)[0].should.have.property('sectionId');
                res.body[0].id.should.equal(1);
                res.body[0].name.should.equal('HTML & CSS');
                res.body[0].sectionId.should.equal(1);
@@ -515,7 +527,8 @@ describe('Topic Management', () => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('tag', 'forbiddenField');
+               res.body[0].should.have.property('tag');
+               res.body[0].should.have.property('forbiddenField');
                res.body[0].should.have.property('params');
                res.body[0].params.should.be.a('array');
                res.body[0].params.should.have.lengthOf(1);
@@ -550,7 +563,9 @@ describe('Topic Management', () => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('id', 'name', 'sectionId'); 
+               res.body[0].should.have.property('id');
+               res.body[0].should.have.property('name');
+               res.body[0].should.have.property('sectionId');
                res.body[0].id.should.equal(1);
                res.body[0].name.should.equal('HTML');
                res.body[0].sectionId.should.equal(1);
@@ -594,7 +609,9 @@ describe('Topic Management', () => {
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);
                for (var i in res.body) {
-                  (res.body)[i].should.have.property('id, name, sectionId');
+                  (res.body)[i].should.have.property('id');
+                  (res.body)[i].should.have.property('name');
+                  (res.body)[i].should.have.property('sectionId');
                }
                done();
             });
@@ -717,7 +734,9 @@ describe('Topic Management', () => {
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);
                for (var i in res.body) {
-                  (res.body)[i].should.have.property('id', 'name', 'sectionId');
+                  (res.body)[i].should.have.property('id');
+                  (res.body)[i].should.have.property('name');
+                  (res.body)[i].should.have.property('sectionId');
                }
                done();
             });
@@ -732,7 +751,9 @@ describe('Topic Management', () => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('id, name, sectionId');
+               res.body[0].should.have.property('id');
+               res.body[0].should.have.property('name');
+               res.body[0].should.have.property('sectionId');
                res.body[0].sectionId.should.equal(1);
                done();
             });
@@ -747,7 +768,9 @@ describe('Topic Management', () => {
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('id', 'name', 'sectionId');
+               res.body[0].should.have.property('id');
+               res.body[0].should.have.property('name');
+               res.body[0].should.have.property('sectionId');
                res.body[0].id.should.equal(1);
                res.body[0].name.should.equal('HTML');
                res.body[0].sectionId.should.equal(1);
@@ -794,7 +817,9 @@ describe('Topic Management', () => {
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);
                for (var i in res.body) {
-                  (res.body)[i].should.have.property('id', 'name', 'sectionId');
+                  (res.body)[i].should.have.property('id');
+                  (res.body)[i].should.have.property('name');
+                  (res.body)[i].should.have.property('sectionId');
                }
 
                res.body[0].name.should.equal('HTML');
