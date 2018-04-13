@@ -18,8 +18,8 @@ Validator.Tags = {
    dupEmail: 'dupEmail',            // Email duplicates an existing email
    noTerms: 'noTerms',              // Acceptance of terms is required.
    forbiddenRole: 'forbiddenRole',  // Cannot set to this role
-   noOldPwd: 'noOldPwd',            // Change of password requires an old password
-   oldPwdMismatch: 'oldPwdMismatch',// Old passwords don't match 
+   noOldPassword: 'noOldPassword',            // Change of password requires an old password
+   oldPasswordMismatch: 'oldPasswordMismatch',// Old passwords don't match 
    dupTitle: 'dupTitle',            // Title duplicates an existing Conversation title
    dupEnrollment: 'dupEnrollment',  // Duplicate enrollment
    forbiddenField: 'forbiddenField',// Forbidden field supplied as a parameter
