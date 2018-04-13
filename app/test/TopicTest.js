@@ -543,8 +543,15 @@ describe('Topic Management', () => {
              .put('/Topic/' + '1')
              .send(newTopic3)
              .end((err, res) => {
-               res.should.have.status(200);
-               res.body.should.be.empty;
+               res.should.have.status(400);
+               res.body.should.be.a('array');
+               res.body.should.have.lengthOf(1);
+               res.body[0].should.have.property('tag', 'missingField');
+               res.body[0].should.have.property('params');
+               res.body[0].params.should.be.a('array');
+               res.body[0].params.should.have.lengthOf(1);
+               }
+
                done();
             });
          });
@@ -575,7 +582,7 @@ describe('Topic Management', () => {
             agent
              .delete('/Topic/' + '4')
              .end((err, res) => {
-               res.should.have.status(200);
+               res.should.have.status(404);
                res.body.should.be.empty;
                done();
             });
@@ -587,7 +594,7 @@ describe('Topic Management', () => {
             agent
              .delete('/Topic/' + '1000')
              .end((err, res) => {
-               res.should.have.status(200);
+               res.should.have.status(404);
                res.body.should.be.empty;
                done();
             });
@@ -618,10 +625,10 @@ describe('Topic Management', () => {
 
          before('Nuke, add users and sections', 
           (done) => {
-            connection.connect(function (err) {
-               if (err)
-                  throw new Error('Unable to connect to database!');
-            });
+            // connection.connect(function (err) {
+            //    if (err)
+            //       throw new Error('Unable to connect to database!');
+            // });
             
             // Activities for testing
             let video1 = {
@@ -650,20 +657,18 @@ describe('Topic Management', () => {
              .get('/Topic/1/Activities')
              .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(3);
 
-               res.body[0].should.have.property('documents');
-               res.body[0].documents.should.be.a('array');
-               res.body[0].documents.should.have.lengthOf(0);
+               res.body.should.have.property('documents');
+               res.body.documents.should.be.a('array');
+               res.body.documents.should.have.lengthOf(0);
                
-               res.body[1].should.have.property('exercises');
-               res.body[1].documents.should.be.a('array');
-               res.body[0].documents.should.have.lengthOf(0);
+               res.body.should.have.property('exercises');
+               res.body.exercises.should.be.a('array');
+               res.body.exercises.should.have.lengthOf(0);
                
-               res.body[2].should.have.property('videos');
-               res.body[2].documents.should.be.a('array');
-               res.body[0].documents.should.have.lengthOf(2);
+               res.body.should.have.property('videos');
+               res.body.videos.should.be.a('array');
+               res.body.videos.should.have.lengthOf(2);
                done();
             });
          });
@@ -830,20 +835,18 @@ describe('Topic Management', () => {
              .get('/Topic/1/Activities')
              .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(3);
                
-               res.body[0].should.have.property('documents');
-               res.body[0].documents.should.be.a('array');
-               res.body[0].documents.should.have.lengthOf(0);
+               res.body.should.have.property('documents');
+               res.body.documents.should.be.a('array');
+               res.body.documents.should.have.lengthOf(0);
                
-               res.body[1].should.have.property('exercises');
-               res.body[1].documents.should.be.a('array');
-               res.body[0].documents.should.have.lengthOf(0);
+               res.body.should.have.property('exercises');
+               res.body.exercises.should.be.a('array');
+               res.body.exercises.should.have.lengthOf(0);
                
-               res.body[2].should.have.property('videos');
-               res.body[2].documents.should.be.a('array');
-               res.body[0].documents.should.have.lengthOf(2);
+               res.body.should.have.property('videos');
+               res.body.videos.should.be.a('array');
+               res.body.videos.should.have.lengthOf(2);
             });
          });
       });
