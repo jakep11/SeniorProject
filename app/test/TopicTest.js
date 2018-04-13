@@ -627,7 +627,7 @@ describe('Topic Management', () => {
             }
 
             connection.query('insert into Video set ?', video1);
-            connection.query('insert into Video set ?', video2, 
+            connection.query('insert into Video set ?', video2,
              function() {
                done();
             });
