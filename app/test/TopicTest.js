@@ -290,8 +290,7 @@ describe('Topic Management', () => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('tag');
-               res.body[0].should.have.property('missingField');
+               res.body[0].should.have.property('tag', 'missingField');
                res.body[0].should.have.property('params');
                res.body[0].params.should.have.lengthOf(1);
                res.body[0].params[0].should.equal('name');
@@ -313,8 +312,7 @@ describe('Topic Management', () => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('tag'); 
-               res.body[0].should.have.property('missingField');
+               res.body[0].should.have.property('tag', 'missingField');
                res.body[0].should.have.property('params');
                res.body[0].params.should.have.lengthOf(1);
                res.body[0].params[0].should.equal('sectionId');
@@ -338,8 +336,7 @@ describe('Topic Management', () => {
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(2);
                for (var i in res.body) {
-                  (res.body)[i].should.have.property('tag');
-                  (res.body)[i].should.have.property('missingField');
+                  (res.body)[i].should.have.property('tag', 'missingField');
                   (res.body)[i].should.have.property('params');
                   (res.body)[i].params.should.be.a('array');
                   (res.body)[i].params.should.have.lengthOf(1);
@@ -367,8 +364,7 @@ describe('Topic Management', () => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('tag'); 
-               res.body[0].should.have.property('forbiddenField');
+               res.body[0].should.have.property('tag', 'forbiddenField');
                res.body[0].should.have.property('params');
                res.body[0].params.should.be.a('array');
                res.body[0].params.should.have.lengthOf(1);
@@ -527,8 +523,7 @@ describe('Topic Management', () => {
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('tag');
-               res.body[0].should.have.property('forbiddenField');
+               res.body[0].should.have.property('tag', 'forbiddenField');
                res.body[0].should.have.property('params');
                res.body[0].params.should.be.a('array');
                res.body[0].params.should.have.lengthOf(1);
@@ -644,7 +639,7 @@ describe('Topic Management', () => {
             }
 
             connection.query('insert into Video set ?', video1);
-            connection.query('insert into Video set ?', video2,
+            connection.query('insert into Video set ?', video2, 
              function() {
                done();
             });
