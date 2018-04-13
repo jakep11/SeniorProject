@@ -617,12 +617,7 @@ describe('Topic Management', () => {
       describe('/GET/:Id/Activities', () => {
 
          before('Nuke, add users and sections', 
-          (done) => {
-            connection.connect(function (err) {
-               if (err)
-                  throw new Error('Unable to connect to database!');
-            });
-            
+          (done) => {            
             // Activities for testing
             let video1 = {
                'name':'HTML Basics',
