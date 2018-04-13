@@ -624,7 +624,12 @@ describe('Topic Management', () => {
       describe('/GET/:Id/Activities', () => {
 
          before('Nuke, add users and sections', 
-          (done) => {            
+          (done) => {
+            connection.connect(function (err) {
+               if (err)
+                  throw new Error('Unable to connect to database!');
+            });
+            
             // Activities for testing
             let video1 = {
                'name':'HTML Basics',
@@ -652,18 +657,20 @@ describe('Topic Management', () => {
              .get('/Topic/1/Activities')
              .end((err, res) => {
                res.should.have.status(200);
+               res.body.should.be.a('array');
+               res.body.should.have.lengthOf(3);
 
-               res.body.should.have.property('documents');
-               res.body.documents.should.be.a('array');
-               res.body.documents.should.have.lengthOf(0);
+               res.body[0].should.have.property('documents');
+               res.body[0].documents.should.be.a('array');
+               res.body[0].documents.should.have.lengthOf(0);
                
-               res.body.should.have.property('exercises');
-               res.body.exercises.should.be.a('array');
-               res.body.exercises.should.have.lengthOf(0);
+               res.body[1].should.have.property('exercises');
+               res.body[1].documents.should.be.a('array');
+               res.body[0].documents.should.have.lengthOf(0);
                
-               res.body.should.have.property('videos');
-               res.body.videos.should.be.a('array');
-               res.body.videos.should.have.lengthOf(2);
+               res.body[2].should.have.property('videos');
+               res.body[2].documents.should.be.a('array');
+               res.body[0].documents.should.have.lengthOf(2);
                done();
             });
          });
@@ -830,18 +837,20 @@ describe('Topic Management', () => {
              .get('/Topic/1/Activities')
              .end((err, res) => {
                res.should.have.status(200);
+               res.body.should.be.a('array');
+               res.body.should.have.lengthOf(3);
                
-               res.body.should.have.property('documents');
-               res.body.documents.should.be.a('array');
-               res.body.documents.should.have.lengthOf(0);
+               res.body[0].should.have.property('documents');
+               res.body[0].documents.should.be.a('array');
+               res.body[0].documents.should.have.lengthOf(0);
                
-               res.body.should.have.property('exercises');
-               res.body.exercises.should.be.a('array');
-               res.body.exercises.should.have.lengthOf(0);
+               res.body[1].should.have.property('exercises');
+               res.body[1].documents.should.be.a('array');
+               res.body[0].documents.should.have.lengthOf(0);
                
-               res.body.should.have.property('videos');
-               res.body.videos.should.be.a('array');
-               res.body.videos.should.have.lengthOf(2);
+               res.body[2].should.have.property('videos');
+               res.body[2].documents.should.be.a('array');
+               res.body[0].documents.should.have.lengthOf(2);
             });
          });
       });
