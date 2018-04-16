@@ -10,7 +10,7 @@ class Main extends Component {
 
    logout() {
       console.log(this.props);
-      this.props.logout();
+      this.props.logout(() => this.props.history.push('/login'));
    }
 
    render() {
