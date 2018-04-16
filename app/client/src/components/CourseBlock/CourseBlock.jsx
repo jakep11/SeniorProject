@@ -28,6 +28,12 @@ export default class CourseBlock extends Component {
 
                <Line { ...progressBarOptions } />
             </div>
+
+            <div className="cb-right">
+               <div className="term">{this.props.term}</div>
+
+
+            </div>
          </div>
       )
 

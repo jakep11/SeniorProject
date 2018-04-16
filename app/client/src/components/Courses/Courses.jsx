@@ -23,7 +23,7 @@ export default class Courses extends Component {
       return (
          <div>
             <h1>Courses</h1>
-            <CourseBlock title="CPE-453" progress={this.state.progress}></CourseBlock>
+            <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018"></CourseBlock>
          </div>
       )
 
