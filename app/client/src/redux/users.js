@@ -1,6 +1,8 @@
 
 import Rx from 'rxjs/Rx';
 import { push } from 'react-router-redux';
+import { signIn } from "../api";
+
 
 /* Actions */
 const LOGIN = 'LOGIN';
@@ -38,9 +40,7 @@ export const logout = () => ({ type: LOGOUT });
 /* Epics */
 export const loginEpic = (action$) =>
    action$.ofType(LOGIN)
-      .do(() => console.log('try login'))
-      .delay(1000)
-      .do(() => console.log('delay complete'))
+      .switchMap((action) => signIn(action.credentials))
       .mapTo({ type: LOGIN_SUCCESS });
 
 export const loginSuccessEpic = (action$) =>
