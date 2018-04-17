@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var Session = require('./routes/Session.js');
 var Validator = require('./routes/Validator.js');
 var CnnPool = require('./routes/CnnPool.js');

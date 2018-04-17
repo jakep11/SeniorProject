@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 
 const agent = chai.request.agent(server);
 
-describe('Video Management', () => {
+describe.skip('Video Management', () => {
    let studentCookie;
    let adminCookie;
    let defaultAdminCookie;

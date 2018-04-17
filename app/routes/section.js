@@ -20,10 +20,8 @@ router.get('/', (req, res) => {
 				cnn.chkQry(`SELECT * FROM Section ${where}`, null, cb);
 		},
 		function(secResult, fields, cb){
-			if(vld.check(secResult.length, Tags.notFound, null, cb)){
-				res.json(secResult);
-				cb();
-			}
+			res.json(secResult);
+			cb();
 		}
 	], 
 	function(err){
@@ -89,7 +87,7 @@ router.get('/:id', (req,res) => {
 });
 
 router.put('/:id', (req, res) => {
-	let id = re.params.id;
+	let id = req.params.id;
 	let vld = req.validator;
 	let cnn = req.cnn;
 	let body = req.body;
