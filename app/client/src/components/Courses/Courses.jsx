@@ -1,6 +1,8 @@
 
 import React, { Component } from 'react';
 import CourseBlock from "../CourseBlock/CourseBlock";
+import './Courses.css';
+import { Link } from "react-router-dom";
 
 export default class Courses extends Component {
    constructor(props) {
@@ -21,9 +23,26 @@ export default class Courses extends Component {
 
    render() {
       return (
-         <div>
-            <h1>Courses</h1>
-            <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018"></CourseBlock>
+         <div className="cs-wrapper">
+            <div className="cs-sidebar-container">
+               sidebar here
+
+            </div>
+            <div className="cs-main">
+               
+               <div className="cs-header">
+                  <input type="text" placeholder="Search Classes..."/>
+               </div>
+               
+               <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" isEnrolled={true} />
+               <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" />
+
+               <Link to={'/courses/1'}>
+                  <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" isEnrolled={true} />
+               </Link>
+
+               <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" />
+            </div>
          </div>
       )
 

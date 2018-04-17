@@ -14,9 +14,40 @@
 }
 .cb-body {
     flex: 1 1 auto;
-    padding: 5px 10px;
+    padding: 5px 0 5px 10px;
 }
 
-.cb-title {
-
+.cb-body-row1 {
+    display: flex;
 }
+.term {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+}
+
+.cb-body-row2 {
+    display: flex;
+    align-items: center;
+}
+
+.cb-body-row2 .cb-line-wrapper {
+    flex: 0 0 75%;
+    /*width: 75%;*/
+    /*display: inline-block;*/
+}
+
+.cb-progress, .cb-enroll {
+    margin-left: auto;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+
+
+/*.cb-right {*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: space-between;*/
+    /*align-items: flex-end;*/
+/*}*/

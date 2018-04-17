@@ -1,0 +1,30 @@
+
+.cs-wrapper {
+    display: flex;
+    align-content: stretch;
+    min-height: 90vh;
+}
+
+.cs-sidebar-container {
+    flex: 0 0 350px;
+    border-right: 2px solid blue;
+}
+
+.cs-header {
+    border-bottom: 2px solid blue;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.cs-header input {
+    width: 100%;
+    padding: 7px;
+    background-color: #ddd;
+}
+
+.cs-main {
+    flex: 1 1 auto;
+
+
+}
