@@ -39,6 +39,7 @@ router.post('/', (req, res) => {
 
    const postTopicFields = ['name', 'sectionId'];
    let getSectionQuery = 'SELECT * FROM Section WHERE id = ?';
+   let getTopicQuery = 'SELECT * FROM Topic WHERE SectionId = ? and Name = ?';
    let insertTopicQuery = 'INSERT INTO Topic SET ?';
 
    async.waterfall([
@@ -53,8 +54,14 @@ router.post('/', (req, res) => {
          }
       },
 
-      function createTopic(sectionResults, fields, cb) { // insert topic into DB
+      function checkTopicDuplicate(sectionResults, fields, cb) {
          if (vld.check(sectionResults.length, Tags.notFound, null, cb)) {
+            cnn.chkQry(getTopicQuery, [sectionId, body.name], cb);
+         }
+      },
+
+      function createTopic(topicResults, fields, cb) { // insert topic into DB
+         if (vld.check(!topicResults.length, Tags.notFound, null, cb)) {
             cnn.chkQry(insertTopicQuery, body, cb);
          }
       },
@@ -90,7 +97,14 @@ router.get('/:id', (req, res) => {
       },
 
       function finalizeResponse(topicResults, fields, cb) { // finalize response
-         res.json(topicResults);
+         if (topicResults.length) {// topic exists
+            res.json(topicResults);
+         }
+         else {
+            res.status(404).end();
+            return;
+         }
+
          cb(null);
       }
       
@@ -118,17 +132,21 @@ router.put('/:id', (req, res) => {
          }
          else if (vld.checkAdmin(cb) &&
             vld.hasOnlyFields(body, putTopicFields, cb) &&
-            vld.chain(!('name' in body) || body.name, Tags.badValue, ['name'])
+            vld.chain(!('name' in body) || body.name, Tags.missingField, ['name'])
                .check(!('sectionId' in body) || body.sectionId, 
-                  Tags.badValue, ['sectionId'], cb)) { // validate input
+                  Tags.missingField, ['sectionId'], cb)) { // validate input
 
             cnn.chkQry(getTopicQuery, [topicId], cb);
          }
       },
 
       function updateTopic(topicResults, fields, cb) { // update topic in DB
-         if (vld.check(topicResults.length, Tags.notFound, null, cb)) {
+         if (topicResults.length) {// topic exists
             cnn.chkQry(updateTopicQuery, [body, topicId], cb);
+         }
+         else {
+            res.status(404).end();
+            return;
          }
       },
 
@@ -163,8 +181,12 @@ router.delete('/:id', (req, res) => {
       },
 
       function deleteTopic(topicResults, fields, cb) { // delete topic from DB
-         if (vld.check(topicResults.length, Tags.notFound, null, cb)) {
+         if (topicResults.length) {
             cnn.chkQry(deleteTopicQuery, [topicId], cb);
+         }
+         else {
+            res.status(404).end();
+            return;
          }
       },
 
@@ -204,8 +226,12 @@ router.get('/:id/Activities', (req, res) => {
       },
 
       function getExercises(topicsResult, fields, cb) { // get topic's activities from DB
-         if (vld.check(topicsResult.length, Tags.notFound, null, cb)) {
+         if (topicsResult.length) { // topic exists
             cnn.chkQry(getExercisesQuery, [topicId], cb);
+         }
+         else {
+            res.status(404).end();
+            return;
          }
       },
 

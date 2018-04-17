@@ -23,7 +23,8 @@ Validator.Tags = {
    dupTitle: 'dupTitle',            // Title duplicates an existing Conversation title
    dupEnrollment: 'dupEnrollment',  // Duplicate enrollment
    forbiddenField: 'forbiddenField',// Forbidden field supplied as a parameter
-   queryFailed: 'queryFailed'       // Query failed in the database
+   queryFailed: 'queryFailed',      // Query failed in the database
+   dupTopic: 'dupTopic',            // Duplicate topic
 };
 
 // Check |test|.  If false, add an error with tag and possibly empty array

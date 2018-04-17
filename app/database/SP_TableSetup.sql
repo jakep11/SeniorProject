@@ -39,7 +39,7 @@ CREATE TABLE Enrollment (
 
 CREATE TABLE Topic (
    id INT AUTO_INCREMENT,
-   name VARCHAR(100),
+   name VARCHAR(500),
    sectionId INT,
    PRIMARY KEY (id),
    UNIQUE (name, sectionId),

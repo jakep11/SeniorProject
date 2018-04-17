@@ -437,6 +437,7 @@ describe('Topic Management', () => {
             agent
              .get('/Topic' + '?sectionId=\'1\'')
              .end((err, res) => {
+               console.log('GET w/ string value: ' + JSON.stringify(res.body));
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(0);
@@ -543,7 +544,6 @@ describe('Topic Management', () => {
              .put('/Topic/' + '1')
              .send(newTopic3)
              .end((err, res) => {
-               console.log("PUT w/ null" + JSON.stringify(res.body));
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
@@ -581,7 +581,7 @@ describe('Topic Management', () => {
             agent
              .delete('/Topic/' + '4')
              .end((err, res) => {
-               res.should.have.status(404);
+               res.should.have.status(200);
                res.body.should.be.empty;
                done();
             });
@@ -593,6 +593,7 @@ describe('Topic Management', () => {
             agent
              .delete('/Topic/' + '1000')
              .end((err, res) => {
+               console.log("Delete non-existant: " + JSON.stringify(res.body));
                res.should.have.status(404);
                res.body.should.be.empty;
                done();
@@ -650,6 +651,7 @@ describe('Topic Management', () => {
             agent
              .get('/Topic/1/Activities')
              .end((err, res) => {
+               console.log("Get activities: " + JSON.stringify(res.body));
                res.should.have.status(200);
 
                res.body.should.have.property('documents');
@@ -807,6 +809,7 @@ describe('Topic Management', () => {
             agent
              .get('/Topic')
              .end((err, res) => {
+               console.log("Confirm no update: " + JSON.stringify(res.body));
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);

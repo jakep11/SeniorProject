@@ -1,0 +1,22 @@
+
+.cb-wrapper {
+    display: flex;
+    position: relative;
+    background-color: #ddd;
+    margin: 15px;
+    padding: 20px;
+    width: 600px;
+}
+
+.cb-icon {
+    width: 75px;
+    background-color: orange;
+}
+.cb-body {
+    flex: 1 1 auto;
+    padding: 5px 10px;
+}
+
+.cb-title {
+
+}
