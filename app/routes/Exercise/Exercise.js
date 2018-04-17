@@ -47,12 +47,14 @@ router.post('/', function(req, res) {
       function(cb) {
          if (vld.checkAdmin(cb) &&
             vld.hasFields(body, ['name', 'question', 'answer', 'type', 'points', 'topicId'], cb))
+
             cnn.chkQry('SELECT * FROM Exercise WHERE TopicId = ? AND Name = ? AND Question = ?', 
             [body.topicId, body.name, body.question], cb); 
       },
       function(existingExe, fields, cb) {
          if (vld.check(!existingExe.length, Tags.dupExercise, null, cb)) {
             body.dueDate = null;
+         
             cnn.chkQry('insert into Exercise set ?', body, cb);
          }  
       },
