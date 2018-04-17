@@ -22,6 +22,8 @@ Validator.Tags = {
    oldPwdMismatch: 'oldPwdMismatch',// Old passwords don't match 
    dupTitle: 'dupTitle',            // Title duplicates an existing Conversation title
    dupEnrollment: 'dupEnrollment',  // Duplicate enrollment
+   dupVideoLink: 'dupVideoLink',    // Duplicate Video link
+   dupSection: 'dupSection',        // Duplicate section
    forbiddenField: 'forbiddenField',// Forbidden field supplied as a parameter
    queryFailed: 'queryFailed'       // Query failed in the database
 };
@@ -82,7 +84,7 @@ Validator.prototype.hasFields = function (obj, fieldList, cb) {
    var self = this;
 
    fieldList.forEach(function (name) {
-      self.chain(obj.hasOwnProperty(name) && obj[name],
+      self.chain(obj.hasOwnProperty(name) && obj[name] !== '',
          Validator.Tags.missingField, [name]);
    });
 
