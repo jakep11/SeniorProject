@@ -70,6 +70,7 @@ app.use('/Document', require('./routes/Document/Document'));
 app.use('/Exercise', require('./routes/Exercise/Exercise'));
 //app.use('/Section', require('./routes/Section/Section'));
 
+
 // Special debugging route for /DB DELETE.  Clears all table contents, resets 
 // all auto_increment keys to start at 1, and reinserts one admin user.
 app.delete('/DB', function(req, res) {
