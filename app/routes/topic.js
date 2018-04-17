@@ -8,13 +8,16 @@ router.baseURL = '/Topic';
 router.get('/', (req, res) => {
    const sectionId = req.query.sectionId;
    const cnn = req.cnn;
+   const isLoggedIn = req.session;
+   const vld = req.validator;
 
    const where = sectionId ? `WHERE sectionId = ${sectionId}` : '';
    const query = `SELECT * FROM Topic ${where}`;
 
    async.waterfall([
       function validateAndQuery(cb) { 
-         cnn.chkQry(query, null, cb);
+         if (vld.check(isLoggedIn, Tags.noLogin, null, cb))
+            cnn.chkQry(query, null, cb);
       },
 
       function checkResults(topicResults, fields, cb) {
@@ -70,6 +73,8 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
    const cnn = req.cnn;
    const topicId = req.params.id;
+   const vld = req.validator;
+   const isLoggedIn = req.session;
 
    const getTopicQuery = 'SELECT * FROM Topic WHERE Id = ?';
 
@@ -79,7 +84,7 @@ router.get('/:id', (req, res) => {
             res.status(400).end();
             cb(true);
          }
-         else {
+         else if (vld.check(isLoggedIn, Tags.noLogin, null, cb)) { // is logged in
             cnn.chkQry(getTopicQuery, [topicId], cb);
          }
       },
@@ -152,7 +157,7 @@ router.delete('/:id', (req, res) => {
             res.status(400).end();
             cb(true);
          }
-         else if (vld.checkAdmin(cb)) {
+         else if (vld.checkAdmin(cb)) { // is admin
             cnn.chkQry(getTopicQuery, [topicId], cb);
          }
       },
