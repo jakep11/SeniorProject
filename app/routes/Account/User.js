@@ -17,18 +17,18 @@ router.get('/', function (req, res) {
    };
 
    if (reqEmail && req.session.isAdmin()) {
-      req.cnn.chkQry('select id, email from User where email like' +
+      req.cnn.chkQry('select id, firstName, lastName, email, role from User where email like' +
          ' concat(?, "%")', [reqEmail], handler);
    }
    else if (reqEmail && !req.session.isAdmin()) {
-      req.cnn.chkQry('select id, email from User where (id = ? and email' +
+      req.cnn.chkQry('select id, firstName, lastName, email, role from User where (id = ? and email' +
          ' like concat(?, "%"))', [au, reqEmail], handler);
    }
    else if (!reqEmail && req.session.isAdmin()) {
-      req.cnn.chkQry('select id, email from User', handler);
+      req.cnn.chkQry('select id, firstName, lastName, email, role from User', handler);
    }
    else { //No request email and not an admin
-      req.cnn.chkQry('select id, email from User where id = ?', [au],
+      req.cnn.chkQry('select id, firstName, lastName, email, role from User where id = ?', [au],
          handler);
    }
 });
@@ -76,20 +76,17 @@ router.post('/', function (req, res) {
 router.get('/:id', function (req, res) {
    var vld = req.validator;
 
-   if (vld.checkPrsOK(req.params.id)) {
-      req.cnn.query('select id, firstName, lastName, email,' +
-         'UNIX_TIMESTAMP(termsAccepted) * 1000 as termsAccepted,' +
-         ' role from User where id = ?', [req.params.id],
-      function (err, userArray) {
-         if (vld.check(userArray.length, Tags.notFound))
-            res.json(userArray);
+   req.cnn.query('select id, firstName, lastName, email,' +
+      'UNIX_TIMESTAMP(termsAccepted) * 1000 as termsAccepted,' +
+      ' role from User where id = ?', [req.params.id],
+   function (err, userArray) {
+      if (!userArray.length)
+         res.status(404).end(); 
+      else if (vld.checkPrsOK(req.params.id))
+         res.json(userArray);
 
-         req.cnn.release();
-      });
-   }
-   else {
       req.cnn.release();
-   }
+   });
 });
 
 router.put('/:id', function (req, res) {
@@ -107,11 +104,10 @@ router.put('/:id', function (req, res) {
 
                .chain(!(body.hasOwnProperty('id')), Tags.forbiddenField, ['id'])
                .chain(!(body.hasOwnProperty('email')), Tags.forbiddenField, ['email'])
-               .chain(!(body.hasOwnProperty('termsAccepted')),
-                  Tags.forbiddenField, ['termsAccepted'])
-
+               .chain(!(body.hasOwnProperty('termsAccepted')), Tags.forbiddenField, ['termsAccepted'])
+               .chain(!(body.hasOwnProperty('passHash')), Tags.forbiddenField, ['passHash'])
                .check((!body.password && body.password !== '') || body.oldPassword
-                  || admin, Tags.noOldPwd, null, cb)
+                  || admin, Tags.noOldPassword, null, cb)
             && vld.check(!body.hasOwnProperty('password') ||
                body.password.length > 0, Tags.badValue, ['password'], cb)) {
 
@@ -119,9 +115,16 @@ router.put('/:id', function (req, res) {
          }
       },
       function (qRes, fields, cb) {
-         if (vld.check(admin || !body.password || qRes[0].password ===
-            body.oldPassword, Tags.oldPwdMismatch, null, cb)) {
-            delete req.body.oldPassword;
+         if (!qRes.length) {
+            res.status(404).end();
+            return;
+         }
+         else if (vld.check(admin || !body.password || 
+            bcrypt.compareSync(body.oldPassword, qRes[0].passHash), Tags.oldPasswordMismatch, null, cb)) {
+            if (body.password)
+               body.passHash = bcrypt.hashSync(body.password, saltRounds);
+            delete body.password;
+            delete body.oldPassword;
             cnn.chkQry('update User set ? where id = ?', [req.body,
                req.params.id], cb);
          }
@@ -140,7 +143,9 @@ router.delete('/:id', function (req, res) {
    if (vld.checkAdmin()) {
       req.cnn.query('DELETE from User where id = ?', [req.params.id],
          function (err, result) {
-            if (!err && vld.check(result.affectedRows, Tags.notFound))
+            if (!err && !result.affectedRows)
+               res.status(404).end();
+            else if (!err)
                res.status(200).end();
 
             req.cnn.release();

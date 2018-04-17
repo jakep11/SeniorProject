@@ -14,6 +14,8 @@ import 'bootstrap/dist/css/bootstrap.css'; // Bootstrap
 import './index.css'; // Our own main stylesheet
 
 import Rx from 'rxjs/Rx';
+import 'rxjs/add/observable/of';
+
 
 
 import store from './redux/store';

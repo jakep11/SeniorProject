@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var Session = require('./routes/Session.js');
 var Validator = require('./routes/Validator.js');
 var CnnPool = require('./routes/CnnPool.js');
@@ -27,6 +26,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function(req, res, next) {
+   console.log("Handling " + req.path + '/' + req.method);
+   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+   res.header("Access-Control-Allow-Credentials", true);
+   res.header("Access-Control-Allow-Headers", "Location, Content-Type, Authorization, Accept, X-HTTP-Method-Override, X-Requested-With");
+   res.header("Access-Control-Allow-Methods", 'POST, GET, PUT, DELETE, OPTIONS');
+   res.header("Access-Control-Expose-Headers", 'Location');
+   res.header("Access-Control-Allow-Request-Headers", 'Location');
+
+
+   if (req.method === 'OPTIONS')
+      res.sendStatus(200);
+   else
+      next();
+});
+
 
 // Set up Session on req if available
 app.use(Session.router);
@@ -46,10 +61,14 @@ app.use(function (req, res, next) {
 app.use(CnnPool.router);
 
 app.use('/', index);
-app.use('/users', users);
 // Load all subroutes
 app.use('/User', require('./routes/Account/User'));
 app.use('/Session', require('./routes/Account/Sessions'));
+app.use('/Document', require('./routes/Activities/Document'));
+app.use('/Exercise', require('./routes/Activities/Exercise'));
+app.use('/Section', require('./routes/Section'));
+app.use('/Topic', require('./routes/Topic'));
+
 
 // Special debugging route for /DB DELETE.  Clears all table contents, resets 
 // all auto_increment keys to start at 1, and reinserts one admin user.
