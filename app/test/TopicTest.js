@@ -543,7 +543,6 @@ describe('Topic Management', () => {
              .put('/Topic/' + '1')
              .send(newTopic3)
              .end((err, res) => {
-               console.log("PUT w/ null name: " + JSON.stringify(res.body));
                res.should.have.status(400);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(1);
