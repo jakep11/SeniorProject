@@ -40,8 +40,43 @@ describe('Document Management', () => {
          'termsAccepted': new Date()
       };
 
+/*
+      let session = {
+         'email': 'jake@admin.com',
+         'password': 'password'
+      };
+
+      agent
+         .post('/Session')
+         .send(session)
+         .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.empty;
+            res.should.have.cookie('SPAuth');
+
+            // save cookie for getting Session by cookie
+            studentCookie = res.header.location.replace('/Session/', '');
+
+            done();
+         });
+
+      agent
+         .delete('/DB')
+         .end((err, res) => {
+            res.should.have.status(200);
+            //done();
+         });
+
+*/
+
       connection.query('insert into User set ?', adminUser);
       connection.query('insert into User set ?', studentUser, function() {
+         // agent
+         //    .delete('/DB')
+         //    .end((err, res) => {
+         //       res.should.have.status(200);
+         //       done();
+         //    });
          done();
       });
    });
@@ -55,7 +90,12 @@ describe('Document Management', () => {
          'passHash': '$2a$10$Nq2f5SyrbQL2R0e9E.cU2OSjqqORgnwwsY1vBvVhV.SGlfzpfYvyi',
          'termsAccepted': new Date()
       };
-
+      /*agent
+         .delete('/DB')
+         .end((err, res) => {
+            res.should.have.status(200);
+            //done();
+         });*/
       connection.query('delete from User');
       connection.query('alter table User auto_increment=1');
       connection.query('insert into User set ?', defaultAdmin, function (err) {
@@ -109,8 +149,8 @@ describe('Document Management', () => {
          let documentData = {
             'name': 'document0',
             'content': 'this is the content of document 0',
-            'topicId': 1,
-            'dueDate': new Date()
+            //'topicId': 1,
+            'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
          }
 
          agent
@@ -150,8 +190,8 @@ describe('Document Management', () => {
          let documentData = {
             'name': 'document1',
             'content': 'This is the content of document 1',
-            'topicId': 1,
-            'dueDate': new Date()
+            //'topicId': 1,
+            'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
          }
 
          agent
@@ -170,8 +210,8 @@ describe('Document Management', () => {
          let documentData = {
             'name': 'document2',
             'link': 'This is the content of document 2',
-            'topicId': 1,
-            'dueDate': new Date()
+           // 'topicId': 1,
+            'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
          }
 
          agent

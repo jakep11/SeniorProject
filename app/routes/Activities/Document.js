@@ -19,10 +19,8 @@ router.get('/', function(req, res) {
             cnn.chkQry('SELECT * FROM Document', cb);
       },
       function(documentArr, fields, cb) {
-         if (vld.check(documentArr.length, Tags.notFound, null, cb)) {
-            res.json(documentArr);
-            cb();
-         }
+         res.json(documentArr);
+         cb();
       }
    ], function(err) {
       cnn.release();
@@ -75,9 +73,10 @@ router.get('/:documentId', function(req, res) {
             cnn.chkQry('SELECT * FROM Document WHERE Id = ?', [documentId], cb);
       },
       function(documentArr, fields, cb) {
-         if (vld.check(documentArr.length, Tags.notFound, null, cb))
+         if (vld.check(documentArr.length, Tags.notFound, null, cb)) {
             res.json(documentArr);
             cb();
+         }
       }
    ], function(err) {
       cnn.release();
@@ -96,7 +95,7 @@ router.put('/:documentId', function(req, res) {
    
    async.waterfall([
       function(cb) {
-         cnn.chkQuery('SELECT * FROM Document WHERE Id = ?', [documentId], cb);
+         cnn.chkQry('SELECT * FROM Document WHERE Id = ?', [documentId], cb);
       },
       function(documentArr, fields, cb) {
          if (vld.check(documentArr.length, Tags.notFound, null, cb) &&
@@ -119,7 +118,7 @@ router.delete('/:documentId', function(req, res) {
    
    async.waterfall([
       function(cb) {
-         cnn.chkQuery('SELECT * FROM Document WHERE Id = ?', [documentId], cb);
+         cnn.chkQry('SELECT * FROM Document WHERE Id = ?', [documentId], cb);
       },
       function(documentArr, fields, cb) {
          if (vld.check(documentArr.length, Tags.notFound, null, cb) &&
