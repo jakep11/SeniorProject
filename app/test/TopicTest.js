@@ -439,20 +439,25 @@ describe('Topic Management', () => {
              .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
-               res.body.should.have.lengthOf(0);
+               res.body.should.have.lengthOf(2);
+               for (var i in res.body) {
+                  (res.body)[i].should.have.property('id');
+                  (res.body)[i].should.have.property('name');
+                  (res.body)[i].should.have.property('sectionId');
+                  (res.body)[i].sectionId.should.equal(1);
+               }
                done();
             });
          });
       }); 
 
       describe('/GET admin login with non existing sectionId', () => {
-         it('results in 200', (done) => {
+         it('results in 404', (done) => {
             agent
              .get('/Topic' + '?sectionId=10000')
              .end((err, res) => {
-               res.should.have.status(200);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(0);
+               res.should.have.status(404);
+               res.body.should.be.empty;
                done();
             });
          });
@@ -479,13 +484,12 @@ describe('Topic Management', () => {
       }); 
 
       describe('/GET/:Id admin login with non-existing topicId', () => {
-         it('results in 200', (done) => {
+         it('results in 404', (done) => {
             agent
              .get('/Topic/' + '666')
              .end((err, res) => {
-               res.should.have.status(200);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(0);
+               res.should.have.status(404);
+               res.body.should.be.empty;
                done();
             });
          });
@@ -580,7 +584,7 @@ describe('Topic Management', () => {
             agent
              .delete('/Topic/' + '4')
              .end((err, res) => {
-               res.should.have.status(404);
+               res.should.have.status(200);
                res.body.should.be.empty;
                done();
             });
@@ -588,7 +592,7 @@ describe('Topic Management', () => {
       });
 
       describe('/DELETE/:Id admin login with non-existing id', () => {
-         it('results in 200', (done) => {
+         it('results in 404', (done) => {
             agent
              .delete('/Topic/' + '1000')
              .end((err, res) => {
@@ -622,7 +626,7 @@ describe('Topic Management', () => {
       describe('/GET/:Id/Activities', () => {
 
          before('Nuke, add users and sections', 
-          (done) => {            
+          (done) => {
             // Activities for testing
             let video1 = {
                'name':'HTML Basics',
@@ -739,7 +743,7 @@ describe('Topic Management', () => {
       describe('/GET student login with sectionId', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic/' + '1')
+             .get('/Topic/' + '?sectionId=1')
              .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
