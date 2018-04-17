@@ -7,6 +7,7 @@ import Help from '../Help/Help';
 import Navbar from '../Navbar/Navbar';
 import Settings from '../Settings/Settings';
 import About from '../About/About';
+import './LoggedIn.css';
 
 export default class LoggedIn extends Component {
    constructor(props) {
@@ -20,7 +21,7 @@ export default class LoggedIn extends Component {
 
    render() {
       return (
-         <div>
+         <div className="page-wrapper">
             <Navbar {...this.props} />
 
             <Switch>
