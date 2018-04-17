@@ -23,7 +23,7 @@ describe('Document Management', () => {
       });
 
       let adminUser = {
-         'firstName': 'Jake',
+         'firstName': 'Jake1',
          'lastName': 'Admin',
          'email': 'Jake@admin.com',
          'role': 1,
@@ -32,7 +32,7 @@ describe('Document Management', () => {
       };
 
       let studentUser = {
-         'firstName': 'Jake',
+         'firstName': 'Jake2',
          'lastName': 'Student',
          'email': 'jake@student.com',
          'role': 0,

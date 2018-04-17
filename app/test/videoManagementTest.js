@@ -92,7 +92,7 @@ describe('Video Management', () => {
    describe('/GET 0 videos', () => {
       it('results in 200 and empty array', (done) => {
          
-         chai.request(server)
+         agent
             .get('/Video')
             .end((err, res) => {
                res.should.have.status(200);

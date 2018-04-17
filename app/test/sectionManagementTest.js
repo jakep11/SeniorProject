@@ -92,7 +92,7 @@ describe('Section Management', () => {
    describe('/GET 0 sections', () => {
       it('results in 200 and empty array', (done) => {
          
-         chai.request(server)
+         agent
             .get('/Section')
             .end((err, res) => {
                res.should.have.status(200);
