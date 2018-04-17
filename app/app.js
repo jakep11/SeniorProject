@@ -62,13 +62,13 @@ app.use(function (req, res, next) {
 app.use(CnnPool.router);
 
 app.use('/', index);
-app.use('/users', users);
 // Load all subroutes
 app.use('/User', require('./routes/Account/User'));
 app.use('/Session', require('./routes/Account/Sessions'));
-app.use('/Document', require('./routes/Document/Document'));
-app.use('/Exercise', require('./routes/Exercise/Exercise'));
-//app.use('/Section', require('./routes/Section/Section'));
+app.use('/Document', require('./routes/Activities/Document'));
+app.use('/Exercise', require('./routes/Activities/Exercise'));
+app.use('/Section', require('./routes/Section'));
+app.use('/Topic', require('./routes/Topic'));
 
 
 // Special debugging route for /DB DELETE.  Clears all table contents, resets 
