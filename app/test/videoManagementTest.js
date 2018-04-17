@@ -110,7 +110,7 @@ describe.skip('Video Management', () => {
             'name': 'video0',
             'link': 'http://example.com',
             'topicId': 1,
-            'dueDate': new Date()
+            'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
          }
 
          agent
@@ -153,7 +153,7 @@ describe.skip('Video Management', () => {
             'name': 'video1',
             'link': 'http://example.com',
             'topicId': 1,
-            'dueDate': new Date()
+            'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
          }
 
          agent
@@ -173,7 +173,7 @@ describe.skip('Video Management', () => {
             'name': 'video2',
             'link': 'http://example.com',
             'topicId': 1,
-            'dueDate': new Date()
+            'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
          }
 
          agent
