@@ -114,7 +114,8 @@ router.put('/:id', (req, res) => {
          else if (vld.checkAdmin(cb) &&
             vld.hasOnlyFields(body, putTopicFields, cb) &&
             vld.chain(!('name' in body) || body.name, Tags.badValue, ['name'])
-               .check(!('sectionId' in body) || body.sectionId, Tags.badValue, ['sectionId'], cb)) { // validate input
+               .check(!('sectionId' in body) || body.sectionId, 
+                  Tags.badValue, ['sectionId'], cb)) { // validate input
 
             cnn.chkQry(getTopicQuery, [topicId], cb);
          }
@@ -177,6 +178,7 @@ router.get('/:id/Activities', (req, res) => {
    const vld = req.validator;
    const cnn = req.cnn;
    const topicId = req.params.id;
+   const isLoggedIn = req.session;
 
    const getTopicQuery = 'SELECT * FROM Topic WHERE Id = ?';
    const getExercisesQuery = 'SELECT * FROM Exercise WHERE TopicId = ?';
@@ -191,7 +193,7 @@ router.get('/:id/Activities', (req, res) => {
             res.status(400).end();
             cb(true);
          }
-         else if (vld.checkAdmin(cb)) {
+         else if (vld.check(isLoggedIn, Tags.noLogin, null, cb)) { // check for login
             cnn.chkQry(getTopicQuery, [topicId], cb);
          }
       },
