@@ -5,9 +5,14 @@ export default class Login extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         username: '',
-         password: ''
+         username: 'admin@example.com',
+         password: 'password'
       };
+
+      if (this.props.User.isLoggedIn) {
+         console.log('User is logged in; sending to /home');
+         this.props.history.push('/home')
+      }
 
       this.handleChange = this.handleChange.bind(this)
    }
@@ -17,9 +22,9 @@ export default class Login extends Component {
    }
 
    submit() {
-      console.log('Submit login');
-      console.log('props:', this.props);
-      this.props.login('bshutt');
+      console.log('Logging in');
+      let creds = { email: this.state.username, password: this.state.password };
+      this.props.login(creds, () => this.props.history.push('/home'));
    }
 
    render() {

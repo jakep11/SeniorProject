@@ -23,7 +23,7 @@ router.get('/', function(req, res) {
             for (var exe in exerciseArr) {
                delete exe.answer;
             }
-            res.json(exerciseArr).end();
+            res.json(exerciseArr);
             cb();
          }
       }
@@ -47,12 +47,15 @@ router.post('/', function(req, res) {
       function(cb) {
          if (vld.checkAdmin(cb) &&
             vld.hasFields(body, ['name', 'question', 'answer', 'type', 'points', 'topicId'], cb))
-            cnn.chkQry('SELECT * FROM Exercise WHERE TopicId = ? AND Name = ? AND Question = ?', cb); 
+
+            cnn.chkQry('SELECT * FROM Exercise WHERE TopicId = ? AND Name = ? AND Question = ?', 
+            [body.topicId, body.name, body.question], cb); 
       },
       function(existingExe, fields, cb) {
          if (vld.check(!existingExe.length, Tags.dupExercise, null, cb)) {
             body.dueDate = null;
-            cnn.chkQry('insert into Person set ?', body, cb);
+         
+            cnn.chkQry('insert into Exercise set ?', body, cb);
          }  
       },
       function(insRes, fields, cb) {
@@ -80,10 +83,10 @@ router.get('/:exerciseId', function(req, res) {
             cnn.chkQry('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
       },
       function(exerciseArr, fields, cb) {
-         if (vld.check(prsArr.length, Tags.notFound, null, cb))
+         if (vld.check(exerciseArr.length, Tags.notFound, null, cb))
             delete exe.answer;
             
-            res.json(exerciseArr).end();
+            res.json(exerciseArr);
             cb();
       }
    ], function(err) {
@@ -122,7 +125,6 @@ router.put('/:exerciseId', function(req, res) {
  */
 router.delete('/:exerciseId', function(req, res) {
    var vld = req.validator;
-   var cnvId = req.params.cnvId;
    var cnn = req.cnn;
    var exerciseId = req.params.exerciseId;
    

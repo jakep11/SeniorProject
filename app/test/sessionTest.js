@@ -40,29 +40,19 @@ describe('Session Management', () => {
          'termsAccepted': new Date()
       };
 
-      connection.query('insert into User set ?', adminUser);
-      connection.query('insert into User set ?', studentUser, function() {
-         done();
-      });
-   });
-
-   after('remove Users and reset auto_increment', (done) => {
-      let defaultAdmin = {
-         'firstName': 'Joe',
-         'lastName': 'Admin',
-         'email': 'admin@example.com',
-         'role': 1,
-         'passHash': '$2a$10$Nq2f5SyrbQL2R0e9E.cU2OSjqqORgnwwsY1vBvVhV.SGlfzpfYvyi',
-         'termsAccepted': new Date()
-      };
-
-      connection.query('delete from User');
-      connection.query('alter table User auto_increment=1');
-      connection.query('insert into User set ?', defaultAdmin, function (err) {
-         if (err) throw err;
-
-         done();
-      });
+      agent
+         .post('/Session')
+         .send({'email': 'admin@example.com', 'password': 'password'})
+         .end(() => {
+            agent
+               .delete('/DB')
+               .end(() => {
+                  connection.query('insert into User set ?', adminUser);
+                  connection.query('insert into User set ?', studentUser, function() {
+                     done();
+                  });
+               });
+         });
    });
 
    describe('/POST with invalid login', () => {
@@ -144,16 +134,13 @@ describe('Session Management', () => {
       });
    });
 
-   // What is the expected behavior for this test?
    describe('/GET/:cookie invalid with AU - student', () => {
-      it('results in 400 and notFound tag', (done) => {
+      it('results in 404', (done) => {
          agent
             .get('/Session/invalidCookie')
             .end((err, res) => {
-               res.should.have.status(400);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('tag', 'notFound');
+               res.should.have.status(404);
+               res.body.should.be.empty;
                done();
             });
       });
@@ -231,14 +218,12 @@ describe('Session Management', () => {
    });
 
    describe('/GET/:cookie invalid with AU - admin', () => {
-      it('results in 400 and notFound tag', (done) => {
+      it('results in 404', (done) => {
          agent
             .get('/Session/invalidCookie')
             .end((err, res) => {
-               res.should.have.status(400);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('tag', 'notFound');
+               res.should.have.status(404);
+               res.body.should.be.empty;
                done();
             });
       });
@@ -276,19 +261,17 @@ describe('Session Management', () => {
       });
    });
 
-   // describe('/DELETE/:cookie invalid with AU - admin', () => {
-   //    it('results in 400 and notFound tag', (done) => {
-   //       agent
-   //          .delete('/Session/invalidCookie')
-   //          .end((err, res) => {
-   //             res.should.have.status(400);
-   //             res.body.should.be.a('array');
-   //             res.body.should.have.lengthOf(1);
-   //             res.body[0].should.have.property('tag', 'notFound');
-   //             done();
-   //          });
-   //    });
-   // });
+   describe('/DELETE/:cookie invalid with AU - admin', () => {
+      it('results in 404', (done) => {
+         agent
+            .delete('/Session/invalidCookie')
+            .end((err, res) => {
+               res.should.have.status(404);
+               res.body.should.be.empty;
+               done();
+            });
+      });
+   });
 
    describe('/DELETE/:cookie other with AU - admin', () => {
       it('results in 200 and logs out the student', (done) => {
@@ -329,6 +312,18 @@ describe('Session Management', () => {
                      res.body.should.be.empty;
                      done();
                   });
+            });
+      });
+   });
+
+   describe('/DELETE/:cookie invalid with AU - student', () => {
+      it('results in 404', (done) => {
+         agent
+            .delete('/Session/invalidCookie')
+            .end((err, res) => {
+               res.should.have.status(404);
+               res.body.should.be.empty;
+               done();
             });
       });
    });

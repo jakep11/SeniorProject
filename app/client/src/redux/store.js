@@ -3,24 +3,24 @@ import { createEpicMiddleware } from 'redux-observable';
 // import { syncHistoryWithStore} from 'react-router-redux';
 import { createBrowserHistory } from 'history';
 // import the root reducer
+import persistState from 'redux-localstorage'
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { rootEpic, rootReducer } from './root';
+import { rootReducer } from './root';
 import { routerMiddleware } from 'react-router-redux';
-// import { rootEpic } from '../epics/index';
-// import rootReducer from '../reducers/index';
-
 
 export const history = createBrowserHistory();
 const historyMiddleware = routerMiddleware(history);
 
-const epicMiddleware = createEpicMiddleware(rootEpic);
 
 const defaultState = {};
+
+const persistMiddleware = persistState();
+
 const store = createStore(
    rootReducer,
    defaultState,
-   composeWithDevTools(applyMiddleware(thunk, epicMiddleware, historyMiddleware))
+   composeWithDevTools(applyMiddleware(thunk, historyMiddleware), persistMiddleware)
 );
 
 if (module.hot) {
