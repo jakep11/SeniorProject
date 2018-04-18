@@ -437,7 +437,6 @@ describe('Topic Management', () => {
             agent
              .get('/Topic' + '?sectionId=\'1\'')
              .end((err, res) => {
-               console.log('GET w/ string value: ' + JSON.stringify(res.body));
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(2);
@@ -453,12 +452,13 @@ describe('Topic Management', () => {
       }); 
 
       describe('/GET admin login with non existing sectionId', () => {
-         it('results in 404', (done) => {
+         it('results in 200', (done) => {
             agent
              .get('/Topic' + '?sectionId=10000')
              .end((err, res) => {
-               res.should.have.status(404);
-               res.body.should.be.empty;
+               res.should.have.status(200);
+               res.body.should.be.a('array');
+               res.body.should.have.lengthOf(0);
                done();
             });
          });
@@ -597,7 +597,6 @@ describe('Topic Management', () => {
             agent
              .delete('/Topic/' + '1000')
              .end((err, res) => {
-               console.log("Delete non-existant: " + JSON.stringify(res.body));
                res.should.have.status(404);
                res.body.should.be.empty;
                done();
@@ -655,7 +654,6 @@ describe('Topic Management', () => {
             agent
              .get('/Topic/1/Activities')
              .end((err, res) => {
-               console.log("Get activities: " + JSON.stringify(res.body));
                res.should.have.status(200);
 
                res.body.should.have.property('documents');
@@ -796,6 +794,24 @@ describe('Topic Management', () => {
          });
       });
 
+      describe('/GET/:Id to confirm update', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic/' + '1')
+             .end((err, res) => {
+               res.should.have.status(200);
+               res.body.should.be.a('array');
+               res.body.should.have.lengthOf(1);
+               res.body[0].should.have.property('id');
+               res.body[0].should.have.property('name');
+               res.body[0].should.have.property('sectionId');
+               res.body[0].id.should.equal(1);
+               res.body[0].sectionId.should.equal(1);
+               done();
+            });
+         });
+      }); 
+
       describe('/DELETE/:Id with student login', () => {
          it('results in 403', (done) => {
             agent
@@ -813,7 +829,6 @@ describe('Topic Management', () => {
             agent
              .get('/Topic')
              .end((err, res) => {
-               console.log("Confirm no update: " + JSON.stringify(res.body));
                res.should.have.status(200);
                res.body.should.be.a('array');
                res.body.should.have.lengthOf(3);
@@ -822,8 +837,6 @@ describe('Topic Management', () => {
                   (res.body)[i].should.have.property('name');
                   (res.body)[i].should.have.property('sectionId');
                }
-
-               res.body[0].name.should.equal('HTML');
                done();
             });
          });
@@ -848,6 +861,7 @@ describe('Topic Management', () => {
                res.body.should.have.property('videos');
                res.body.videos.should.be.a('array');
                res.body.videos.should.have.lengthOf(2);
+               done();
             });
          });
       });
