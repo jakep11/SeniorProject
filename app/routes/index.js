@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const topicRoutes = require('./topic.js');
+const topicRoutes = require('./Topic.js');
 
 
 /* GET home page. */
