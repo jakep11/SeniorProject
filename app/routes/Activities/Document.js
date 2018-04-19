@@ -74,7 +74,7 @@ router.get('/:documentId', function(req, res) {
       },
       function(documentArr, fields, cb) {
          if (vld.check(documentArr.length, Tags.notFound, null, cb)) {
-            res.json(documentArr);
+            res.json(documentArr[0]);
             cb();
          }
       }
@@ -92,7 +92,7 @@ router.put('/:documentId', function(req, res) {
    var body = req.body;
    var cnn = req.cnn;
    var documentId = req.params.documentId;
-   
+
    async.waterfall([
       function(cb) {
          cnn.chkQry('SELECT * FROM Document WHERE Id = ?', [documentId], cb);
