@@ -45,7 +45,6 @@ router.post('/', (req, res) => {
    async.waterfall([
       function checkSectionExists(cb) { // validate input and check section exists
          if (vld.checkAdmin(cb) &&
-            vld.hasFields(body, postTopicFields, cb) && 
             vld.hasOnlyFields(body, postTopicFields, cb) &&
             vld.chain(body.name, Tags.missingField, ['name']) // should hasFields check for falsey?
                .check(body.sectionId, Tags.missingField, ['sectionId'], cb)) { // validate input
