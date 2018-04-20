@@ -16,77 +16,55 @@ describe('Section Management', () => {
    let adminCookie;
    let defaultAdminCookie;
 
-   before('create an admin and student user account', (done) => {
-      connection.connect(function (err) {
-         if (err)
-            throw new Error('Unable to connect to database!');
-      });
+   before('Nuke and preparation', (done) => {
+      agent.post('/Session')
+         .send({email: 'admin@example.com', password: 'password'})
+         .end((err, res) => {
+            res.should.have.status(200);
+            
+            agent
+               .delete('/DB')
+               .end((err, res) => {
+                  res.should.have.status(200);
+                  done();
+               });
+         });
+   });
 
-      let adminUser = {
-         'firstName': 'Jake',
-         'lastName': 'Admin',
-         'email': 'Jake@admin.com',
-         'role': 1,
-         'passHash': bcrypt.hashSync('password', 10),
-         'termsAccepted': new Date()
-      };
+   describe('Register and log in as a student', () => {
 
-      let studentUser = {
-         'firstName': 'Jake',
-         'lastName': 'Student',
-         'email': 'jake@student.com',
+      let user = {
+         'email': 'UserA@domainA',
+         'firstName': 'FirstA',
+         'lastName': 'LastA',
+         'password': 'passwordA',
          'role': 0,
-         'passHash': bcrypt.hashSync('password', 10),
-         'termsAccepted': new Date()
+         'termsAccepted': true
       };
 
-      connection.query('insert into User set ?', adminUser);
-      connection.query('insert into User set ?', studentUser, function() {
-         done();
+      it('results in 200 and registers a new student account', (done) => {
+         agent
+            .post('/User')
+            .send(user)
+            .end((err, res) => {
+               res.should.have.status(200);
+               res.header.location.should.not.be.empty;
+               done();
+            });
       });
-   });
 
-   after('remove Users and reset auto_increment', (done) => {
-      let defaultAdmin = {
-         'firstName': 'Joe',
-         'lastName': 'Admin',
-         'email': 'admin@example.com',
-         'role': 1,
-         'passHash': '$2a$10$Nq2f5SyrbQL2R0e9E.cU2OSjqqORgnwwsY1vBvVhV.SGlfzpfYvyi',
-         'termsAccepted': new Date()
-      };
-
-      connection.query('delete from User');
-      connection.query('alter table User auto_increment=1');
-      connection.query('insert into User set ?', defaultAdmin, function (err) {
-         if (err) throw err;
-
-         done();
-      });
-   });
-
-
-   describe('Log in as a student', () => {
-      it('results in a POST for a new session', (done) => {
-         let session = {
-            'email': 'jake@student.com',
-            'password': 'password'
-         };
-
+      it('results in 200 and logs in as student', (done) => {
          agent
             .post('/Session')
-            .send(session)
+            .send({email: 'UserA@domainA', password: 'passwordA'})
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
                res.should.have.cookie('SPAuth');
-
-               // save cookie for getting Session by cookie
-               studentCookie = res.header.location.replace('/Session/', '');
-
                done();
             });
       });
+      
    });
 
    describe('/GET 0 sections', () => {
@@ -104,7 +82,7 @@ describe('Section Management', () => {
    });
 
    describe('/POST section as a non-admin', () => {
-      it('results in 401', (done) => {
+      it('results in 403', (done) => {
          
          let sectionData = {
             'name': 'CSC101',
@@ -116,9 +94,7 @@ describe('Section Management', () => {
             .post('/Section')
             .send(sectionData)
             .end((err, res) => {
-               res.should.have.status(401);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(0);
+               res.should.have.status(403);
                done();
             });
       });
@@ -127,7 +103,7 @@ describe('Section Management', () => {
    describe('/POST section as an admin', () => {
       it('Logs in as admin', (done) => {
          let session = {
-            'email': 'jake@admin.com',
+            'email': 'admin@example.com',
             'password': 'password'
          };
 
@@ -239,7 +215,8 @@ describe('Section Management', () => {
             .get('/Section/2')
             .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.have.lengthOf(1);
+               //res.body.should.have.lengthOf(1);
+               console.log("TEST JAKE", res.body);
                //res.body.should.include('id', 2);
                res.body.should.have.property('name', 'CSC103');
                done();
@@ -247,22 +224,22 @@ describe('Section Management', () => {
       });
    });
 
-   describe('/PUT update /section/:id', () => {
-      it('results in 200 and updates name of section 1', (done) => {
-
+   describe('/PUT update section/1', () => {
+      it('Updates section 1', (done) => {
          let sectionUpdateInfo = {
             'name': 'CSC201',
             'description': 'Introduction to Computer Science is now CSC201'
          }
 
-         agent
-            .put('/Section/1')
-            .end((err, res) => {
-               res.should.have.status(200);
-               done();
-            });
+         agent.put('/Section/1')
+         .send(sectionUpdateInfo)
+         .end((err, res) => {
+            res.should.have.status(200);
+            done();
+         })
       });
    });
+
 
    describe('/GET /section/1', () => {
       it('results in 200 and confirms the updates to section 1', (done) => {
@@ -270,7 +247,6 @@ describe('Section Management', () => {
             .get('/Section/1')
             .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.have.lengthOf(1);
                res.body.should.have.property('id', 1);
                res.body.should.have.property('name', 'CSC201')
                res.body.should.have.property('description', 'Introduction to Computer Science is now CSC201');

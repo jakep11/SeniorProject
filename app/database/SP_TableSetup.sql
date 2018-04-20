@@ -50,7 +50,7 @@ CREATE TABLE Topic (
 
 CREATE TABLE Video (
    id INT AUTO_INCREMENT,
-   Name VARCHAR(100),
+   name VARCHAR(100),
    link VARCHAR(500),
    dueDate DATETIME,
    topicId INT,
