@@ -16,7 +16,7 @@ const mysql = require('mysql');
 const connection = mysql.createConnection(require('../routes/connection.json'));
 
 // Description for test section
-describe('Topic Management', () => {
+describe.only('Topic Management', () => {
    var studentCookie;
    var adminCookie;
 
@@ -471,14 +471,14 @@ describe('Topic Management', () => {
              .get('/Topic/' + '1')
              .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('id');
-               (res.body)[0].should.have.property('name');
-               (res.body)[0].should.have.property('sectionId');
-               res.body[0].id.should.equal(1);
-               res.body[0].name.should.equal('HTML & CSS');
-               res.body[0].sectionId.should.equal(1);
+               // res.body.should.be.a('array');
+               // res.body.should.have.lengthOf(1);
+               res.body.should.have.property('id', 1);
+               res.body.should.have.property('name', 'HTML & CSS');
+               res.body.should.have.property('sectionId', 1);
+               // res.body[0].id.should.equal(1);
+               // res.body[0].name.should.equal('HTML & CSS');
+               // res.body[0].sectionId.should.equal(1);
                done();
             });
          });
@@ -566,14 +566,14 @@ describe('Topic Management', () => {
              .get('/Topic/' + '1')
              .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('id');
-               res.body[0].should.have.property('name');
-               res.body[0].should.have.property('sectionId');
-               res.body[0].id.should.equal(1);
-               res.body[0].name.should.equal('HTML');
-               res.body[0].sectionId.should.equal(1);
+               // res.body.should.be.a('array');
+               // res.body.should.have.lengthOf(1);
+               res.body.should.have.property('id', 1);
+               res.body.should.have.property('name', 'HTML');
+               res.body.should.have.property('sectionId', 1);
+               // res.body.id.should.equal(1);
+               // res.body.name.should.equal('HTML');
+               // res.body.sectionId.should.equal(1);
                done();
             });
          });
@@ -764,14 +764,14 @@ describe('Topic Management', () => {
              .get('/Topic/' + '1')
              .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('id');
-               res.body[0].should.have.property('name');
-               res.body[0].should.have.property('sectionId');
-               res.body[0].id.should.equal(1);
-               res.body[0].name.should.equal('HTML');
-               res.body[0].sectionId.should.equal(1);
+               // res.body.should.be.a('array');
+               // res.body.should.have.lengthOf(1);
+               res.body.should.have.property('id', 1);
+               res.body.should.have.property('name', 'HTML');
+               res.body.should.have.property('sectionId', 1);
+               // res.body[0].id.should.equal(1);
+               // res.body[0].name.should.equal('HTML');
+               // res.body[0].sectionId.should.equal(1);
                done();
             });
          });
@@ -800,13 +800,13 @@ describe('Topic Management', () => {
              .get('/Topic/' + '1')
              .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('id');
-               res.body[0].should.have.property('name');
-               res.body[0].should.have.property('sectionId');
-               res.body[0].id.should.equal(1);
-               res.body[0].sectionId.should.equal(1);
+               // res.body.should.be.a('array');
+               // res.body.should.have.lengthOf(1);
+               res.body.should.have.property('id', 1);
+               res.body.should.have.property('name');
+               res.body.should.have.property('sectionId', 1);
+               // res.body[0].id.should.equal(1);
+               // res.body[0].sectionId.should.equal(1);
                done();
             });
          });
