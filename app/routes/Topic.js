@@ -97,7 +97,7 @@ router.get('/:id', (req, res) => {
 
       function finalizeResponse(topicResults, fields, cb) { // finalize response
          if (topicResults.length) {// topic exists
-            res.json(topicResults);
+            res.json(topicResults[0]);
          }
          else {
             res.status(404).end();

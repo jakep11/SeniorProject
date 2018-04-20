@@ -70,11 +70,10 @@ router.get('/:id', (req, res) => {
    		if(videoList.length){
    			res.json(videoList[0]);
    			cb();
+   		} else {
+   			res.status(404).end();
+   			cb();
    		}
-         else {
-            res.status(404).end();
-            cb();
-         }
    	}
    ], 
    function(err) {
@@ -127,11 +126,10 @@ router.delete('/:id', (req, res) => {
    	function(vidsList, fields, cb){
    		if(vidsList.length) {
    			cnn.chkQry("delete from Video where id = ?", id, cb);
+   		} else {
+   			res.status(404).end();
+   			cb();
    		}
-         else {
-            res.status(404).end();
-            cb();
-         }
    	},
       function(delResult, fields, cb) {
          res.status(200).end();
