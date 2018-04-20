@@ -13,10 +13,8 @@ router.get('/', (req, res) => {
    			req.cnn.chkQry("Select * from Video", null, cb);
    	},
    	function(videoList, fields, cb) {
-   		if(vld.check(videoList.length, Tags.notFound, null, cb)){
-   			res.json(videoList);
-   			cb();
-   		}
+			res.json(videoList);
+			cb();
    	}
    ], 
    function(err) {
@@ -68,8 +66,11 @@ router.get('/:id', (req, res) => {
    		}
    	},
    	function(videoList, fields, cb) {
-   		if(vld.check(videoList.length, Tags.notFound, null, cb)){
+   		if(videoList.length){
    			res.json(videoList);
+   			cb();
+   		} else {
+   			res.status(404).end();
    			cb();
    		}
    	}
@@ -87,11 +88,17 @@ router.put('/:id', (req, res) => {
 
 	async.waterfall([
 		function(cb) {
-			cnn.chkQry("Select * from Video where id = ?", id, cb);
+			if(vld.checkAdmin(cb))
+				cnn.chkQry("Select * from Video where id = ?", id, cb);
 		},
 		function(vidsList, fields, cb) {
-			if(vld.check(vidsList.length, Tags.notFound, null, cb) &&
-			 vld.checkAdmin(cb)){
+			if(!vidsList.length) {
+				res.status(404).end();
+				cb();
+			}
+			else if(vld.hasOnlyFields(body, ['name','link'], cb) &&
+			 (vld.check(body.name, Tags.missingField, ["name"], cb) || 
+			 vld.check(body.link, Tags.missingField, ["link"], cb))){
 				cnn.chkQry("UPDATE Video SET ? WHERE Id = ?", [body, id], cb);
 			}
 		}
@@ -107,12 +114,15 @@ router.delete('/:id', (req, res) => {
 
 	async.waterfall([
    	function(cb) {
-			cnn.chkQry("Select * from Video where id = ?", id, cb);
+   		if(vld.checkAdmin(cb))
+				cnn.chkQry("Select * from Video where id = ?", id, cb);
    	},
    	function(vidsList, fields, cb){
-   		if(vld.checkAdmin(cb) && 
-   		 vld.check(vidsList.length, Tags.notFound, null, cb)){
+   		if(vidsList.length){
    			cnn.chkQry("delete from Video where id = ?", id, cb);
+   		} else {
+   			res.status(404).end();
+   			cb();
    		}
    	}
    ], 
