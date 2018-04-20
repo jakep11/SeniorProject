@@ -101,6 +101,10 @@ router.put('/:id', (req, res) => {
 			 vld.check(body.link, Tags.missingField, ["link"], cb))){
 				cnn.chkQry("UPDATE Video SET ? WHERE Id = ?", [body, id], cb);
 			}
+		}, 
+		function(result, fields, cb) {
+			res.status(200).end()
+			cb()
 		}
 	], function(err) {
 		cnn.release();
@@ -124,7 +128,11 @@ router.delete('/:id', (req, res) => {
    			res.status(404).end();
    			cb();
    		}
-   	}
+   	},
+   	function(result, fields, cb) {
+			res.status(200).end()
+			cb()
+		}
    ], 
    function(err) {
    	req.cnn.release();
