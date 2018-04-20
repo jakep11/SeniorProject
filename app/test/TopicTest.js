@@ -16,7 +16,7 @@ const mysql = require('mysql');
 const connection = mysql.createConnection(require('../routes/connection.json'));
 
 // Description for test section
-describe.only('Topic Management', () => {
+describe('Topic Management', () => {
    var studentCookie;
    var adminCookie;
 

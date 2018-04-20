@@ -11,8 +11,8 @@ router.get('/', (req, res) => {
 	let vld = req.validator;
 	let cnn = req.cnn;
 
-	let where = term ? `WHERE term = ${term}` : (
-		name ? `WHERE name = ${name}` : '')
+	let where = term ? `WHERE term = "${term}"` : (
+		name ? `WHERE name = "${name}"` : '')
 
 	async.waterfall([
 		function(cb){
@@ -73,7 +73,7 @@ router.get('/:id', (req,res) => {
 		},
 		function(secResult, fields, cb){
 			if(secResult.length){
-				res.json(secResult);
+				res.json(secResult[0]);
 				cb();
 			} else {
 				res.status(404).end();
@@ -98,13 +98,17 @@ router.put('/:id', (req, res) => {
 			if(vld.checkAdmin(cb))
 				cnn.chkQry('SELECT * FROM Section WHERE id = ?', [id], cb);
 		},
-		function(secResult, fieldas, cb) {
+		function(secResult, fields, cb) {
 			if(!secResult.length) {
 				res.status(404).end();
 				cb();
 			} else if (vld.hasOnlyFields(body, vldfields, cb)) {
-				cnn.chkQry("UPDATE Section SET ? WHERE id = ?", [body, id], cb);
+				cnn.chkQry('UPDATE Section SET ? WHERE id = ?', [body, id], cb);
 			}
+		},
+		function(putResult, fields, cb){
+			res.status(200).end();
+			cb();
 		}
 	],
 	function(err){
@@ -130,6 +134,10 @@ router.delete('/:id', (req, res) => {
 				res.status(404).end();
 				cb();
 			}
+		},
+		function(delResult, fields, cb) {
+			res.status(200).end();
+			cb();
 		}
 	],
 	function(err){
