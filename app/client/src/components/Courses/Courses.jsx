@@ -33,10 +33,10 @@ export default class Courses extends Component {
 
    render() {
       return (
-         <Sydebar {...this.props} 
-            titleBar={<h2 className="cs-filter-header">Filter</h2>}
-            content={
-               <div className="cs-filter-wrapper">
+         <div className="cs-wrapper">
+            <div className="cs-sidebar-container">
+               <h2 className="cs-filter-header">Filter</h2>
+               <div>
                   <div className="cs-filter-type">Date Order</div>
                   <FormGroup>
                      <Checkbox id='ascending' onChange={this.handleChange}> Ascending</Checkbox>
@@ -56,26 +56,23 @@ export default class Courses extends Component {
                      <Checkbox id='enrolled' onChange={this.handleChange}> Enrolled</Checkbox>
                   </FormGroup>
                </div>
-            }
-            children={
-               <div className="cs-wrapper">
-                  <div className="cs-main">
-                     
-                     <div className="cs-header">
-                        <input type="text" placeholder="Search Classes..."/>
-                     </div>
-                     
-                     <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" isEnrolled={true} />
-                     <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" />
-
-                     <Link to={'/courses/1'}>
-                        <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" isEnrolled={true} />
-                     </Link>
-
-                     <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" />
-                  </div>
+            </div>
+            <div className="cs-main">
+               
+               <div className="cs-header">
+                  <input type="text" placeholder="Search Classes..."/>
                </div>
-            }/>
+               
+               <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" isEnrolled={true} />
+               <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" />
+
+               <Link to={'/courses/1'}>
+                  <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" isEnrolled={true} />
+               </Link>
+
+               <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" />
+            </div>
+         </div>
       )
 
    }
