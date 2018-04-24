@@ -66,6 +66,7 @@ app.use('/User', require('./routes/Account/User'));
 app.use('/Session', require('./routes/Account/Sessions'));
 app.use('/Document', require('./routes/Activities/Document'));
 app.use('/Exercise', require('./routes/Activities/Exercise'));
+app.use('/Video', require('./routes/Activities/Video'));
 app.use('/Section', require('./routes/Section'));
 app.use('/Topic', require('./routes/Topic'));
 

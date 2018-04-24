@@ -33,7 +33,6 @@ export default class LoggedIn extends Component {
                <Route exact path="/settings" component={Settings} />
                <Route exact path="/about" component={About} />
             </Switch>
-
          </div>
 
       )

@@ -452,12 +452,13 @@ describe('Topic Management', () => {
       }); 
 
       describe('/GET admin login with non existing sectionId', () => {
-         it('results in 404', (done) => {
+         it('results in 200', (done) => {
             agent
              .get('/Topic' + '?sectionId=10000')
              .end((err, res) => {
-               res.should.have.status(404);
-               res.body.should.be.empty;
+               res.should.have.status(200);
+               res.body.should.be.a('array');
+               res.body.should.have.lengthOf(0);
                done();
             });
          });
@@ -470,14 +471,14 @@ describe('Topic Management', () => {
              .get('/Topic/' + '1')
              .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('id');
-               (res.body)[0].should.have.property('name');
-               (res.body)[0].should.have.property('sectionId');
-               res.body[0].id.should.equal(1);
-               res.body[0].name.should.equal('HTML & CSS');
-               res.body[0].sectionId.should.equal(1);
+               // res.body.should.be.a('array');
+               // res.body.should.have.lengthOf(1);
+               res.body.should.have.property('id', 1);
+               res.body.should.have.property('name', 'HTML & CSS');
+               res.body.should.have.property('sectionId', 1);
+               // res.body[0].id.should.equal(1);
+               // res.body[0].name.should.equal('HTML & CSS');
+               // res.body[0].sectionId.should.equal(1);
                done();
             });
          });
@@ -565,14 +566,14 @@ describe('Topic Management', () => {
              .get('/Topic/' + '1')
              .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('id');
-               res.body[0].should.have.property('name');
-               res.body[0].should.have.property('sectionId');
-               res.body[0].id.should.equal(1);
-               res.body[0].name.should.equal('HTML');
-               res.body[0].sectionId.should.equal(1);
+               // res.body.should.be.a('array');
+               // res.body.should.have.lengthOf(1);
+               res.body.should.have.property('id', 1);
+               res.body.should.have.property('name', 'HTML');
+               res.body.should.have.property('sectionId', 1);
+               // res.body.id.should.equal(1);
+               // res.body.name.should.equal('HTML');
+               // res.body.sectionId.should.equal(1);
                done();
             });
          });
@@ -763,14 +764,14 @@ describe('Topic Management', () => {
              .get('/Topic/' + '1')
              .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(1);
-               res.body[0].should.have.property('id');
-               res.body[0].should.have.property('name');
-               res.body[0].should.have.property('sectionId');
-               res.body[0].id.should.equal(1);
-               res.body[0].name.should.equal('HTML');
-               res.body[0].sectionId.should.equal(1);
+               // res.body.should.be.a('array');
+               // res.body.should.have.lengthOf(1);
+               res.body.should.have.property('id', 1);
+               res.body.should.have.property('name', 'HTML');
+               res.body.should.have.property('sectionId', 1);
+               // res.body[0].id.should.equal(1);
+               // res.body[0].name.should.equal('HTML');
+               // res.body[0].sectionId.should.equal(1);
                done();
             });
          });
@@ -792,6 +793,24 @@ describe('Topic Management', () => {
             });
          });
       });
+
+      describe('/GET/:Id to confirm update', () => {
+         it('results in 200', (done) => {
+            agent
+             .get('/Topic/' + '1')
+             .end((err, res) => {
+               res.should.have.status(200);
+               // res.body.should.be.a('array');
+               // res.body.should.have.lengthOf(1);
+               res.body.should.have.property('id', 1);
+               res.body.should.have.property('name');
+               res.body.should.have.property('sectionId', 1);
+               // res.body[0].id.should.equal(1);
+               // res.body[0].sectionId.should.equal(1);
+               done();
+            });
+         });
+      }); 
 
       describe('/DELETE/:Id with student login', () => {
          it('results in 403', (done) => {
@@ -818,8 +837,6 @@ describe('Topic Management', () => {
                   (res.body)[i].should.have.property('name');
                   (res.body)[i].should.have.property('sectionId');
                }
-
-               res.body[0].name.should.equal('HTML');
                done();
             });
          });
@@ -844,6 +861,7 @@ describe('Topic Management', () => {
                res.body.should.have.property('videos');
                res.body.videos.should.be.a('array');
                res.body.videos.should.have.lengthOf(2);
+               done();
             });
          });
       });

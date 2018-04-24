@@ -73,8 +73,12 @@ router.get('/:documentId', function(req, res) {
             cnn.chkQry('SELECT * FROM Document WHERE Id = ?', [documentId], cb);
       },
       function(documentArr, fields, cb) {
-         if (vld.check(documentArr.length, Tags.notFound, null, cb)) {
-            res.json(documentArr);
+         if (documentArr.length) {
+            res.json(documentArr[0]);
+            cb();
+         }
+         else {
+            res.status(404).end();
             cb();
          }
       }
@@ -102,6 +106,10 @@ router.put('/:documentId', function(req, res) {
             vld.checkAdmin(cb))
             cnn.chkQry('UPDATE Document SET ? WHERE Id = ?', 
                [body, documentId], cb);
+      },
+      function(putResult, fields, cb) {
+         res.status(200).end();
+         cb();
       }
    ], function(err) {
       cnn.release();
@@ -118,12 +126,22 @@ router.delete('/:documentId', function(req, res) {
    
    async.waterfall([
       function(cb) {
-         cnn.chkQry('SELECT * FROM Document WHERE Id = ?', [documentId], cb);
+         if (vld.checkAdmin(cb)) {
+            cnn.chkQry('SELECT * FROM Document WHERE Id = ?', [documentId], cb);
+         }
       },
       function(documentArr, fields, cb) {
-         if (vld.check(documentArr.length, Tags.notFound, null, cb) &&
-            vld.checkAdmin(cb))
+         if (documentArr.length) {
             cnn.chkQry('DELETE FROM Document WHERE Id = ?', [documentId], cb);
+         }
+         else {
+            res.status(404).end();
+            cb();
+         }
+      },
+      function(delResult, fields, cb) {
+         res.status(200).end();
+         cb();
       }
    ], function (err) {
       cnn.release();

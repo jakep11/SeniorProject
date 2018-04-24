@@ -8,13 +8,16 @@ router.baseURL = '/Topic';
 router.get('/', (req, res) => {
    const sectionId = req.query.sectionId;
    const cnn = req.cnn;
+   const isLoggedIn = req.session;
+   const vld = req.validator;
 
    const where = sectionId ? `WHERE sectionId = ${sectionId}` : '';
    const query = `SELECT * FROM Topic ${where}`;
 
    async.waterfall([
       function validateAndQuery(cb) { 
-         cnn.chkQry(query, null, cb);
+         if (vld.check(isLoggedIn, Tags.noLogin, null, cb))
+            cnn.chkQry(query, null, cb);
       },
 
       function checkResults(topicResults, fields, cb) {
@@ -36,12 +39,12 @@ router.post('/', (req, res) => {
 
    const postTopicFields = ['name', 'sectionId'];
    let getSectionQuery = 'SELECT * FROM Section WHERE id = ?';
+   let getTopicQuery = 'SELECT * FROM Topic WHERE SectionId = ? and Name = ?';
    let insertTopicQuery = 'INSERT INTO Topic SET ?';
 
    async.waterfall([
       function checkSectionExists(cb) { // validate input and check section exists
          if (vld.checkAdmin(cb) &&
-            vld.hasFields(body, postTopicFields, cb) && 
             vld.hasOnlyFields(body, postTopicFields, cb) &&
             vld.chain(body.name, Tags.missingField, ['name']) // should hasFields check for falsey?
                .check(body.sectionId, Tags.missingField, ['sectionId'], cb)) { // validate input
@@ -50,8 +53,14 @@ router.post('/', (req, res) => {
          }
       },
 
-      function createTopic(sectionResults, fields, cb) { // insert topic into DB
+      function checkTopicDuplicate(sectionResults, fields, cb) {
          if (vld.check(sectionResults.length, Tags.notFound, null, cb)) {
+            cnn.chkQry(getTopicQuery, [sectionId, body.name], cb);
+         }
+      },
+
+      function createTopic(topicResults, fields, cb) { // insert topic into DB
+         if (vld.check(!topicResults.length, Tags.notFound, null, cb)) {
             cnn.chkQry(insertTopicQuery, body, cb);
          }
       },
@@ -70,6 +79,8 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
    const cnn = req.cnn;
    const topicId = req.params.id;
+   const vld = req.validator;
+   const isLoggedIn = req.session;
 
    const getTopicQuery = 'SELECT * FROM Topic WHERE Id = ?';
 
@@ -79,13 +90,20 @@ router.get('/:id', (req, res) => {
             res.status(400).end();
             cb(true);
          }
-         else {
+         else if (vld.check(isLoggedIn, Tags.noLogin, null, cb)) { // is logged in
             cnn.chkQry(getTopicQuery, [topicId], cb);
          }
       },
 
       function finalizeResponse(topicResults, fields, cb) { // finalize response
-         res.json(topicResults);
+         if (topicResults.length) {// topic exists
+            res.json(topicResults[0]);
+         }
+         else {
+            res.status(404).end();
+            return;
+         }
+
          cb(null);
       }
       
@@ -113,16 +131,21 @@ router.put('/:id', (req, res) => {
          }
          else if (vld.checkAdmin(cb) &&
             vld.hasOnlyFields(body, putTopicFields, cb) &&
-            vld.chain(!('name' in body) || body.name, Tags.badValue, ['name'])
-               .check(!('sectionId' in body) || body.sectionId, Tags.badValue, ['sectionId'], cb)) { // validate input
+            vld.chain(!('name' in body) || body.name, Tags.missingField, ['name'])
+               .check(!('sectionId' in body) || body.sectionId, 
+                  Tags.missingField, ['sectionId'], cb)) { // validate input
 
             cnn.chkQry(getTopicQuery, [topicId], cb);
          }
       },
 
       function updateTopic(topicResults, fields, cb) { // update topic in DB
-         if (vld.check(topicResults.length, Tags.notFound, null, cb)) {
+         if (topicResults.length) {// topic exists
             cnn.chkQry(updateTopicQuery, [body, topicId], cb);
+         }
+         else {
+            res.status(404).end();
+            return;
          }
       },
 
@@ -151,14 +174,18 @@ router.delete('/:id', (req, res) => {
             res.status(400).end();
             cb(true);
          }
-         else if (vld.checkAdmin(cb)) {
+         else if (vld.checkAdmin(cb)) { // is admin
             cnn.chkQry(getTopicQuery, [topicId], cb);
          }
       },
 
       function deleteTopic(topicResults, fields, cb) { // delete topic from DB
-         if (vld.check(topicResults.length, Tags.notFound, null, cb)) {
+         if (topicResults.length) {
             cnn.chkQry(deleteTopicQuery, [topicId], cb);
+         }
+         else {
+            res.status(404).end();
+            return;
          }
       },
 
@@ -177,6 +204,7 @@ router.get('/:id/Activities', (req, res) => {
    const vld = req.validator;
    const cnn = req.cnn;
    const topicId = req.params.id;
+   const isLoggedIn = req.session;
 
    const getTopicQuery = 'SELECT * FROM Topic WHERE Id = ?';
    const getExercisesQuery = 'SELECT * FROM Exercise WHERE TopicId = ?';
@@ -191,14 +219,18 @@ router.get('/:id/Activities', (req, res) => {
             res.status(400).end();
             cb(true);
          }
-         else if (vld.checkAdmin(cb)) {
+         else if (vld.check(isLoggedIn, Tags.noLogin, null, cb)) { // check for login
             cnn.chkQry(getTopicQuery, [topicId], cb);
          }
       },
 
       function getExercises(topicsResult, fields, cb) { // get topic's activities from DB
-         if (vld.check(topicsResult.length, Tags.notFound, null, cb)) {
+         if (topicsResult.length) { // topic exists
             cnn.chkQry(getExercisesQuery, [topicId], cb);
+         }
+         else {
+            res.status(404).end();
+            return;
          }
       },
 

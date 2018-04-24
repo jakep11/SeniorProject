@@ -25,7 +25,8 @@ Validator.Tags = {
    dupVideoLink: 'dupVideoLink',    // Duplicate Video link
    dupSection: 'dupSection',        // Duplicate section
    forbiddenField: 'forbiddenField',// Forbidden field supplied as a parameter
-   queryFailed: 'queryFailed'       // Query failed in the database
+   queryFailed: 'queryFailed',      // Query failed in the database
+   dupTopic: 'dupTopic',            // Duplicate topic
 };
 
 // Check |test|.  If false, add an error with tag and possibly empty array
