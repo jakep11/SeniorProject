@@ -27,7 +27,14 @@ export default class Courses extends Component {
    
    handleChange(ev) {
       let newState = {};
-      newState[ev.target.id] = ev.target.checked;
+      switch (ev.target.type) {
+         case 'checkbox':
+            newState[ev.target.id] = ev.target.checked;
+            break;
+         default:
+            newState[ev.target.id] = ev.target.value;
+      }
+      console.log("New state of", ev.target.id,":", newState[ev.target.id]);
       this.setState(newState);
    }
 
@@ -60,7 +67,7 @@ export default class Courses extends Component {
             <div className="cs-main">
                
                <div className="cs-header">
-                  <input type="text" placeholder="Search Classes..."/>
+                  <input type="text" placeholder="Search Classes..." id='filter' onChange={this.handleChange}/>
                </div>
                
                <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" isEnrolled={true} />
