@@ -32,8 +32,9 @@ export default class Sydebar extends Component {
    render() {
       var sidebarContent =
          <div style={styles.sidebar}>
-            Test title
+            {this.props.titleBar}
             <div style={styles.divider} />
+            {this.props.content}
          </div>
 
       return (
