@@ -136,6 +136,42 @@ export function register(user) {
       })
 }
 
+/**
+ * Gets a topic
+ * @param {Integer} topicId
+ * @returns {Promise}
+ */
+export function getTopic(topicId) {
+
+}
+
+export function getTopics(sectionId) {
+
+}
+
+export function createTopic(body) {
+
+}
+
+export function modifyTopic(body) {
+
+}
+
+export function getActivities(topicId) {
+
+}
+
+export function getExercise(exerciseId) {
+
+}
+
+export function getExercises() {
+
+}
+
+export function getExerciseGrades(exerciseId) {
+   
+}
 
 const errMap = {
    en: {
