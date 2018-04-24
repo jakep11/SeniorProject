@@ -27,18 +27,7 @@ export default class Courses extends Component {
    
    handleChange(ev) {
       let newState = {};
-      console.log("CHECKBOX:", ev.target);
-      switch (ev.target.type) {
-      case 'checkbox':
-         if (ev.target.id === 'ascending') {
-            newState.ascending = ev.target.checked ? 1 : 0;
-         } else if (ev.target.id === 'descending') {
-            newState.descending = ev.target.checked ? 1 : 0;
-         }
-         break;
-      default:
-         newState[ev.target.id] = ev.target.value;
-      }
+      newState[ev.target.id] = ev.target.checked;
       this.setState(newState);
    }
 
@@ -56,17 +45,16 @@ export default class Courses extends Component {
 
                   <div className="cs-filter-type">Department</div>
                   <FormGroup>
-                     <Checkbox> CPE</Checkbox>
-                     <Checkbox> CSC</Checkbox>
-                     <Checkbox> EE</Checkbox>
+                     <Checkbox id='cpe' onChange={this.handleChange}> CPE</Checkbox>
+                     <Checkbox id='csc' onChange={this.handleChange}> CSC</Checkbox>
+                     <Checkbox id='ee' onChange={this.handleChange}> EE</Checkbox>
                   </FormGroup>
                   
                   <div className="cs-filter-type">Show</div>
                   <FormGroup>
-                     <Checkbox> % Progress</Checkbox>
-                     <Checkbox> Enrolled</Checkbox>
+                     <Checkbox id='progress' onChange={this.handleChange}> % Progress</Checkbox>
+                     <Checkbox id='enrolled' onChange={this.handleChange}> Enrolled</Checkbox>
                   </FormGroup>
-                  
                </div>
             }
             children={

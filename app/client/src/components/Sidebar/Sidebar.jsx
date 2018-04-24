@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import Sidebar from 'react-sidebar';
 
 const styles = {
+   root: {
+      flexDirection: 'column'
+   },
    sidebar: {
       width: 256,
       height: '100%'
@@ -11,7 +14,7 @@ const styles = {
       //margin: '8px 0',
       height: 2,
       backgroundColor: 'blue',
-   }
+   },
 };
 
 export default class Sydebar extends Component {
