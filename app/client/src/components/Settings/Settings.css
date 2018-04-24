@@ -1,5 +1,6 @@
 .settings-wrapper {
     padding: 35px 0px;
+    
 }
 
 .settings-wrapper h1 {
@@ -13,18 +14,17 @@
 
 .settings-wrapper div {
     padding: 10px 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 200px);
+    width: 75%;
+    margin: auto;
+
 }
 
-.settings-wrapper span {
-   padding: 10px;
-   display: flex;
-   justify-content: center;
+.settings-border {
+   border-bottom: 2px solid rgb(0,166,255);
 }
 
-.settings-wrapper input {
-   
-}
+
+
 

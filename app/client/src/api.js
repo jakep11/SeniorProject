@@ -137,6 +137,24 @@ export function register(user) {
 }
 
 /**
+ * Modify a user
+ * @param {Integer} userId,
+ * @param {Object} body,
+ * @returns {Promise}
+ */
+export function modifyUser(userId, body) {
+   return put(`User/${userId}`, body)
+      .then(res => {
+         if (res.ok) {
+            return get(`User/${userId}`);
+         }
+         else
+            return createErrorPromise(res);
+      })
+      .then(res => res.json());
+}
+
+/**
  * Gets a section's topics
  * @param {Integer} sectionId    // optional argument
  * @returns {Promise}
