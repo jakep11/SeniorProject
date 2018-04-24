@@ -11,7 +11,7 @@ const reqConf = {
 
 function safeFetch(...params) {
    return fetch(...params)
-      .then((res) => {
+      .then(res => {
          return res.ok ? res : res.json().then((body) => Promise.reject(body))
       })
       .catch((err) => {
@@ -85,29 +85,29 @@ export function del(endpoint) {
 export function signIn(cred) {
    console.log("API signin with ", cred);
    return post("Session", cred)
-      .then((response) => {
-         if (response.ok) {
-            let location = response.headers.get("Location").split('/');
+      .then(res => {
+         if (res.ok) {
+            let location = res.headers.get("Location").split('/');
             cookie = location[location.length - 1];
             return get("Session/" + cookie)
          }
          else
-            return createErrorPromise(response);
+            return createErrorPromise(res);
       })
-      .then(response => response.json())
-      .then(rsp => get('User/' + rsp.userId))
+      .then(res => res.json())
+      .then(res => get('User/' + res.userId))
       .then(userResponse => userResponse.json())
-      .then(rsp => rsp[0]);
+      .then(res => res[0]);
 }
 
-// Handle response with non-200 status by returning a Promise that rejects,
+// Handle res with non-200 status by returning a Promise that rejects,
 // with reason: array of one or more error strings suitable for display.
-function createErrorPromise(response) {
+function createErrorPromise(res) {
    console.log('create error promise')
-   if (response.status === 400 || response.status === 401
-    || response.status === 402 || response.status === 403) {
-      return Promise.resolve(response)
-         .then(response => response.json())
+   if (res.status === 400 || res.status === 401
+    || res.status === 402 || res.status === 403) {
+      return Promise.resolve(res)
+         .then(res => res.json())
          .then(errorList => {
             Promise.reject(errorList.length
             ? errorList.map(err => errorTranslate(err.tag))
@@ -148,7 +148,7 @@ export function getTopics(sectionId) {
       endpoint += `?sectionId=${sectionId}`;
 
    return get(endpoint)
-      .then((res) => res.json());
+      .then(res => res.json());
 }
 
 /**
@@ -158,17 +158,17 @@ export function getTopics(sectionId) {
  */
 export function createTopic(body) {
    return post('Topic', body)
-      .then((response) => {
-         if (response.ok) {
-            const location = response.headers.get("Location").split('/');
+      .then(res => {
+         if (res.ok) {
+            const location = res.headers.get("Location").split('/');
             const topicId = location[location.length - 1];
 
             return get(`Topic/${topicId}`);
          }
          else
-            return createErrorPromise(response);
+            return createErrorPromise(res);
       })
-      .then(response => response.json())
+      .then(res => res.json())
 }
 
 /**
@@ -178,7 +178,7 @@ export function createTopic(body) {
  */
 export function getTopic(topicId) {
    return get(`Topic/${topicId}`)
-      .then((res) => res.json());
+      .then(res => res.json());
 }
 
 /**
@@ -189,14 +189,14 @@ export function getTopic(topicId) {
  */
 export function modifyTopic(topicId, body) {
    return put(`Topic/${topicId}`, body)
-      .then((response) => {
-         if (response.ok) {
+      .then(res => {
+         if (res.ok) {
             return get(`Topic/${topicId}`);
          }
          else
-            return createErrorPromise(response);
+            return createErrorPromise(res);
       })
-      .then(response => response.json());
+      .then(res => res.json());
 }
 
 /**
@@ -206,12 +206,12 @@ export function modifyTopic(topicId, body) {
  */
 export function deleteTopic(topicId) {
    return del(`Topic/${topicId}`)
-      .then((response) => {
-         if (response.ok) {
+      .then(res => {
+         if (res.ok) {
             return topicId;
          }
          else
-            return createErrorPromise(response);
+            return createErrorPromise(res);
       });
 }
 
@@ -222,7 +222,7 @@ export function deleteTopic(topicId) {
  */
 export function getActivities(topicId) {
    return get(`Topic/${topicId}/Activities`)
-      .then((res) => res.json());
+      .then(res => res.json());
 }
 
 /**
@@ -231,7 +231,10 @@ export function getActivities(topicId) {
  */
 export function getExercises() {
    return get('Exercise')
-      .then((res) => res.json());
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
@@ -241,17 +244,17 @@ export function getExercises() {
  */
 export function createExercise(body) {
    return post('Exercise', body)
-      .then((response) => {
-         if (response.ok) {
-            const location = response.headers.get("Location").split('/');
+      .then(res => {
+         if (res.ok) {
+            const location = res.headers.get("Location").split('/');
             const exerciseId = location[location.length - 1];
 
             return get(`Exercise/${exerciseId}`);
          }
          else
-            return createErrorPromise(response);
+            return createErrorPromise(res);
       })
-      .then(response => response.json())
+      .then(res => res.json())
 }
 
 /**
@@ -261,7 +264,10 @@ export function createExercise(body) {
  */
 export function getExercise(exerciseId) {
    return get(`Exercise/${exerciseId}`)
-      .then((res) => res.json());
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
@@ -271,7 +277,15 @@ export function getExercise(exerciseId) {
  * @returns {Promise}
  */
 export function modifyExercise(exerciseId, body) {
-
+   return put(`Exercise/${exerciseId}`, body)
+      .then(res => {
+         if (res.ok) {
+            return get(`Exercise/${exerciseId}`);
+         }
+         else
+            return createErrorPromise(res);
+      })
+      .then(res => res.json());
 }
 
 /**
@@ -280,7 +294,11 @@ export function modifyExercise(exerciseId, body) {
  * @returns {Promise}
  */
 export function deleteExercise(exerciseId) {
-
+   return del(`Exercise/${exerciseId}`)
+      .then(res => {
+         return res.ok ? exerciseId : createErrorPromise(res);
+      })
+      .then(res => res.json());
 }
 
 /**
@@ -290,7 +308,11 @@ export function deleteExercise(exerciseId) {
  * @returns {Promise}
  */
 export function modifyExerciseGrade(exerciseId, body) {
-   
+   return put(`Exercise/${exerciseId}/Grade`, body)
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
@@ -299,7 +321,7 @@ export function modifyExerciseGrade(exerciseId, body) {
  */
 export function getVideos() {
    return get('Video')
-      .then((res) => res.json());
+      .then(res => res.json());
 }
 
 /**
@@ -309,17 +331,17 @@ export function getVideos() {
  */
 export function createVideo(body) {
    return post('Video', body)
-      .then((response) => {
-         if (response.ok) {
-            const location = response.headers.get("Location").split('/');
+      .then(res => {
+         if (res.ok) {
+            const location = res.headers.get("Location").split('/');
             const videoId = location[location.length - 1];
 
             return get(`Video/${videoId}`);
          }
          else
-            return createErrorPromise(response);
+            return createErrorPromise(res);
       })
-      .then(response => response.json())
+      .then(res => res.json())
 }
 
 /**
@@ -329,7 +351,7 @@ export function createVideo(body) {
  */
 export function getVideo(videoId) {
    return get(`Video/${videoId}`)
-      .then((res) => res.json());
+      .then(res => res.json());
 }
 
 /**
@@ -340,14 +362,14 @@ export function getVideo(videoId) {
  */
 export function modifyVideo(videoId, body) {
    return put(`Video/${videoId}`, body)
-      .then((response) => {
-         if (response.ok) {
+      .then(res => {
+         if (res.ok) {
             return get(`Video/${videoId}`);
          }
          else
-            return createErrorPromise(response);
+            return createErrorPromise(res);
       })
-      .then(response => response.json());
+      .then(res => res.json());
 }
 
 /**
@@ -357,12 +379,12 @@ export function modifyVideo(videoId, body) {
  */
 export function deleteVideo(videoId) {
    return del(`Video/${videoId}`)
-      .then((response) => {
-         if (response.ok) {
+      .then(res => {
+         if (res.ok) {
             return videoId;
          }
          else
-            return createErrorPromise(response);
+            return createErrorPromise(res);
       });
 }
 
@@ -372,7 +394,7 @@ export function deleteVideo(videoId) {
  */
 export function getDocuments() {
    return get('Document')
-      .then((res) => res.json());
+      .then(res => res.json());
 }
 
 /**
@@ -382,17 +404,17 @@ export function getDocuments() {
  */
 export function createDocument(body) {
    return post('Document', body)
-      .then((response) => {
-         if (response.ok) {
-            const location = response.headers.get("Location").split('/');
+      .then(res => {
+         if (res.ok) {
+            const location = res.headers.get("Location").split('/');
             const documentId = location[location.length - 1];
 
             return get(`Document/${documentId}`);
          }
          else
-            return createErrorPromise(response);
+            return createErrorPromise(res);
       })
-      .then(response => response.json())
+      .then(res => res.json())
 }
 
 /**
@@ -402,7 +424,7 @@ export function createDocument(body) {
  */
 export function getDocument(documentId) {
    return get(`Document/${documentId}`)
-      .then((res) => res.json());
+      .then(res => res.json());
 }
 
 /**
@@ -413,14 +435,14 @@ export function getDocument(documentId) {
  */
 export function modifyDocument(documentId, body) {
    return put(`Document/${documentId}`, body)
-      .then((response) => {
-         if (response.ok) {
+      .then(res => {
+         if (res.ok) {
             return get(`Document/${documentId}`);
          }
          else
-            return createErrorPromise(response);
+            return createErrorPromise(res);
       })
-      .then(response => response.json());
+      .then(res => res.json());
 }
 
 /**
@@ -430,12 +452,12 @@ export function modifyDocument(documentId, body) {
  */
 export function deleteDocument(documentId) {
    return del(`Document/${documentId}`)
-      .then((response) => {
-         if (response.ok) {
+      .then(res => {
+         if (res.ok) {
             return documentId;
          }
          else 
-            return createErrorPromise(response);
+            return createErrorPromise(res);
       });
 }
 
@@ -456,7 +478,7 @@ export function getSections(term, name) {
    }
 
    return get(endpoint)
-      .then((res) => res.json());
+      .then(res => res.json());
 }
 
 /**
@@ -466,18 +488,18 @@ export function getSections(term, name) {
  */
 export function createSection(body) {
    return post('Section', body)
-      .then((response) => {
-         if (response.ok) {
-            const location = response.headers.get("Location").split('/');
+      .then(res => {
+         if (res.ok) {
+            const location = res.headers.get("Location").split('/');
             const sectionId = location[location.length - 1];
 
             return get(`Section/${sectionId}`);
          }
          else {
-            return createErrorPromise(response);
+            return createErrorPromise(res);
          }
       })
-      .then(response => response.json())
+      .then(res => res.json())
 }
 
 /**
@@ -487,7 +509,7 @@ export function createSection(body) {
  */
 export function getSection(sectionId) {
    return get(`Section/${sectionId}`)
-      .then((res) => res.json());
+      .then(res => res.json());
 }
 
 /**
@@ -498,15 +520,15 @@ export function getSection(sectionId) {
  */
 export function modifySection(sectionId, body) {
    return put(`Section/${sectionId}`, body)
-      .then((response) => {
-         if (response.ok) {
+      .then(res => {
+         if (res.ok) {
             return get(`Section/${sectionId}`);
          }
          else {
-            return createErrorPromise(response);
+            return createErrorPromise(res);
          }
       })
-      .then(response => response.json());
+      .then(res => res.json());
 }
 
 /**
@@ -516,12 +538,12 @@ export function modifySection(sectionId, body) {
  */
 export function deleteSection(sectionId) {
    return del(`Section/${sectionId}`)
-      .then((response) => {
-         if (response.ok) {
+      .then(res => {
+         if (res.ok) {
             return sectionId;
          }
          else {
-            return createErrorPromise(response);
+            return createErrorPromise(res);
          }
       });
 }
@@ -533,7 +555,7 @@ export function deleteSection(sectionId) {
  */
 export function getUserProgress(userId) {
    return get(`Progress/${userId}`)
-      .then((res) => res.json());
+      .then(res => res.json());
 }
 
 /**
@@ -544,15 +566,15 @@ export function getUserProgress(userId) {
  */
 export function modifyUserProgress(userId, body) {
    return put(`Progress/${userId}`, body)
-      .then((response) => {
-         if (response.ok) {
+      .then(res => {
+         if (res.ok) {
             return get(`Progress/${userId}`);
          }
          else {
-            return createErrorPromise(response);
+            return createErrorPromise(res);
          }
       })
-      .then(response => response.json());
+      .then(res => res.json());
 }
 
 const errMap = {
