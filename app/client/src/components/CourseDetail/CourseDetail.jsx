@@ -4,6 +4,7 @@ import './CourseDetail.css';
 import { Link } from "react-router-dom";
 import Video from "../Video/Video";
 import Activity from "../Activity/Activity";
+import CourseSidebar from "../CourseSidebar/CourseSidebar";
 
 export default class CourseDetail extends Component {
    constructor(props) {
@@ -20,7 +21,8 @@ export default class CourseDetail extends Component {
             <div className="cd-main-wrapper">
 
                <div className="cd-sidebar-container">
-                  course detail sidebar
+                  <h2>Course Name</h2>
+                  <CourseSidebar title="Number Systems" {...this.props}/>
                </div>
 
                <div className="cd-main-body">

@@ -8,6 +8,7 @@
 .cd-sidebar-container {
     flex: 0 0 350px;
     border-right: 2px solid blue;
+    padding-left: 10px;
 }
 
 .cd-main-body {
