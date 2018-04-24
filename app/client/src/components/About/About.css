@@ -1,8 +1,8 @@
-.login-wrapper {
+.help-wrapper {
     padding: 35px 0px;
 }
 
-.login-wrapper h1 {
+.help-wrapper h1 {
     text-align: center;
     border-bottom: 2px solid rgba(0,0,255,0.5);
     width: 75%;
@@ -11,7 +11,7 @@
     font-weight: bolder;
 }
 
-.login-wrapper div {
+.help-wrapper div {
     padding: 10px 0;
     display: flex;
     justify-content: center;
