@@ -7,12 +7,12 @@
 
 .cs-sidebar-container {
     flex: 0 0 350px;
-    border-right: 2px solid blue;
+    border-right: 2px solid rgb(0,166,255);
     padding-left: 10px;
 }
 
 .cs-header {
-    border-bottom: 2px solid blue;
+    border-bottom: 2px solid rgb(0,166,255);
     padding: 10px;
     display: flex;
     justify-content: center;

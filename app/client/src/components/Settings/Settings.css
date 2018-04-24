@@ -1,14 +1,8 @@
-
-
-.hm-wrapper {
-    padding: 25px 0;
+.settings-wrapper {
+    padding: 35px 0px;
 }
 
-.hm-wrapper section {
-    padding: 10px 0;
-}
-
-.hm-wrapper section h1 {
+.settings-wrapper h1 {
     text-align: center;
     border-bottom: 2px solid rgb(0,166,255);
     width: 75%;
@@ -17,7 +11,9 @@
     font-weight: bolder;
 }
 
-.hm-wrapper section div {
+.settings-wrapper div {
     padding: 10px 0;
-    text-align: center;
+    display: flex;
+    justify-content: center;
 }
+

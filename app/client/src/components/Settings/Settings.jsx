@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import './Settings.css';
 
 export default class Settings extends Component {
    constructor(props) {
@@ -8,8 +9,10 @@ export default class Settings extends Component {
 
    render() {
       return (
-         <h1>Settings</h1>
-      )
+         <div className='settings-wrapper'>
+            <h1>Settings</h1>
+         </div>
+      );
 
    }
 }
