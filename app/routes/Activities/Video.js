@@ -1,7 +1,7 @@
 const Express = require('express');
 const router = Express.Router({caseSensitive: true});
 const async = require('async');
-const Tags = require('./Validator.js').Tags;
+const Tags = require('../Validator.js').Tags;
 
 router.baseURL = '/Video';
 
@@ -26,7 +26,7 @@ router.post('/', (req, res) => {
 	let vld = req.validator;
 	let body = req.body;
 	let cnn = req.cnn;
-	let vidFields = ['name', 'link', 'topicid']
+	let vidFields = ['name', 'link', 'topicId', 'dueDate']
 
 	async.waterfall([
 		function(cb) {
@@ -35,7 +35,8 @@ router.post('/', (req, res) => {
 			 vld.hasOnlyFields(body, vidFields, cb) &&
 			 vld.chain(body.name, Tags.missingField, ["name"])
 			 .chain(body.link, Tags.missingField, ["link"])
-			 .check(body.topicid, Tags.missingField, ["topicid"], cb)){
+          .chain(body.dueDate, Tags.missingField, ["dueDate"])
+			 .check(body.topicId, Tags.missingField, ["topicId"], cb)){
 				cnn.chkQry("SELECT * FROM Video WHERE Name = ? AND Link = ?", 
 				 [body.name, body.link], cb);
 			}
@@ -67,7 +68,7 @@ router.get('/:id', (req, res) => {
    	},
    	function(videoList, fields, cb) {
    		if(videoList.length){
-   			res.json(videoList);
+   			res.json(videoList[0]);
    			cb();
    		} else {
    			res.status(404).end();
@@ -87,28 +88,28 @@ router.put('/:id', (req, res) => {
 	let id = req.params.id;
 
 	async.waterfall([
-		function(cb) {
-			if(vld.checkAdmin(cb))
-				cnn.chkQry("Select * from Video where id = ?", id, cb);
-		},
-		function(vidsList, fields, cb) {
-			if(!vidsList.length) {
-				res.status(404).end();
-				cb();
-			}
-			else if(vld.hasOnlyFields(body, ['name','link'], cb) &&
-			 (vld.check(body.name, Tags.missingField, ["name"], cb) || 
-			 vld.check(body.link, Tags.missingField, ["link"], cb))){
-				cnn.chkQry("UPDATE Video SET ? WHERE Id = ?", [body, id], cb);
-			}
-		}, 
-		function(result, fields, cb) {
-			res.status(200).end()
-			cb()
-		}
-	], function(err) {
-		cnn.release();
-	});
+      function(cb) {
+         if(vld.checkAdmin(cb))
+            cnn.chkQry("Select * from Video where id = ?", id, cb);
+      },
+      function(vidsList, fields, cb) {
+         if(!vidsList.length) {
+            res.status(404).end();
+            cb();
+         }
+         else if(vld.hasOnlyFields(body, ['name','link', 'dueDate'], cb) &&
+          (vld.check(body.name, Tags.missingField, ["name"], cb) || 
+          vld.check(body.link, Tags.missingField, ["link"], cb))){
+            cnn.chkQry("UPDATE Video SET ? WHERE Id = ?", [body, id], cb);
+         }
+      }, 
+      function(result, fields, cb) {
+         res.status(200).end()
+         cb()
+      }
+   ], function(err) {
+     cnn.release();
+   });
 });
 
 router.delete('/:id', (req, res) => {
@@ -118,21 +119,22 @@ router.delete('/:id', (req, res) => {
 
 	async.waterfall([
    	function(cb) {
-   		if(vld.checkAdmin(cb))
-				cnn.chkQry("Select * from Video where id = ?", id, cb);
+         if(vld.checkAdmin(cb)) {
+            cnn.chkQry("Select * from Video where id = ?", id, cb);
+         }
    	},
    	function(vidsList, fields, cb){
-   		if(vidsList.length){
+   		if(vidsList.length) {
    			cnn.chkQry("delete from Video where id = ?", id, cb);
    		} else {
    			res.status(404).end();
    			cb();
    		}
    	},
-   	function(result, fields, cb) {
-			res.status(200).end()
-			cb()
-		}
+      function(delResult, fields, cb) {
+         res.status(200).end();
+         cb();
+      }
    ], 
    function(err) {
    	req.cnn.release();

@@ -25,9 +25,10 @@ export default class Video extends Component {
                   <h1>Video</h1>
                   <hr />
                   <YouTube
-                     videoId="dQw4w9WgXcQ"
-                     opts={opts}           
+                     videoId={this.props.videoId}
+                     opts={opts}
                   />
+                  {/*videoId="dQw4w9WgXcQ"*/}
                   </div>
                </Row>
          </Grid>

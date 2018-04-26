@@ -1,0 +1,44 @@
+
+
+.act-wrapper {
+    padding: 5px 0;
+}
+.act-bar-wrapper {
+    position: relative;
+    display: flex;
+    /*width: 500px;*/
+    align-items: center;
+    min-height: 50px;
+    margin: 0 15px;
+}
+
+.act-icon {
+    background-color: black;
+    border-radius: 100px;
+    width: 50px;
+    height: 50px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    z-index: 1;
+}
+
+.act-main {
+    background-color: #ddd;
+    height: 40px;
+    position: absolute;
+    left: 30px;
+    right: 0;
+    padding: 0 10px 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.act-content {
+    display: flex;
+    justify-content: center;
+}

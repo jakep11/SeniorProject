@@ -11,84 +11,81 @@ chai.use(chaiHttp);
 
 const agent = chai.request.agent(server);
 
-describe.skip('Video Management', () => {
+describe('Video Management', () => {
    let studentCookie;
    let adminCookie;
    let defaultAdminCookie;
 
-   before('create an admin and student user account', (done) => {
+   before('Nuke and preparation', (done) => {
+
       connection.connect(function (err) {
          if (err)
             throw new Error('Unable to connect to database!');
       });
 
-      let adminUser = {
-         'firstName': 'Jake',
-         'lastName': 'Admin',
-         'email': 'Jake@admin.com',
-         'role': 1,
-         'passHash': bcrypt.hashSync('password', 10),
-         'termsAccepted': new Date()
-      };
+      // Section for testing
+      let section437 = {
+         'name': 'CSC437',
+         'description': 'Web Dev',
+         'term': 'W18'
+      }
 
-      let studentUser = {
-         'firstName': 'Jake',
-         'lastName': 'Student',
-         'email': 'jake@student.com',
+      let topic1 = {
+         'name': 'First topic',
+         'sectionId': 1,
+      }
+
+      agent.post('/Session')
+         .send({email: 'admin@example.com', password: 'password'})
+         .end((err, res) => {
+            res.should.have.status(200);
+            
+            agent
+               .delete('/DB')
+               .end((err, res) => {
+                  connection.query('insert into Section set ?', section437);
+                  connection.query('insert into Topic set ?', topic1);
+                  res.should.have.status(200);
+                  done();
+               });
+         });
+   });
+
+   describe('Register and log in as a student', () => {
+
+      let user = {
+         'email': 'UserA@domainA',
+         'firstName': 'FirstA',
+         'lastName': 'LastA',
+         'password': 'passwordA',
          'role': 0,
-         'passHash': bcrypt.hashSync('password', 10),
-         'termsAccepted': new Date()
+         'termsAccepted': true
       };
 
-      connection.query('insert into User set ?', adminUser);
-      connection.query('insert into User set ?', studentUser, function() {
-         done();
+      it('results in 200 and registers a new student account', (done) => {
+         agent
+            .post('/User')
+            .send(user)
+            .end((err, res) => {
+               res.should.have.status(200);
+               res.header.location.should.not.be.empty;
+               done();
+            });
       });
-   });
 
-   after('remove Users and reset auto_increment', (done) => {
-      let defaultAdmin = {
-         'firstName': 'Joe',
-         'lastName': 'Admin',
-         'email': 'admin@example.com',
-         'role': 1,
-         'passHash': '$2a$10$Nq2f5SyrbQL2R0e9E.cU2OSjqqORgnwwsY1vBvVhV.SGlfzpfYvyi',
-         'termsAccepted': new Date()
-      };
-
-      connection.query('delete from User');
-      connection.query('alter table User auto_increment=1');
-      connection.query('insert into User set ?', defaultAdmin, function (err) {
-         if (err) throw err;
-
-         done();
-      });
-   });
-
-
-   describe('Log in as a student', () => {
-      it('results in a POST for a new session', (done) => {
-         let session = {
-            'email': 'jake@student.com',
-            'password': 'password'
-         };
-
+      it('results in 200 and logs in as student', (done) => {
          agent
             .post('/Session')
-            .send(session)
+            .send({email: 'UserA@domainA', password: 'passwordA'})
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
                res.should.have.cookie('SPAuth');
-
-               // save cookie for getting Session by cookie
-               studentCookie = res.header.location.replace('/Session/', '');
-
                done();
             });
       });
+      
    });
-
    describe('/GET 0 videos', () => {
       it('results in 200 and empty array', (done) => {
          
@@ -104,7 +101,7 @@ describe.skip('Video Management', () => {
    });
 
    describe('/POST video as a non-admin', () => {
-      it('results in 401', (done) => {
+      it('results in 403', (done) => {
          
          let videoData = {
             'name': 'video0',
@@ -117,9 +114,7 @@ describe.skip('Video Management', () => {
             .post('/Video')
             .send(videoData)
             .end((err, res) => {
-               res.should.have.status(401);
-               res.body.should.be.a('array');
-               res.body.should.have.lengthOf(0);
+               res.should.have.status(403);
                done();
             });
       });
@@ -128,7 +123,7 @@ describe.skip('Video Management', () => {
    describe('/POST video as an admin', () => {
       it('Logs in as admin', (done) => {
          let session = {
-            'email': 'jake@admin.com',
+            'email': 'admin@example.com',
             'password': 'password'
          };
 
@@ -206,7 +201,6 @@ describe.skip('Video Management', () => {
             .get('/Video/2')
             .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.have.lengthOf(1);
                res.body.should.have.property('id', 2);
                res.body.should.have.property('link', 'http://example.com');
                done();
@@ -219,11 +213,13 @@ describe.skip('Video Management', () => {
 
          let videoUpdateInfo = {
             'name': 'video1UpdatedName',
-            'link': 'http://example.com/updated'
+            'link': 'http://example.com/updated',
+            'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
          }
 
          agent
             .put('/Video/1')
+            .send(videoUpdateInfo)
             .end((err, res) => {
                res.should.have.status(200);
                done();
@@ -237,10 +233,9 @@ describe.skip('Video Management', () => {
             .get('/Video/1')
             .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.have.lengthOf(1);
                res.body.should.have.property('id', 1);
                res.body.should.have.property('name', 'video1UpdatedName')
-               res.body.should.have.property('link', 'http://example.com');
+               res.body.should.have.property('link', 'http://example.com/updated');
                done();
             });
       });
