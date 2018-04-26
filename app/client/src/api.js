@@ -138,16 +138,17 @@ export function register(user) {
 
 /**
  * Gets a section's topics
- * @param {Integer} sectionId // optional argument
+ * @param {Integer} sectionId    // optional argument
  * @returns {Promise}
  */
 export function getTopics(sectionId) {
-   let endpoint = 'Topic';
+   const endpoint = 'Topic';
 
    if (sectionId) // add sectionId query if not null
-      endpoint += '?sectionId=' + sectionId;
+      endpoint += `?sectionId=${sectionId}`;
 
-   return get(endpoint).then((res) => res.json());
+   return get(endpoint)
+      .then((res) => res.json());
 }
 
 /**
@@ -160,9 +161,9 @@ export function createTopic(body) {
       .then((response) => {
          if (response.ok) {
             const location = response.headers.get("Location").split('/');
-            const cnvId = location[location.length - 1];
+            const topicId = location[location.length - 1];
 
-            return get(`Topic/${cnvId}`);
+            return get(`Topic/${topicId}`);
          }
          else
             return createErrorPromise(response);
@@ -176,7 +177,8 @@ export function createTopic(body) {
  * @returns {Promise}
  */
 export function getTopic(topicId) {
-
+   return get(`Topic/${topicId}`)
+      .then((res) => res.json());
 }
 
 /**
@@ -186,7 +188,15 @@ export function getTopic(topicId) {
  * @returns {Promise}
  */
 export function modifyTopic(topicId, body) {
-
+   return put(`Topic/${topicId}`, body)
+      .then((response) => {
+         if (response.ok) {
+            return get(`Topic/${topicId}`);
+         }
+         else
+            return createErrorPromise(response);
+      })
+      .then(response => response.json());
 }
 
 /**
@@ -195,7 +205,14 @@ export function modifyTopic(topicId, body) {
  * @returns {Promise}
  */
 export function deleteTopic(topicId) {
-
+   return del(`Topic/${topicId}`)
+      .then((response) => {
+         if (response.ok) {
+            return topicId;
+         }
+         else
+            return createErrorPromise(response);
+      });
 }
 
 /**
@@ -204,7 +221,8 @@ export function deleteTopic(topicId) {
  * @returns {Promise}
  */
 export function getActivities(topicId) {
-
+   return get(`Topic/${topicId}/Activities`)
+      .then((res) => res.json());
 }
 
 /**
