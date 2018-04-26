@@ -138,11 +138,16 @@ export function register(user) {
 
 /**
  * Gets a section's topics
- * @param {Integer} sectionId
+ * @param {Integer} sectionId // optional argument
  * @returns {Promise}
  */
 export function getTopics(sectionId) {
+   let endpoint = 'Topic';
 
+   if (sectionId) // add sectionId query if not null
+      endpoint += '?sectionId=' + sectionId;
+
+   return get(endpoint).then((res) => res.json());
 }
 
 /**
@@ -151,7 +156,18 @@ export function getTopics(sectionId) {
  * @returns {Promise}
  */
 export function createTopic(body) {
+   return post('Topic', body)
+      .then((response) => {
+         if (response.ok) {
+            const location = response.headers.get("Location").split('/');
+            const cnvId = location[location.length - 1];
 
+            return get(`Topic/${cnvId}`);
+         }
+         else
+            return createErrorPromise(response);
+      })
+      .then(response => response.json())
 }
 
 /**
