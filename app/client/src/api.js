@@ -137,6 +137,24 @@ export function register(user) {
 }
 
 /**
+ * Gets a section's topics
+ * @param {Integer} sectionId
+ * @returns {Promise}
+ */
+export function getTopics(sectionId) {
+
+}
+
+/**
+ * Create a topic
+ * @param {Object} body
+ * @returns {Promise}
+ */
+export function createTopic(body) {
+
+}
+
+/**
  * Gets a topic
  * @param {Integer} topicId
  * @returns {Promise}
@@ -145,31 +163,86 @@ export function getTopic(topicId) {
 
 }
 
-export function getTopics(sectionId) {
+/**
+ * Modifies a topic
+ * @param {Integer} topicId
+ * @param {Object} body
+ * @returns {Promise}
+ */
+export function modifyTopic(topicId, body) {
 
 }
 
-export function createTopic(body) {
+/**
+ * Deletes a topic
+ * @param {Integer} topicId
+ * @returns {Promise}
+ */
+export function deleteTopic(topicId) {
 
 }
 
-export function modifyTopic(body) {
-
-}
-
+/**
+ * Gets a topic's activities
+ * @param {Integer} topicId
+ * @returns {Promise}
+ */
 export function getActivities(topicId) {
 
 }
 
-export function getExercise(exerciseId) {
-
-}
-
+/**
+ * Gets exercises
+ * @returns {Promise}
+ */
 export function getExercises() {
 
 }
 
-export function getExerciseGrades(exerciseId) {
+/**
+ * Gets a topic's activities
+ * @param {object} body
+ * @returns {Promise}
+ */
+export function createExercise(body) {
+
+}
+
+/**
+ * Gets an exercise
+ * @param {Integer} exerciseId
+ * @returns {Promise}
+ */
+export function getExercise(exerciseId) {
+
+}
+
+/**
+ * Modifies an exercise
+ * @param {Integer} exerciseId
+ * @param {Object} body
+ * @returns {Promise}
+ */
+export function modifyExercise(exerciseId, body) {
+
+}
+
+/**
+ * Deletes an exercise
+ * @param {Integer} exerciseId
+ * @returns {Promise}
+ */
+export function deleteExercise(exerciseId) {
+
+}
+
+/**
+ * Grades an exercise
+ * @param {Integer} exerciseId
+ * @param {Object} body
+ * @returns {Promise}
+ */
+export function modifyExerciseGrade(exerciseId, body) {
    
 }
 
