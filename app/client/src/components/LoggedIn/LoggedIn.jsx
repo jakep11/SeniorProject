@@ -27,7 +27,8 @@ export default class LoggedIn extends Component {
 
             <Switch>
                <Route exact path="/home" component={Home} />
-               <Route exact path="/courses" component={Courses} />
+               {/*<Route exact path="/courses" component={Courses} />*/}
+               <Route exact path="/courses" render={() => <Courses {...this.props} />} />
                <Route path="/courses/:courseId" component={CourseDetail} />
                <Route exact path="/help" component={Help} />
                <Route exact path="/settings" component={Settings} />

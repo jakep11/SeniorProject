@@ -5,23 +5,15 @@ import CourseBlock from "../CourseBlock/CourseBlock";
 import Sydebar from "../Sidebar/Sidebar";
 import './Courses.css';
 import { Link } from "react-router-dom";
+import CoursesFilterSidebar from "../CoursesFilterSidebar/CoursesFilterSidebar";
 
 export default class Courses extends Component {
    constructor(props) {
       super(props);
 
-      this.state = {
-         progress: 10
-      };
+      this.props.updateSections();
 
-      let mult = 1;
-
-      setInterval(() => {
-         if (this.state.progress >= 100 || this.state.progress <= 0)
-            mult *= -1;
-         this.setState({ progress: this.state.progress + mult * 10});
-      }, 320);
-      
+      console.log('xyz:', this.props);
       this.handleChange = this.handleChange.bind(this);
    }
    
@@ -38,46 +30,55 @@ export default class Courses extends Component {
       this.setState(newState);
    }
 
+   renderCourse(course, idx) {
+      return (
+         <Link key={course.id} to={`/courses/${course.id}`}>
+            <CourseBlock title={course.name} progress={0} term={course.term} isEnrolled={true} />
+         </Link>
+      )
+
+   }
+
    render() {
+      let filter = this.props.Courses.filter;
+      let depts = Object
+         .entries(filter)                  /* Get list of key-value pairs */
+         .filter((kv) => kv[1] === true)   /* Filter only those with true value */
+         .map((kv) => kv[0])               /* Get just the dept names */
+      let courses = this.props.Courses.sections.filter((c) => {
+         for (let dept of depts)
+            if (c.dept.toLowerCase() !== dept.toLowerCase()) {
+               console.log(`c.dept (${c.dept}) !== dept (${dept})`)
+
+               return false;
+            }
+         return true;
+
+      })
       return (
          <div className="cs-wrapper">
             <div className="cs-sidebar-container">
-               <h2 className="cs-filter-header">Filter</h2>
-               <div>
-                  <div className="cs-filter-type">Date Order</div>
-                  <FormGroup>
-                     <Checkbox id='ascending' onChange={this.handleChange}> Ascending</Checkbox>
-                     <Checkbox id='descending' onChange={this.handleChange}> Descending</Checkbox>
-                  </FormGroup>
-
-                  <div className="cs-filter-type">Department</div>
-                  <FormGroup>
-                     <Checkbox id='cpe' onChange={this.handleChange}> CPE</Checkbox>
-                     <Checkbox id='csc' onChange={this.handleChange}> CSC</Checkbox>
-                     <Checkbox id='ee' onChange={this.handleChange}> EE</Checkbox>
-                  </FormGroup>
-                  
-                  <div className="cs-filter-type">Show</div>
-                  <FormGroup>
-                     <Checkbox id='progress' onChange={this.handleChange}> % Progress</Checkbox>
-                     <Checkbox id='enrolled' onChange={this.handleChange}> Enrolled</Checkbox>
-                  </FormGroup>
-               </div>
+               <CoursesFilterSidebar {...this.props} />
             </div>
             <div className="cs-main">
                
                <div className="cs-header">
                   <input type="text" placeholder="Search Classes..." id='filter' onChange={this.handleChange}/>
                </div>
-               
-               <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" isEnrolled={true} />
-               <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" />
 
-               <Link to={'/courses/1'}>
-                  <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" isEnrolled={true} />
-               </Link>
 
-               <CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" />
+               {/*<CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" isEnrolled={true} />*/}
+               {/*<CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" />*/}
+
+               {
+                  courses.map(this.renderCourse)
+               }
+
+               {/*<Link to={'/courses/1'}>*/}
+                  {/*<CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" isEnrolled={true} />*/}
+               {/*</Link>*/}
+
+               {/*<CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" />*/}
             </div>
          </div>
       )
