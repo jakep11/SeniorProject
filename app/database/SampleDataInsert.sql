@@ -1,3 +1,4 @@
+source SP_TableSetup.sql;  -- clear database, can remove later
 -- User
 /*password: password1*/
 INSERT INTO User SET firstName = 'User1', lastName = 'Admin', 
@@ -18,7 +19,7 @@ INSERT INTO User SET firstName = 'UserB', lastName = 'Student',
 INSERT INTO User SET firstName = 'UserC', lastName = 'Student', 
  email = 'userC@example.com', role = 0, termsAccepted = '2016-10-07 10:09:11',
  passHash = '$2y$10$mNKOj6o2.BuTlgw5Bxc0g.SYNeCK9sxQ.ww0qpPHsJ4pwsioB1t3W';
--------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 
 -- Section 
 INSERT INTO Section SET name = 'CPE133', 
@@ -31,7 +32,7 @@ INSERT INTO Section SET name = 'CSC437',
  description = 'Dynamic Web Development', term = 'W17';
 INSERT INTO Section SET name = 'MATH143', 
  description = 'Calculus III', term = 'W17';
--------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 
 -- Topic
 -- CPE133
@@ -57,7 +58,7 @@ INSERT INTO Topic SET name = 'Database Analysis', sectionId = 3;
 INSERT INTO Topic SET name = 'Advance Queries', sectionId = 3;
 INSERT INTO Topic SET name = 'JDBC', sectionId = 3;
 
--- CSC437
+-- CSC437 -- 
 INSERT INTO Topic SET name = 'JSBasics', sectionId = 4;
 INSERT INTO Topic SET name = 'JSAdvanced', sectionId = 4;
 INSERT INTO Topic SET name = 'JSObjectOriented', sectionId = 4;
@@ -68,7 +69,7 @@ INSERT INTO Topic SET name = 'Sequence', sectionId = 5;
 INSERT INTO Topic SET name = 'Series', sectionId = 5;
 INSERT INTO Topic SET name = 'Three-space', sectionId = 5;
 INSERT INTO Topic SET name = 'Vector', sectionId = 5;
--------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 
 -- Enrollment
 INSERT INTO Enrollment SET userId = 3, sectionId = 2;
@@ -89,8 +90,8 @@ INSERT INTO Video SET name = 'Relational Algebra - Lecture A', link = 'equ58Tfl5
  topicId = 13, dueDate = '2016-10-25 23:59:59';
 INSERT INTO Video SET name = 'Aggregation', link = 'OXJAOpf51CA', 
  topicId = 14, dueDate = '2016-11-05 23:59:59';
-INSERT INTO Video SET name = 'Creating DBs', link = 'aaBa0rANf8U', 
- topicId = 14, dueDate = '2016-11-05 23:59:59';
+-- INSERT INTO Video SET name = 'Creating DBs', link = 'aaBa0rANf8U', 
+-- topicId = 14, dueDate = '2016-11-05 23:59:59';
 
 -- Exercise
 -- Document
