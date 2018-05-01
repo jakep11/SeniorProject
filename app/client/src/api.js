@@ -142,7 +142,7 @@ export function register(user) {
  * @returns {Promise}
  */
 export function getTopics(sectionId) {
-   const endpoint = 'Topic';
+   let endpoint = 'Topic';
 
    if (sectionId) // add sectionId query if not null
       endpoint += `?sectionId=${sectionId}`;
