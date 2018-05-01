@@ -13,11 +13,20 @@ class Main extends Component {
       console.log(this.props);
       this.props.logout(() => this.props.history.push('/login'));
    }
-
-   render() {
+   
+   renderNotLoggedIn() {
       return (
          <nav className="navbar">
-
+            <Link to={'/login'}>
+               <div>Login</div>
+            </Link>
+         </nav>
+      );
+   }
+   
+   renderLoggedIn() {
+      return (
+         <nav className="navbar">
             <Link to={'/home'}>
                <div>Home</div>
             </Link>
@@ -39,8 +48,20 @@ class Main extends Component {
             </Link>
 
             <a onClick={() => this.logout()}><div>Logout</div></a>
-
          </nav>
+      );
+   }
+   
+   renderNavbar() {
+      if (this.props.User.isLoggedIn)
+         return this.renderLoggedIn();
+      else
+         return this.renderNotLoggedIn();
+   }
+
+   render() {
+      return (
+         <div>{this.renderNavbar()}</div>
       )
    }
 }
