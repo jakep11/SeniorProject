@@ -31,9 +31,14 @@ export default class Courses extends Component {
    }
 
    renderCourse(course, idx) {
+      console.log('render: ', this);
       return (
          <Link key={course.id} to={`/courses/${course.id}`}>
-            <CourseBlock title={course.name} progress={0} term={course.term} isEnrolled={true} />
+            <CourseBlock title={course.name}
+                         progress={0}
+                         showProgress={true}
+                         term={course.term}
+                         isEnrolled={true} />
          </Link>
       )
 
@@ -44,17 +49,21 @@ export default class Courses extends Component {
       let depts = Object
          .entries(filter)                  /* Get list of key-value pairs */
          .filter((kv) => kv[1] === true)   /* Filter only those with true value */
-         .map((kv) => kv[0])               /* Get just the dept names */
+         .map((kv) => kv[0].toLowerCase())               /* Get just the dept names */
       let courses = this.props.Courses.sections.filter((c) => {
-         for (let dept of depts)
-            if (c.dept.toLowerCase() !== dept.toLowerCase()) {
-               console.log(`c.dept (${c.dept}) !== dept (${dept})`)
-
+         console.log('depts', depts);
+         console.log('depts[c.dept.toLowerCase()]', depts[c.dept.toLowerCase()]);
+         console.log('c.dept.toLowerCase()', c.dept.toLowerCase());
+         if (depts.length > 0) {
+            if (depts.indexOf(c.dept.toLowerCase()) === -1)
                return false;
-            }
-         return true;
-
-      })
+            else
+               return true;
+         }
+         else {
+            return true;
+         }
+      });
       return (
          <div className="cs-wrapper">
             <div className="cs-sidebar-container">
@@ -71,7 +80,7 @@ export default class Courses extends Component {
                {/*<CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" />*/}
 
                {
-                  courses.map(this.renderCourse)
+                  courses.map((c, idx) => this.renderCourse(c, idx))
                }
 
                {/*<Link to={'/courses/1'}>*/}
