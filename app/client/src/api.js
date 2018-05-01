@@ -152,7 +152,7 @@ export function getTopics(sectionId) {
 }
 
 /**
- * Create a topic
+ * Creates a topic
  * @param {Object} body
  * @returns {Promise}
  */
@@ -235,7 +235,7 @@ export function getExercises() {
 }
 
 /**
- * Gets a topic's activities
+ * Creates an exercise
  * @param {object} body
  * @returns {Promise}
  */
@@ -303,7 +303,7 @@ export function getVideos() {
 }
 
 /**
- * Gets a video's activities
+ * Creates a video
  * @param {object} body
  * @returns {Promise}
  */
@@ -360,6 +360,79 @@ export function deleteVideo(videoId) {
       .then((response) => {
          if (response.ok) {
             return videoId;
+         }
+         else
+            return createErrorPromise(response);
+      });
+}
+
+/**
+ * Gets documents
+ * @returns {Promise}
+ */
+export function getDocuments() {
+   return get('Document')
+      .then((res) => res.json());
+}
+
+/**
+ * Creates a document
+ * @param {object} body
+ * @returns {Promise}
+ */
+export function createDocument(body) {
+   return post('Document', body)
+      .then((response) => {
+         if (response.ok) {
+            const location = response.headers.get("Location").split('/');
+            const documentId = location[location.length - 1];
+
+            return get(`Document/${documentId}`);
+         }
+         else
+            return createErrorPromise(response);
+      })
+      .then(response => response.json())
+}
+
+/**
+ * Gets a Document
+ * @param {Integer} documentId
+ * @returns {Promise}
+ */
+export function getDocument(documentId) {
+   return get(`Document/${documentId}`)
+      .then((res) => res.json());
+}
+
+/**
+ * Modifies a Document
+ * @param {Integer} documentId
+ * @param {Object} body
+ * @returns {Promise}
+ */
+export function modifyDocument(documentId, body) {
+   return put(`Document/${documentId}`, body)
+      .then((response) => {
+         if (response.ok) {
+            return get(`Document/${documentId}`);
+         }
+         else
+            return createErrorPromise(response);
+      })
+      .then(response => response.json());
+}
+
+/**
+ * Deletes a Document
+ * @param {Integer} documentId
+ * @returns {Promise}
+ */
+export function deleteDocument(documentId) {
+   return del(`Document/${documentId}`)
+      .then((response) => {
+         if (response.ok) {
+            return documentId;
          }
          else
             return createErrorPromise(response);
