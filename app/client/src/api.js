@@ -396,7 +396,7 @@ export function createDocument(body) {
 }
 
 /**
- * Gets a Document
+ * Gets a document
  * @param {Integer} documentId
  * @returns {Promise}
  */
@@ -406,7 +406,7 @@ export function getDocument(documentId) {
 }
 
 /**
- * Modifies a Document
+ * Modifies a document
  * @param {Integer} documentId
  * @param {Object} body
  * @returns {Promise}
@@ -424,7 +424,7 @@ export function modifyDocument(documentId, body) {
 }
 
 /**
- * Deletes a Document
+ * Deletes a document
  * @param {Integer} documentId
  * @returns {Promise}
  */
