@@ -55,8 +55,6 @@ class Main extends Component {
                <div>About</div>
             </Link>
             {loggedInDisplayName}
-            
-            <a onClick={() => this.logout()}><div>Logout</div></a>
          </nav>
       );
    }
