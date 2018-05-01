@@ -1,6 +1,7 @@
 
 import './Navbar.css';
 import React, { Component } from 'react';
+import {DropdownButton, MenuItem} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 class Main extends Component {
@@ -25,6 +26,13 @@ class Main extends Component {
    }
    
    renderLoggedIn() {
+      let loggedInDisplayName = 
+         <div>{this.props.User.username} &nbsp;
+            <a href="" onClick={() => this.logout()}>
+               Logout
+            </a>
+         </div>;
+         
       return (
          <nav className="navbar">
             <Link to={'/home'}>
@@ -46,7 +54,8 @@ class Main extends Component {
             <Link to={'/about'}>
                <div>About</div>
             </Link>
-
+            {loggedInDisplayName}
+            
             <a onClick={() => this.logout()}><div>Logout</div></a>
          </nav>
       );
