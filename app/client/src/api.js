@@ -293,6 +293,79 @@ export function modifyExerciseGrade(exerciseId, body) {
    
 }
 
+/**
+ * Gets videos
+ * @returns {Promise}
+ */
+export function getVideos() {
+   return get('Video')
+      .then((res) => res.json());
+}
+
+/**
+ * Gets a video's activities
+ * @param {object} body
+ * @returns {Promise}
+ */
+export function createVideo(body) {
+   return post('Video', body)
+      .then((response) => {
+         if (response.ok) {
+            const location = response.headers.get("Location").split('/');
+            const videoId = location[location.length - 1];
+
+            return get(`Video/${videoId}`);
+         }
+         else
+            return createErrorPromise(response);
+      })
+      .then(response => response.json())
+}
+
+/**
+ * Gets a video
+ * @param {Integer} videoId
+ * @returns {Promise}
+ */
+export function getVideo(videoId) {
+   return get(`Video/${videoId}`)
+      .then((res) => res.json());
+}
+
+/**
+ * Modifies a video
+ * @param {Integer} videoId
+ * @param {Object} body
+ * @returns {Promise}
+ */
+export function modifyVideo(videoId, body) {
+   return put(`Video/${videoId}`, body)
+      .then((response) => {
+         if (response.ok) {
+            return get(`Video/${videoId}`);
+         }
+         else
+            return createErrorPromise(response);
+      })
+      .then(response => response.json());
+}
+
+/**
+ * Deletes a video
+ * @param {Integer} videoId
+ * @returns {Promise}
+ */
+export function deleteVideo(videoId) {
+   return del(`Video/${videoId}`)
+      .then((response) => {
+         if (response.ok) {
+            return videoId;
+         }
+         else
+            return createErrorPromise(response);
+      });
+}
+
 const errMap = {
    en: {
       missingField: 'Field missing from request: ',
