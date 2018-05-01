@@ -148,7 +148,10 @@ export function getTopics(sectionId) {
       endpoint += `?sectionId=${sectionId}`;
 
    return get(endpoint)
-      .then(res => res.json());
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
@@ -178,7 +181,10 @@ export function createTopic(body) {
  */
 export function getTopic(topicId) {
    return get(`Topic/${topicId}`)
-      .then(res => res.json());
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
@@ -222,7 +228,10 @@ export function deleteTopic(topicId) {
  */
 export function getActivities(topicId) {
    return get(`Topic/${topicId}/Activities`)
-      .then(res => res.json());
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
@@ -321,7 +330,10 @@ export function modifyExerciseGrade(exerciseId, body) {
  */
 export function getVideos() {
    return get('Video')
-      .then(res => res.json());
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
@@ -351,7 +363,10 @@ export function createVideo(body) {
  */
 export function getVideo(videoId) {
    return get(`Video/${videoId}`)
-      .then(res => res.json());
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
@@ -394,7 +409,10 @@ export function deleteVideo(videoId) {
  */
 export function getDocuments() {
    return get('Document')
-      .then(res => res.json());
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
@@ -424,7 +442,10 @@ export function createDocument(body) {
  */
 export function getDocument(documentId) {
    return get(`Document/${documentId}`)
-      .then(res => res.json());
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
@@ -478,7 +499,10 @@ export function getSections(term, name) {
    }
 
    return get(endpoint)
-      .then(res => res.json());
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
@@ -509,7 +533,10 @@ export function createSection(body) {
  */
 export function getSection(sectionId) {
    return get(`Section/${sectionId}`)
-      .then(res => res.json());
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
@@ -555,7 +582,10 @@ export function deleteSection(sectionId) {
  */
 export function getUserProgress(userId) {
    return get(`Progress/${userId}`)
-      .then(res => res.json());
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
 }
 
 /**
