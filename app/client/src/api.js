@@ -230,7 +230,8 @@ export function getActivities(topicId) {
  * @returns {Promise}
  */
 export function getExercises() {
-
+   return get('Exercise')
+      .then((res) => res.json());
 }
 
 /**
@@ -239,7 +240,18 @@ export function getExercises() {
  * @returns {Promise}
  */
 export function createExercise(body) {
+   return post('Exercise', body)
+      .then((response) => {
+         if (response.ok) {
+            const location = response.headers.get("Location").split('/');
+            const exerciseId = location[location.length - 1];
 
+            return get(`Exercise/${exerciseId}`);
+         }
+         else
+            return createErrorPromise(response);
+      })
+      .then(response => response.json())
 }
 
 /**
@@ -248,7 +260,8 @@ export function createExercise(body) {
  * @returns {Promise}
  */
 export function getExercise(exerciseId) {
-
+   return get(`Exercise/${exerciseId}`)
+      .then((res) => res.json());
 }
 
 /**
