@@ -8,6 +8,7 @@
 .cs-sidebar-container {
     flex: 0 0 350px;
     border-right: 2px solid blue;
+    padding-left: 10px;
 }
 
 .cs-header {
@@ -25,6 +26,14 @@
 
 .cs-main {
     flex: 1 1 auto;
-
-
 }
+
+.cs-filter-header {
+   padding: 10px;
+   display: flex;
+}
+
+.cs-filter-type {
+   font-weight: bold;
+}
+

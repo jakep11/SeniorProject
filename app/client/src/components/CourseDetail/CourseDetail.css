@@ -1,0 +1,18 @@
+
+.cd-main-wrapper {
+    display: flex;
+    align-content: stretch;
+    min-height: 90vh;
+}
+
+.cd-sidebar-container {
+    flex: 0 0 350px;
+    border-right: 2px solid blue;
+    padding-left: 10px;
+}
+
+.cd-main-body {
+    flex: 1 1 auto;
+    overflow-y: scroll;
+    height: 90vh;
+}

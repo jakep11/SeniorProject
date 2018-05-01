@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter, Switch, Route, Redirect } from 'react-router-dom';
 // import * as actionCreators from '../actions/user-actions';
 import { actionCreators as userActionCreators } from '../redux/users';
+import { actionCreators as courseActionCreators } from '../redux/courses';
 import Main from './Main/Main';
 import React from 'react';
 import Login from './Login/Login'
@@ -13,11 +14,12 @@ import LoggedIn from './LoggedIn/LoggedIn'
 function mapStateToProps(state) {
    return {
       User: state.User,
+      Courses: state.Courses
    };
 }
 
 function mapDispatchToProps(dispatch) {
-   return bindActionCreators(userActionCreators, dispatch);
+   return bindActionCreators({...userActionCreators, ...courseActionCreators}, dispatch);
 }
 
 const App = withRouter(connect(
@@ -26,7 +28,6 @@ const App = withRouter(connect(
 )(AppComponent));
 
 function AppComponent(props) {
-   console.log('props:',props);
    return (
       <Switch>
          <Route exact path="/login" render={() => <Login {...props} />} />
