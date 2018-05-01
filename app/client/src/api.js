@@ -526,6 +526,35 @@ export function deleteSection(sectionId) {
       });
 }
 
+/**
+ * Gets a user's progress
+ * @param {Integer} userId
+ * @returns {Promise}
+ */
+export function getUserProgress(userId) {
+   return get(`Progress/${userId}`)
+      .then((res) => res.json());
+}
+
+/**
+ * Modifies a user's progress
+ * @param {Integer} userId
+ * @param {Object} body
+ * @returns {Promise}
+ */
+export function modifySection(userId, body) {
+   return put(`Progress/${userId}`, body)
+      .then((response) => {
+         if (response.ok) {
+            return get(`Progress/${userId}`);
+         }
+         else {
+            return createErrorPromise(response);
+         }
+      })
+      .then(response => response.json());
+}
+
 const errMap = {
    en: {
       missingField: 'Field missing from request: ',
