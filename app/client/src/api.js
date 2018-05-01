@@ -434,8 +434,95 @@ export function deleteDocument(documentId) {
          if (response.ok) {
             return documentId;
          }
-         else
+         else 
             return createErrorPromise(response);
+      });
+}
+
+/**
+ * Gets a section
+ * @param {Integer} term   // optional argument
+ * @param {Integer} name   // optional argument
+ * @returns {Promise}
+ */
+export function getSections(term, name) {
+   let endpoint = 'Section';
+
+   /* add query paremeters if they exist */
+   if (term || name) {     // check if queries exist
+      endpoint += '?';
+      addQueryArg(endpoint, 'term', term);
+      addQueryArg(endpoint, 'name', name);
+   }
+
+   return get(endpoint)
+      .then((res) => res.json());
+}
+
+/**
+ * Creates a section
+ * @param {Object} body
+ * @returns {Promise}
+ */
+export function createSection(body) {
+   return post('Section', body)
+      .then((response) => {
+         if (response.ok) {
+            const location = response.headers.get("Location").split('/');
+            const sectionId = location[location.length - 1];
+
+            return get(`Section/${sectionId}`);
+         }
+         else {
+            return createErrorPromise(response);
+         }
+      })
+      .then(response => response.json())
+}
+
+/**
+ * Gets a section
+ * @param {Integer} sectionId
+ * @returns {Promise}
+ */
+export function getSection(sectionId) {
+   return get(`Section/${sectionId}`)
+      .then((res) => res.json());
+}
+
+/**
+ * Modifies a section
+ * @param {Integer} sectionId
+ * @param {Object} body
+ * @returns {Promise}
+ */
+export function modifySection(sectionId, body) {
+   return put(`Section/${sectionId}`, body)
+      .then((response) => {
+         if (response.ok) {
+            return get(`Section/${sectionId}`);
+         }
+         else {
+            return createErrorPromise(response);
+         }
+      })
+      .then(response => response.json());
+}
+
+/**
+ * Deletes a section
+ * @param {Integer} SectionId
+ * @returns {Promise}
+ */
+export function deleteSection(sectionId) {
+   return del(`Section/${sectionId}`)
+      .then((response) => {
+         if (response.ok) {
+            return sectionId;
+         }
+         else {
+            return createErrorPromise(response);
+         }
       });
 }
 
@@ -469,4 +556,16 @@ export function errorTranslate(errTag, lang = 'en') {
    console.log('errTag:', errTag)
    // console.log(errMap[lang][errTag])
    return errMap[lang][errTag] || 'Unknown Error!';
+}
+
+function addQueryArg(endpoint, query, arg) {
+   const lastChar = endpoint[endpoint.length - 1];
+
+   if (!arg)               // no argument exists
+      return;
+
+   if (lastChar !== '?')   // previous argument exists
+      endpoint += '&';
+      
+   endpoint += `${query}=${arg}`;
 }
