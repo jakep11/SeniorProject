@@ -542,7 +542,7 @@ export function getUserProgress(userId) {
  * @param {Object} body
  * @returns {Promise}
  */
-export function modifySection(userId, body) {
+export function modifyUserProgress(userId, body) {
    return put(`Progress/${userId}`, body)
       .then((response) => {
          if (response.ok) {
