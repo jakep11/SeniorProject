@@ -13,7 +13,6 @@ const LOGOUT = 'LOGOUT';
 /* Reducer */
 export default function User(state = { isLoggedIn: false }, action) {
    switch(action.type) {
-
       case LOGIN:
          return {
             isLoggedIn: true,

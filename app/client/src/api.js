@@ -560,7 +560,7 @@ export function modifySection(sectionId, body) {
 
 /**
  * Deletes a section
- * @param {Integer} SectionId
+ * @param {Integer} sectionId
  * @returns {Promise}
  */
 export function deleteSection(sectionId) {
@@ -605,6 +605,64 @@ export function modifyUserProgress(userId, body) {
          }
       })
       .then(res => res.json());
+}
+
+/**
+ * Gets users enrolled in the section(s)
+ * @param {Integer} userId    // optional
+ * @param {Integer} sectionId // optional
+ * @returns {Promise}
+ */
+export function getEnrollment(userId, sectionId) {
+   let endpoint = 'Enrollment';
+
+   /* add query paremeters if they exist */
+   if (userId || sectionId) {     // check if queries exist
+      endpoint += '?';
+      addQueryArg(endpoint, 'userId', userId);
+      addQueryArg(endpoint, 'sectionId', sectionId);
+   }
+
+   return get(endpoint)
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
+}
+
+/**
+ * Enrolling student into section
+ * @param {Object} body
+ * @returns {Promise}
+ */
+export function createEnrollment(body) {
+   return post('Enrollment', body)
+      .then(res => {
+         if (res.ok) {
+            const userId = body.userId;
+            const sectionId = body.sectionId;
+
+            return getEnrollment(userId, sectionId);
+         }
+         else {
+            return createErrorPromise(res);
+         }
+      });
+}
+
+/**
+ * Deletes a section
+ * @param {Integer} userId    
+ * @param {Integer} sectionId 
+ * @returns {Promise}
+ */
+export function deleteEnrollment(userId, sectionId) {
+   return del(`Enrollment/${sectionId}/${userId}`)
+      .then(res => {
+         if (!res.ok) {
+            return createErrorPromise(res);
+         }
+      });
 }
 
 const errMap = {
