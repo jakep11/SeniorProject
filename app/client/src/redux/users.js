@@ -1,6 +1,6 @@
 
 import { push } from 'react-router-redux';
-import { signIn, modifyUser } from "../api";
+import { signIn, modifyUser } from '../api';
 
 
 /* Actions */
@@ -38,7 +38,7 @@ export const login = (credentials, cb) => {
          .then((userInfo) => {
             dispatch({ username: userInfo.email, userId: userInfo.id, type: LOGIN });
             cb();
-         })
+         });
    };
 };
 
@@ -46,7 +46,7 @@ export const logout = (cb) => {
    return (dispatch, prevState) => {
       dispatch({ type: LOGOUT });
       cb();
-   }
+   };
 };
 
 export const updateUser = (userId, body, cb) => {
@@ -54,8 +54,8 @@ export const updateUser = (userId, body, cb) => {
       modifyUser(userId, body)
          .then((userInfo) => {
             dispatch({ username: userInfo.email, userId: userInfo.id, type: UPDATE });
-         })
-   }
+         });
+   };
 };
 
 export const actionCreators = { login, logout, updateUser };
