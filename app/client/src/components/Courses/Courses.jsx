@@ -13,10 +13,9 @@ export default class Courses extends Component {
 
       this.props.updateSections();
 
-      console.log('xyz:', this.props);
       this.handleChange = this.handleChange.bind(this);
    }
-   
+
    handleChange(ev) {
       let newState = {};
       switch (ev.target.type) {
@@ -50,10 +49,8 @@ export default class Courses extends Component {
          .entries(filter)                  /* Get list of key-value pairs */
          .filter((kv) => kv[1] === true)   /* Filter only those with true value */
          .map((kv) => kv[0].toLowerCase())               /* Get just the dept names */
+      console.log('flter:', this.props.Courses.filter)
       let courses = this.props.Courses.sections.filter((c) => {
-         console.log('depts', depts);
-         console.log('depts[c.dept.toLowerCase()]', depts[c.dept.toLowerCase()]);
-         console.log('c.dept.toLowerCase()', c.dept.toLowerCase());
          if (depts.length > 0) {
             if (depts.indexOf(c.dept.toLowerCase()) === -1)
                return false;

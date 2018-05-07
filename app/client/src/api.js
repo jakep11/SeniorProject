@@ -1,5 +1,6 @@
 const baseURL = 'http://localhost:4000/';
 const headers = new Headers();
+
 var cookie;
 
 headers.set('Content-Type', 'application/json');
@@ -12,6 +13,10 @@ const reqConf = {
 function safeFetch(...params) {
    return fetch(...params)
       .then(res => {
+         console.log('res: ', res);
+         if (res.status === 401) {
+            return Promise.reject([{tag: 'notAuthorized'}]);
+         }
          return res.ok ? res : res.json().then((body) => Promise.reject(body))
       })
       .catch((err) => {
@@ -686,6 +691,7 @@ export function deleteEnrollment(userId, sectionId) {
 const errMap = {
    en: {
       missingField: 'Field missing from request: ',
+      notAuthorized: 'Not authorized',
       badValue: 'Field has bad value: ',
       notFound: 'Entity not present in DB',
       badLogin: 'Email/password combination invalid',
