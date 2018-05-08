@@ -5,3 +5,4 @@ connection.json
 .idea/
 *.swp
 .history/
+*.log
