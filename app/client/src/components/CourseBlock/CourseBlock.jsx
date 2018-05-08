@@ -12,6 +12,7 @@ export default class CourseBlock extends Component {
    }
 
    render() {
+      console.log('showProg:', this.props.showProgress);
       let progressBarOptions = {
          strokeWidth: 2,
          strokeColor: '#00cc00',
@@ -35,11 +36,14 @@ export default class CourseBlock extends Component {
                      <Line { ...progressBarOptions } />
                   </div>
 
-                  { this.props.isEnrolled
-                     ? <div className="cb-progress">{ this.props.progress }% Completed</div>
-                     : <div className="cb-enroll">
-                         <button className="cb-enroll-button">Enroll</button>
-                       </div>
+                  { this.props.isEnrolled && this.props.showProgress &&
+                     <div className="cb-progress">{this.props.progress}% Completed</div>
+                  }
+
+                  { this.props.showEnroll &&
+                     <div className="cb-enroll">
+                        <button className="cb-enroll-button">Enroll</button>
+                     </div>
                   }
                </div>
             </div>

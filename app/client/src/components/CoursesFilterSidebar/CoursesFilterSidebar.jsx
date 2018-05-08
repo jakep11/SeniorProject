@@ -1,5 +1,13 @@
 
-import {Checkbox, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
+import {
+   Checkbox,
+   FormGroup,
+   FormControl,
+   ControlLabel,
+   ToggleButton,
+   ToggleButtonGroup,
+   ButtonToolbar, Button
+} from 'react-bootstrap';
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 
@@ -42,8 +50,22 @@ export default class CoursesFilterSidebar extends Component {
             <div>
                <div className="cs-filter-type">Date Order</div>
                <FormGroup>
-                  <Checkbox id='ascending' onChange={(ev) => this.handleChange(ev)}> Ascending</Checkbox>
-                  <Checkbox id='descending' onChange={(ev) => this.handleChange(ev)}> Descending</Checkbox>
+
+                  <ButtonToolbar>
+                     <ToggleButtonGroup type="radio"
+                                        name="order"
+                                        defaultValue={'ASC'}
+                                        value={this.props.Courses.sortOrder}
+                                        onChange={(e) => this.props.setSortOrder(e)}>
+                        <ToggleButton value={'ASC'}> Ascending</ToggleButton>
+                        <ToggleButton value={'DESC'}> Descending</ToggleButton>
+                     </ToggleButtonGroup>
+                  </ButtonToolbar>
+
+
+
+                  {/*<Checkbox id='ascending' onChange={(ev) => this.handleChange(ev)}> Ascending</Checkbox>*/}
+                  {/*<Checkbox id='descending' onChange={(ev) => this.handleChange(ev)}> Descending</Checkbox>*/}
                </FormGroup>
 
                <div className="cs-filter-type">Department</div>
@@ -65,13 +87,19 @@ export default class CoursesFilterSidebar extends Component {
 
                <div className="cs-filter-type">Show</div>
                <FormGroup>
-                  <Checkbox id='progress'
-                            value={this.props.Courses.filter.progress == null ? false : this.props.Courses.filter.progress}
-                            onChange={(e) => this.updateFilter({ [e.target.id]: !this.props.Courses.filter[e.target.id]})}> % Progress</Checkbox>
+                  {/*<Checkbox id='showProgress'*/}
+                            {/*value={this.props.Courses.filter.showProgress == null ? false : this.props.Courses.filter.showProgress}*/}
+                            {/*onChange={(e) => this.updateFilter({ [e.target.id]: !this.props.Courses.filter[e.target.id]})}> % Progress</Checkbox>*/}
 
-                  <Checkbox id='enrolled'
-                            value={this.props.Courses.filter.enrolled == null ? false : this.props.Courses.filter.enrolled }
-                            onChange={(e) => this.updateFilter({ [e.target.id]: !this.props.Courses.filter[e.target.id]})}> Enrolled</Checkbox>
+                  {/*setShowEnrolled,*/}
+                  {/*setShowProgress*/}
+                  <Checkbox id='showProgress'
+                            checked={this.props.Courses.showProgress || false}
+                            onChange={(e) => this.props.setShowProgress(e.target.checked)}> Course Progress</Checkbox>
+
+                  <Checkbox id='onlyEnrolled'
+                            checked={this.props.Courses.onlyEnrolled || false}
+                            onChange={(e) => this.props.setShowEnrolled(e.target.checked)}> Only Enrolled Courses</Checkbox>
 
                </FormGroup>
             </div>
