@@ -4,11 +4,11 @@ import { signIn, modifyUser } from "../api";
 
 
 /* Actions */
-const LOGIN = 'LOGIN';
-const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-const LOGIN_FAILURE = 'LOGIN_FAILURE';
-const LOGOUT = 'LOGOUT';
-const UPDATE = 'UPDATE';
+export const LOGIN = 'LOGIN';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT = 'LOGOUT';
+export const UPDATE = 'UPDATE';
 
 
 /* Reducer */

@@ -1,3 +1,7 @@
+import store from './redux/store';
+import {SET_ERROR} from "./redux/error";
+import {LOGOUT} from "./redux/users";
+
 const baseURL = 'http://localhost:4000/';
 const headers = new Headers();
 
@@ -13,8 +17,9 @@ const reqConf = {
 function safeFetch(...params) {
    return fetch(...params)
       .then(res => {
-         console.log('res: ', res);
          if (res.status === 401) {
+            // store.dispatch({ type: SET_ERROR, message: 'Not Authorized' });
+            store.dispatch({ type: LOGOUT });
             return Promise.reject([{tag: 'notAuthorized'}]);
          }
          return res.ok ? res : res.json().then((body) => Promise.reject(body))

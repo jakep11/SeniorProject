@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import './CourseDetail.css';
 import { Link } from "react-router-dom";
-import Video from "../Video/Video";
-import Activity from "../Activity/Activity";
-import CourseSidebar from "../CourseSidebar/CourseSidebar";
+import Video from '../Video/Video';
+import Activity from '../Activity/Activity';
+import CourseSidebar from '../CourseSidebar/CourseSidebar';
 
 export default class CourseDetail extends Component {
    constructor(props) {
