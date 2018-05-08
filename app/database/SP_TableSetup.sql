@@ -79,7 +79,6 @@ CREATE TABLE Exercise (
 CREATE TABLE Document (
    id INT AUTO_INCREMENT,
    name VARCHAR(50),
-   contentName VARCHAR(50),
    contentPath VARCHAR(500),
    dueDate DATETIME,
    topicId INT,
