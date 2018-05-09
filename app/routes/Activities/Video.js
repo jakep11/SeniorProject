@@ -7,10 +7,16 @@ router.baseURL = '/Video';
 
 router.get('/', (req, res) => {
    let vld = req.validator;
+   const sectionId = req.query.sectionId;
+
+   const where = sectionId ? `WHERE sectionId = ${sectionId}` : '';
+   const query = `SELECT * FROM Video ${where}`;
+
+
    async.waterfall([
    	function(cb) {
    		if (vld.check(req.session, Tags.noLogin, null, cb))
-   			req.cnn.chkQry("Select * from Video", null, cb);
+   			req.cnn.chkQry(query, null, cb);
    	},
    	function(videoList, fields, cb) {
 			res.json(videoList);

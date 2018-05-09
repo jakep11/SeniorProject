@@ -10,13 +10,17 @@ router.baseURL = '/Document';
  * Documents have id, name, content, topicId, dueDate.
  */
 router.get('/', function(req, res) {
-   var vld = req.validator;
-   var cnn = req.cnn;
-   
+   const vld = req.validator;
+   const cnn = req.cnn;
+   const sectionId = req.query.sectionId;
+
+   const where = sectionId ? `WHERE sectionId = ${sectionId}` : '';
+   const query = `SELECT * FROM Document ${where}`;
+
    async.waterfall([
       function(cb) {
          if (vld.check(req.session, Tags.noLogin, null, cb))
-            cnn.chkQry('SELECT * FROM Document', cb);
+            cnn.chkQry(query, null, cb);
       },
       function(documentArr, fields, cb) {
          res.json(documentArr);
