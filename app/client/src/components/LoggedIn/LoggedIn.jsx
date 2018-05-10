@@ -29,7 +29,7 @@ export default class LoggedIn extends Component {
             <Navbar {...this.props} />
 
             <Switch>
-               <Route exact path="/home" component={Home} />
+               <Route exact path="/home" render={() => <Home {...this.props} />} />
                {/*<Route exact path="/courses" component={Courses} />*/}
                <Route exact path="/courses" render={() => <Courses {...this.props} />} />
                <Route path="/courses/:courseId" component={CourseDetail} />

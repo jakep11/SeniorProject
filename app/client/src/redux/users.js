@@ -37,8 +37,7 @@ export default function User(state = defaultState, action) {
       case UPDATE_ENROLLED:
          return {
             ...state,
-            enrolled:
-
+            enrolled: action.enrolled
          };
 
       default:
@@ -76,9 +75,10 @@ export const updateUser = (userId, body, cb) => {
 
 export const updateEnrolled = (userId, body, cb) => {
    return (dispatch, prevState) => {
-      let userId = prevState.info.id;
+      let state = prevState();
+      let userId = state.User.info.id;
 
-      api.getEnrollment({userId})
+      api.getEnrollment(userId, null)
          .then((enrollment) => {
             console.log('enrollment:', enrollment);
             dispatch({enrolled: enrollment, type: UPDATE_ENROLLED});

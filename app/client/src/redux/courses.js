@@ -84,6 +84,7 @@ export const updateFilter = (filter, cb) => {
 
 export const updateSections = (cb) => {
    return (dispatch, prevState) => {
+      console.log('update sections')
       api.getSections()
          .then((sections) => {
             console.log('SECTIONS: ', sections);
