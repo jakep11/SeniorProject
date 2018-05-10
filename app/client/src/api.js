@@ -647,11 +647,14 @@ export function getEnrollment(userId, sectionId) {
    /* add query parameters if they exist */
    if (userId || sectionId) {     // check if queries exist
       endpoint += '?';
+      console.log('endpoint1: ', endpoint);
       addQueryArg(endpoint, 'userId', userId);
+      console.log('endpoint2: ', endpoint);
       addQueryArg(endpoint, 'sectionId', sectionId);
+      console.log('endpoint3: ', endpoint);
    }
 
-   console.log('endpoint: ', endpoint);
+   console.log('endpoint4: ', endpoint);
 
    return get(endpoint)
       .then(res => {

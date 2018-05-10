@@ -48,9 +48,11 @@ export default function User(state = defaultState, action) {
 
 /* Action Creators */
 export const login = (credentials, cb) => {
+   console.log('login')
    return (dispatch, prevState) => {
       api.signIn(credentials)
          .then((userInfo) => {
+            console.log('Login x')
             dispatch({ info: userInfo, type: LOGIN });
             cb();
          })
