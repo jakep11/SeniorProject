@@ -1,5 +1,9 @@
 source SP_TableSetup.sql;  -- clear database, can remove later
+
+-- ----------------------------------------------------------------------------
 -- User
+-- ----------------------------------------------------------------------------
+
 /*password: password1*/
 INSERT INTO User SET firstName = 'User1', lastName = 'Admin', 
  email = 'user1@example.com', role = 1, termsAccepted = '2015-01-01 12:00:00',
@@ -19,9 +23,11 @@ INSERT INTO User SET firstName = 'UserB', lastName = 'Student',
 INSERT INTO User SET firstName = 'UserC', lastName = 'Student', 
  email = 'userC@example.com', role = 0, termsAccepted = '2016-10-07 10:09:11',
  passHash = '$2a$10$IqGbNmYDcIp5h0Cj4/DvweEjHw1hhOsDFu8e3qFULcIWf6ZQKyM8S';
+
+-- ----------------------------------------------------------------------------
+-- Section 
 -- ----------------------------------------------------------------------------
 
--- Section 
 INSERT INTO Section SET name = 'CPE133', 
  description = 'Digital Design', term = 'S18';
 INSERT INTO Section SET name = 'CPE357', 
@@ -33,9 +39,11 @@ INSERT INTO Section SET name = 'CSC437',
 INSERT INTO Section SET name = 'CPE233', 
  description = 'Computer Design and Assembly Language Programming', 
  term = 'W17';
+
+-- ----------------------------------------------------------------------------
+-- Topic
 -- ----------------------------------------------------------------------------
 
--- Topic
 -- CPE133
 INSERT INTO Topic SET name = 'Number Systems', sectionId = 1;
 INSERT INTO Topic SET name = 'Boolean Algebra', sectionId = 1;
@@ -45,6 +53,7 @@ INSERT INTO Topic SET name = 'Adder Circuits', sectionId = 1;
 INSERT INTO Topic SET name = 'Latches & Flip-Flops', sectionId = 1;
 INSERT INTO Topic SET name = 'Sequential Logic', sectionId = 1;
 
+-- ----------------------------------------------------------------------------
 -- CPE357
 INSERT INTO Topic SET name = 'Intro to C', sectionId = 2;
 INSERT INTO Topic SET name = 'Memeory Management', sectionId = 2;
@@ -52,6 +61,7 @@ INSERT INTO Topic SET name = 'Dynamic Data Structures', sectionId = 2;
 INSERT INTO Topic SET name = 'Process Environment & Control', sectionId = 2;
 INSERT INTO Topic SET name = 'File I/O', sectionId = 2;
 
+-- ----------------------------------------------------------------------------
 -- CPE365
 INSERT INTO Topic SET name = 'Relational Algebra', sectionId = 3;
 INSERT INTO Topic SET name = 'Database Design', sectionId = 3;
@@ -59,20 +69,24 @@ INSERT INTO Topic SET name = 'Database Analysis', sectionId = 3;
 INSERT INTO Topic SET name = 'Advance Queries', sectionId = 3;
 INSERT INTO Topic SET name = 'JDBC', sectionId = 3;
 
+-- ----------------------------------------------------------------------------
 -- CSC437
 INSERT INTO Topic SET name = 'JSAdvanced', sectionId = 4;
 INSERT INTO Topic SET name = 'JSObjectOriented', sectionId = 4;
 INSERT INTO Topic SET name = 'Cache', sectionId = 4;
 
+-- ----------------------------------------------------------------------------
 -- CPE233
 INSERT INTO Topic SET name = 'Branch Instructions', sectionId = 5;
 INSERT INTO Topic SET name = 'Logical Instructions', sectionId = 5;
 INSERT INTO Topic SET name = 'ALU', sectionId = 5;
 INSERT INTO Topic SET name = 'FSM', sectionId = 5;
 INSERT INTO Topic SET name = 'I/O', sectionId = 5;
+
+-- ----------------------------------------------------------------------------
+-- Enrollment
 -- ----------------------------------------------------------------------------
 
--- Enrollment
 INSERT INTO Enrollment SET userId = 3, sectionId = 2;
 INSERT INTO Enrollment SET userId = 3, sectionId = 4;
 INSERT INTO Enrollment SET userId = 4, sectionId = 1;
@@ -80,9 +94,18 @@ INSERT INTO Enrollment SET userId = 4, sectionId = 5;
 INSERT INTO Enrollment SET userId = 5, sectionId = 3;
 INSERT INTO Enrollment SET userId = 5, sectionId = 4;
 INSERT INTO Enrollment SET userId = 5, sectionId = 2;
+
+-- ----------------------------------------------------------------------------
+-- Video
+-- ----------------------------------------------------------------------------
+-- Video src: youtube user
+-- CPE133 Bridget Benson
+-- CSC347 Clint Staley
+-- CSC365 Clint Staley
+-- CPE233 Bridget Benson
+-- CSC357 Clint Staley
 -- ----------------------------------------------------------------------------
 
--- Video
 -- CPE133
 INSERT INTO Video SET name = '2s compliment', link = 'bGiLEhWqQkM',
  topicId = 1, dueDate = '2018-04-10 23:00:00';
@@ -99,6 +122,7 @@ INSERT INTO Video SET name = 'T JKFF', link = 'bu-OseFcKsg',
 INSERT INTO Video SET name = 'Intro To Sequential', link = 'w-vU8Ab6VWE',
  topicId = 7, dueDate = '2018-06-01 23:00:00';
 
+-- ----------------------------------------------------------------------------
 -- CSC437
 INSERT INTO Video SET name = 'JSObjects', link = 'VaMU3wyK0zE',
  topicId = 19, dueDate = '2017-02-10 23:59:59';
@@ -111,6 +135,7 @@ INSERT INTO Video SET name = 'InheritanceC', link = 'LwwnGgTWfCA',
 INSERT INTO Video SET name = 'Optimization', link = 'dYCn2lX--3c',
  topicId = 20, dueDate = '2017-03-12 23:59:59';
 
+-- ----------------------------------------------------------------------------
 -- CSC365
 INSERT INTO Video SET name = 'Creating DBs', link = 'aaBa0rANf8U', 
  topicId = 14, dueDate = '2016-11-05 23:59:59';
@@ -123,7 +148,8 @@ INSERT INTO Video SET name = 'Aggregation', link = 'OXJAOpf51CA',
 INSERT INTO Video SET name = 'JDBC Intro', link = '7-VISk62zYI', 
  topicId = 17, dueDate = '2016-11-25 23:59:59';
 
--- CSC233
+-- ----------------------------------------------------------------------------
+-- CPE233
 INSERT INTO Video SET name = 'Branch Instructions', link = 'ysXyjHVpQN4', 
  topicId = 21, dueDate = '2017-01-15 23:59:59';
 INSERT INTO Video SET name = 'Logical Instructions', link = '7TJCNq-pEIA', 
@@ -135,10 +161,185 @@ INSERT INTO Video SET name = 'Example FSM', link = 'K7E7Chnsqw4',
 INSERT INTO Video SET name = 'I/O Intro', link = 's5ckh_eQ0aI', 
  topicId = 25, dueDate = '2017-03-05 23:59:59';
 
+-- ----------------------------------------------------------------------------
 -- CSC357
+INSERT INTO Video SET name = 'General Types', link = 'pXLUj93rXFI', 
+ topicId = 8, dueDate = '2016-01-15 23:59:59';
+INSERT INTO Video SET name = 'Pointers', link = '5YkIHBwuB-o', 
+ topicId = 9, dueDate = '2016-01-25 23:59:59';
+INSERT INTO Video SET name = 'Dynamic 2-D array', link = 'Bt9rTV6je3w', 
+ topicId = 10, dueDate = '2016-02-10 23:59:59';
+
 -- ----------------------------------------------------------------------------
 -- Exercise
 -- ----------------------------------------------------------------------------
--- Document
+-- Question src: 
+-- CSC357 https://www.tutorialspoint.com/cprogramming/cprogramming_interview_questions.htm
+-- CSC365
+-- CPE233
+-- CPE133
+-- CSC437
 -- ----------------------------------------------------------------------------
 
+-- CSC357
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'Who designed C programming language?', 
+ answer = 'Dennis M Ritchie', type = 'FreeResponse', points = 1, 
+ dueDate = '2016-01-16 23:59:59', topicId = 8;
+INSERT INTO Exercise SET name = 'Problem B', 
+ question = 'S++ / S = S+1, which can be recommended to increment the value', 
+ answer = 'S++', type = 'FreeResponse', points = 1, 
+ dueDate = '2016-01-16 23:59:59', topicId = 8;
+INSERT INTO Exercise SET name = 'Problem C', 
+ question = 'Can a program be compiled without main() function?', 
+ answer = 'Yes', type = 'MultipleChoice', points = 1, 
+ dueDate = '2016-01-16 23:59:59', topicId = 8;
+
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'Which built-in library function can be used to re-size 
+ the allocated dynamic memory?', 
+ answer = 'realloc()', type = 'FreeResponse', points = 1, 
+ dueDate = '2016-01-25 23:59:59', topicId = 9;
+INSERT INTO Exercise SET name = 'Problem B', 
+ question = 'Which operator can be used to determine the size of a 
+ data type or variable?', 
+ answer = 'sizeof', type = 'MultipleChoice', points = 1, 
+ dueDate = '2016-01-25 23:59:59', topicId = 9;
+
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'What is the meaning of base address of the array?', 
+ answer = 'starting address', type = 'FreeResponse', points = 1, 
+ dueDate = '2016-02-10 23:59:59', topicId = 10;
+INSERT INTO Exercise SET name = 'Problem B', 
+ question = 'Which function is used to release the dynamic allocated memory?', 
+ answer = 'free()', type = 'MultipleChoice', points = 1, 
+ dueDate = '2016-02-28 23:59:59', topicId = 11;
+
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'Can variables belonging to different scope have same name?', 
+ answer = 'Yes', type = 'FreeResponse', points = 1, 
+ dueDate = '2016-02-28 23:59:59', topicId = 11;
+
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'Is FILE a built-in data type?', 
+ answer = 'No', type = 'FreeResponse', points = 1, 
+ dueDate = '2016-03-06 23:59:59', topicId = 12;
+
+-- ----------------------------------------------------------------------------
+-- CSC365
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'A base operation defined by T ={t|t∈R and !(t∈S)}', 
+ answer = 'Difference', type = 'FreeResponse', points = 1, 
+ dueDate = '2016-10-26 23:59:59', topicId = 13;
+INSERT INTO Exercise SET name = 'Problem B', 
+ question = 'A join that looks at all common attributes of two relations and
+  joins on them', 
+ answer = 'Natural', type = 'MultipleChoice', points = 1, 
+ dueDate = '2016-10-26 23:59:59', topicId = 13;
+
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'What does DDL stand for?', 
+ answer = 'Data Definition Language', type = 'FreeResponse', points = 1, 
+ dueDate = '2016-11-05 23:59:59', topicId = 14;
+
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'What does DML stand for?', 
+ answer = 'Data Manipulation Language', type = 'FreeResponse', points = 1, 
+ dueDate = '2016-11-15 23:59:59', topicId = 15;
+
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'A query contained by a query', 
+ answer = 'Sub-query', type = 'FreeResponse', points = 1, 
+ dueDate = '2016-11-20 23:59:59', topicId = 16;
+INSERT INTO Exercise SET name = 'Problem B', 
+ question = 'Helps in explaining the relation between different tables', 
+ answer = 'Joins', type = 'FreeResponse', points = 1, 
+ dueDate = '2016-11-20 23:59:59', topicId = 16;
+
+-- ----------------------------------------------------------------------------
+-- CPE233
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2017-01-15 23:59:59', topicId = 21;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2017-01-25 23:59:59', topicId = 22;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'MultipleChoice', points = 1, 
+ dueDate = '2017-02-10 23:59:59', topicId = 23;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2017-02-28 23:59:59', topicId = 24;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'MultipleChoice', points = 1, 
+ dueDate = '2017-03-05 23:59:59', topicId = 25;
+
+-- ----------------------------------------------------------------------------
+-- CPE133
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2018-04-10 23:00:00', topicId = 1;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2018-04-17 23:00:00', topicId = 2;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2018-04-25 23:00:00', topicId = 3;
+INSERT INTO Exercise SET name = 'Problem B', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2018-04-25 23:00:00', topicId = 3;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2018-05-03 23:00:00', topicId = 4;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'MultipleChoice', points = 1, 
+ dueDate = '2018-05-15 23:00:00', topicId = 5;
+INSERT INTO Exercise SET name = 'Problem B', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2018-05-15 23:00:00', topicId = 5;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2018-05-20 23:00:00', topicId = 6;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'MultipleChoice', points = 1, 
+ dueDate = '2018-06-01 23:00:00', topicId = 7;
+INSERT INTO Exercise SET name = 'Problem B', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2018-06-01 23:00:00', topicId = 7;
+
+-- ----------------------------------------------------------------------------
+-- CSC437
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2017-01-10 23:59:59', topicId = 17;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'MultipleChoice', points = 1, 
+ dueDate = '2017-01-15 23:59:59', topicId = 18;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2017-02-10 23:59:59', topicId = 19;
+
+INSERT INTO Exercise SET name = 'Problem A', question = '', 
+ answer = '', type = 'FreeResponse', points = 1, 
+ dueDate = '2017-03-12 23:59:59', topicId = 20;
+
+-- ----------------------------------------------------------------------------
+-- Document
+-- ----------------------------------------------------------------------------
+-- INSERT INTO Document SET name = "Writing Effective Test", 
+ -- contentName =, contentPath= ,dueDate = '2017-01-20 23:59:59', topicId = 18;
+-- ----------------------------------------------------------------------------
+-- Progress
+-- ----------------------------------------------------------------------------

@@ -11,8 +11,9 @@ router.get('/', (req, res) => {
 	let vld = req.validator;
 	let cnn = req.cnn;
 
-	let where = term ? `WHERE term = "${term}"` : (
-		name ? `WHERE name = "${name}"` : '')
+	let where = (term && name) ? `WHERE term = "${term}" and name="${name}"`: 
+	 (term ? `WHERE term = "${term}"` : 
+	 (name ? `WHERE name = "${name}"`: ''))
 
 	async.waterfall([
 		function(cb){
