@@ -643,6 +643,7 @@ export function modifyUserProgress(userId, body) {
  */
 export function getEnrollment(userId, sectionId) {
    let endpoint = 'Enrollment';
+   console.log(`getEnrollment userId: ${userId}, sectionId: ${sectionId}`);
 
    /* add query parameters if they exist */
    if (userId || sectionId) {     // check if queries exist
