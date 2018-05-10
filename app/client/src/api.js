@@ -641,7 +641,7 @@ export function modifyUserProgress(userId, body) {
  * @param {Integer} sectionId // optional
  * @returns {Promise}
  */
-export function getEnrollment(userId, sectionId) {
+export function getEnrollment({userId, sectionId}) {
    let endpoint = 'Enrollment';
 
    /* add query paremeters if they exist */

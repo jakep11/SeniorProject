@@ -93,6 +93,19 @@ export default class Courses extends Component {
                   return 1 * mult;
             }
          })
+         .map((c) => {
+            let cYear = +c.term.slice(1);
+            let cQuaterShort = c.term.slice(0,1);
+            let cQuater =
+               cQuaterShort === 'W' ? 'Winter '
+               : cQuaterShort === 'F' ? 'Fall '
+               : cQuaterShort === 'S' ? 'Spring '
+               : '';
+            return {
+               ...c,
+               term: cQuater + cYear
+            }
+         });
 
       return (
          <div className="cs-wrapper">
