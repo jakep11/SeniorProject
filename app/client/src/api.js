@@ -716,13 +716,15 @@ export function errorTranslate(errTag, lang = 'en') {
 }
 
 function addQueryArg(endpoint, query, arg) {
+   let newEndpoint = endpoint;
    const lastChar = endpoint[endpoint.length - 1];
 
    if (!arg)               // no argument exists
-      return;
+      return endpoint;
 
    if (lastChar !== '?')   // previous argument exists
-      endpoint += '&';
+      newEndpoint += '&';
       
-   endpoint += `${query}=${arg}`;
+   newEndpoint += `${query}=${arg}`;
+   return newEndpoint;
 }
