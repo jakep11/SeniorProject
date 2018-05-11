@@ -14,19 +14,22 @@ export default class LoggedIn extends Component {
    constructor(props) {
       super(props);
       console.log(this.props);
-      if (!this.props.User.isLoggedIn) {
-         console.log('User is not logged in; sending to /login');
-         this.props.history.push("/login")
-      }
    }
 
    render() {
+
+      if (!this.props.User.isLoggedIn) {
+         console.log('User is not logged in; sending to /login');
+         this.props.history.push("/login")
+         return null;
+      }
+
       return (
          <div className="page-wrapper">
             <Navbar {...this.props} />
 
             <Switch>
-               <Route exact path="/home" component={Home} />
+               <Route exact path="/home" render={() => <Home {...this.props} />} />
                {/*<Route exact path="/courses" component={Courses} />*/}
                <Route exact path="/courses" render={() => <Courses {...this.props} />} />
                <Route path="/courses/:courseId" component={CourseDetail} />
