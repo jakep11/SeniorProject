@@ -1,5 +1,10 @@
+import store from './redux/store';
+import {SET_ERROR} from "./redux/error";
+import {LOGOUT} from "./redux/users";
+
 const baseURL = 'http://localhost:4000/';
 const headers = new Headers();
+
 var cookie;
 
 headers.set('Content-Type', 'application/json');
@@ -12,6 +17,11 @@ const reqConf = {
 function safeFetch(...params) {
    return fetch(...params)
       .then(res => {
+         if (res.status === 401) {
+            // store.dispatch({ type: SET_ERROR, message: 'Not Authorized' });
+            store.dispatch({ type: LOGOUT });
+            return Promise.reject([{tag: 'notAuthorized'}]);
+         }
          return res.ok ? res : res.json().then((body) => Promise.reject(body))
       })
       .catch((err) => {
@@ -633,13 +643,19 @@ export function modifyUserProgress(userId, body) {
  */
 export function getEnrollment(userId, sectionId) {
    let endpoint = 'Enrollment';
+   console.log(`getEnrollment userId: ${userId}, sectionId: ${sectionId}`);
 
-   /* add query paremeters if they exist */
+   /* add query parameters if they exist */
    if (userId || sectionId) {     // check if queries exist
       endpoint += '?';
+      console.log('endpoint1: ', endpoint);
       addQueryArg(endpoint, 'userId', userId);
+      console.log('endpoint2: ', endpoint);
       addQueryArg(endpoint, 'sectionId', sectionId);
+      console.log('endpoint3: ', endpoint);
    }
+
+   console.log('endpoint4: ', endpoint);
 
    return get(endpoint)
       .then(res => {
@@ -686,6 +702,7 @@ export function deleteEnrollment(userId, sectionId) {
 const errMap = {
    en: {
       missingField: 'Field missing from request: ',
+      notAuthorized: 'Not authorized',
       badValue: 'Field has bad value: ',
       notFound: 'Entity not present in DB',
       badLogin: 'Email/password combination invalid',

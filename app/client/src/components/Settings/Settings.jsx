@@ -65,7 +65,7 @@ export default class Settings extends Component {
                <div>Enter current password again:</div>
                <div><input type="password" placeholder="Current password again" name="oldPasswordAgain" onKeyUp={this.handleChange} /></div>
             </div>
-                <button type="button" onClick={() => this.submit()}>Submit</button>
+                <button className="settings-button" type="button" onClick={() => this.submit()}>Submit</button>
 
          </div>
       );

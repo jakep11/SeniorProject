@@ -27,7 +27,7 @@ class Main extends Component {
    
    renderLoggedIn() {
       let loggedInDisplayName = 
-         <div>{this.props.User.username} &nbsp;
+         <div>{this.props.User.info.username} &nbsp;
             <a href="" onClick={() => this.logout()}>
                Logout
             </a>
