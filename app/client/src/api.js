@@ -266,8 +266,16 @@ export function getActivities(topicId) {
  * Gets exercises
  * @returns {Promise}
  */
-export function getExercises() {
-   return get('Exercise')
+export function getExercises(sectionId) {
+   let endpoint = 'Exercise';
+
+   /* add query paremeters if they exist */
+   if (sectionId) {     // check if queries exist
+      endpoint += '?';
+      addQueryArg(endpoint, 'sectionId', sectionId);
+   }
+
+   return get(endpoint)
       .then(res => {
          return res.ok ? res.json() : createErrorPromise(res);
       })
@@ -356,8 +364,15 @@ export function modifyExerciseGrade(exerciseId, body) {
  * Gets videos
  * @returns {Promise}
  */
-export function getVideos() {
-   return get('Video')
+export function getVideos(sectionId) {
+   let endpoint = 'Video';
+
+   /* add query paremeters if they exist */
+   if (sectionId) {     // check if queries exist
+      endpoint += '?';
+      addQueryArg(endpoint, 'sectionId', sectionId);
+   }
+   return get(endpoint)
       .then(res => {
          return res.ok ? res.json() : createErrorPromise(res);
       })
@@ -435,8 +450,16 @@ export function deleteVideo(videoId) {
  * Gets documents
  * @returns {Promise}
  */
-export function getDocuments() {
-   return get('Document')
+export function getDocuments(sectionId) {
+   let endpoint = 'Document';
+
+   /* add query paremeters if they exist */
+   if (sectionId) {     // check if queries exist
+      endpoint += '?';
+      addQueryArg(endpoint, 'sectionId', sectionId);
+   }
+
+   return get(endpoint)
       .then(res => {
          return res.ok ? res.json() : createErrorPromise(res);
       })

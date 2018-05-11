@@ -55,7 +55,7 @@ export const login = (credentials, cb) => {
             console.log('Login x')
             dispatch({ info: userInfo, type: LOGIN });
             cb();
-         })
+         });
    };
 };
 
@@ -63,7 +63,7 @@ export const logout = (cb) => {
    return (dispatch, prevState) => {
       dispatch({ type: LOGOUT });
       cb();
-   }
+   };
 };
 
 export const updateUser = (userId, body, cb) => {
