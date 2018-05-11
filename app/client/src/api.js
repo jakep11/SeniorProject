@@ -272,7 +272,7 @@ export function getExercises(sectionId) {
    /* add query paremeters if they exist */
    if (sectionId) {     // check if queries exist
       endpoint += '?';
-      addQueryArg(endpoint, 'sectionId', sectionId);
+      endpoint = addQueryArg(endpoint, 'sectionId', sectionId);
    }
 
    return get(endpoint)
@@ -370,7 +370,7 @@ export function getVideos(sectionId) {
    /* add query paremeters if they exist */
    if (sectionId) {     // check if queries exist
       endpoint += '?';
-      addQueryArg(endpoint, 'sectionId', sectionId);
+      endpoint = addQueryArg(endpoint, 'sectionId', sectionId);
    }
    return get(endpoint)
       .then(res => {
@@ -456,7 +456,7 @@ export function getDocuments(sectionId) {
    /* add query paremeters if they exist */
    if (sectionId) {     // check if queries exist
       endpoint += '?';
-      addQueryArg(endpoint, 'sectionId', sectionId);
+      endpoint = addQueryArg(endpoint, 'sectionId', sectionId);
    }
 
    return get(endpoint)
@@ -545,8 +545,8 @@ export function getSections(term, name) {
    /* add query paremeters if they exist */
    if (term || name) {     // check if queries exist
       endpoint += '?';
-      addQueryArg(endpoint, 'term', term);
-      addQueryArg(endpoint, 'name', name);
+      endpoint = addQueryArg(endpoint, 'term', term);
+      endpoint = addQueryArg(endpoint, 'name', name);
    }
 
    return get(endpoint)
@@ -672,9 +672,9 @@ export function getEnrollment(userId, sectionId) {
    if (userId || sectionId) {     // check if queries exist
       endpoint += '?';
       console.log('endpoint1: ', endpoint);
-      addQueryArg(endpoint, 'userId', userId);
+      endpoint = addQueryArg(endpoint, 'userId', userId);
       console.log('endpoint2: ', endpoint);
-      addQueryArg(endpoint, 'sectionId', sectionId);
+      endpoint = addQueryArg(endpoint, 'sectionId', sectionId);
       console.log('endpoint3: ', endpoint);
    }
 
