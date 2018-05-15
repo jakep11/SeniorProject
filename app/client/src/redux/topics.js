@@ -7,7 +7,7 @@ const TOGGLE_ACTIVITY = 'TOGGLE_ACTIVITY';
 
 const initialState = {
    topics: {
-      byId: { },
+      byId: {},
       allIds: []
    }
 };
@@ -24,14 +24,12 @@ export default function Topics(state = initialState, action) {
          clone.topics.byId[topicId] = topic;
          clone.topics.allIds.push(topicId);
 
-
          topic.activities = {
             exercises: [],
             documents: [],
             videos: []
          }
-      })
-
+      });
       return clone;
 
    case ADD_TOPICS_DOCUMENTS:
@@ -40,8 +38,7 @@ export default function Topics(state = initialState, action) {
       action.documents.forEach(document => {
          let topicId = document.topicId;
          clone.topics.byId[topicId].activities.documents.push(document);
-      })
-
+      });
       return clone;
 
    case ADD_TOPICS_EXERCISES:
@@ -50,8 +47,7 @@ export default function Topics(state = initialState, action) {
       action.exercises.forEach(exercise => {
          let topicId = exercise.topicId;
          clone.topics.byId[topicId].activities.exercises.push(exercise);
-      })
-
+      });
       return clone;
 
    case ADD_TOPICS_VIDEOS:
@@ -60,8 +56,7 @@ export default function Topics(state = initialState, action) {
       action.videos.forEach(video => {
          let topicId = video.topicId;
          clone.topics.byId[topicId].activities.videos.push(video);
-      })
-
+      });
       return clone;
 
    case TOGGLE_ACTIVITY:
