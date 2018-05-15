@@ -106,7 +106,7 @@ describe('Document Management', () => {
          
          let documentData = {
             'name': 'document0',
-            'content': 'this is the content of document 0',
+            'contentPath': 'this is the contentPath of document 0',
             'topicId': 1,
             'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
          }
@@ -147,7 +147,7 @@ describe('Document Management', () => {
       it('results in successful document creation', (done) => {
          let documentData = {
             'name': 'document1',
-            'content': 'This is the content of document 1',
+            'contentPath': 'This is the contentPath of document 1',
             'topicId': 1,
             'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
          }
@@ -167,7 +167,7 @@ describe('Document Management', () => {
          
          let documentData = {
             'name': 'document2',
-            'content': 'This is the content of document 2',
+            'contentPath': 'This is the contentPath of document 2',
             'topicId': 1,
             'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
          }
@@ -202,8 +202,8 @@ describe('Document Management', () => {
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.have.property('id', 2);
-               res.body.should.have.property('content');
-               //res.body.should.have.property('content', 'This is the content of document 2');
+               res.body.should.have.property('contentPath');
+               //res.body.should.have.property('contentPath', 'This is the contentPath of document 2');
                done();
             });
       });
@@ -214,7 +214,7 @@ describe('Document Management', () => {
 
          let documentUpdateInfo = {
             'name': 'document1UpdatedName',
-            'content': 'This is the updated content of document 1'
+            'contentPath': 'This is the updated contentPath of document 1'
          }
 
          agent
@@ -235,7 +235,7 @@ describe('Document Management', () => {
                res.should.have.status(200);
                res.body.should.have.property('id', 1);
                res.body.should.have.property('name', 'document1UpdatedName')
-               //res.body.should.have.property('content', 'This is the updated content of document 1');
+               //res.body.should.have.property('contentPath', 'This is the updated contentPath of document 1');
                done();
             });
       });

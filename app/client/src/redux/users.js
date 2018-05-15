@@ -1,27 +1,43 @@
 
 import { push } from 'react-router-redux';
-import { signIn } from "../api";
+import * as api from '../api';
 
 
 /* Actions */
-const LOGIN = 'LOGIN';
-const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-const LOGIN_FAILURE = 'LOGIN_FAILURE';
-const LOGOUT = 'LOGOUT';
+export const LOGIN = 'LOGIN';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT = 'LOGOUT';
+export const UPDATE = 'UPDATE';
+export const UPDATE_ENROLLED = 'UPDATE_ENROLLED';
 
+
+let defaultState = {
+   isLoggedIn: false,
+};
 
 /* Reducer */
-export default function User(state = { isLoggedIn: false }, action) {
+export default function User(state = defaultState, action) {
    switch(action.type) {
-
       case LOGIN:
          return {
             isLoggedIn: true,
-            username: action.username
+            info: action.info,
+            // username: action.username,
+            // userId: action.userId
          };
       case LOGOUT:
          return {
-            isLoggedIn: false
+            isLoggedIn: false,
+            info: null
+            // username: null,
+            // userId: null,
+         };
+
+      case UPDATE_ENROLLED:
+         return {
+            ...state,
+            enrolled: action.enrolled
          };
 
       default:
@@ -32,12 +48,14 @@ export default function User(state = { isLoggedIn: false }, action) {
 
 /* Action Creators */
 export const login = (credentials, cb) => {
+   console.log('login')
    return (dispatch, prevState) => {
-      signIn(credentials)
+      api.signIn(credentials)
          .then((userInfo) => {
-            dispatch({ username: userInfo.email, type: LOGIN });
+            console.log('Login x')
+            dispatch({ info: userInfo, type: LOGIN });
             cb();
-         })
+         });
    };
 };
 
@@ -45,8 +63,30 @@ export const logout = (cb) => {
    return (dispatch, prevState) => {
       dispatch({ type: LOGOUT });
       cb();
+   };
+};
+
+export const updateUser = (userId, body, cb) => {
+   return (dispatch, prevState) => {
+      api.modifyUser(userId, body)
+         .then((userInfo) => {
+            dispatch({ info: userInfo, type: UPDATE });
+         })
    }
 };
 
-export const actionCreators = { login, logout };
+export const updateEnrolled = (userId, body, cb) => {
+   return (dispatch, prevState) => {
+      let state = prevState();
+      let userId = state.User.info.id;
+
+      api.getEnrollment(userId, null)
+         .then((enrollment) => {
+            console.log('enrollment:', enrollment);
+            dispatch({enrolled: enrollment, type: UPDATE_ENROLLED});
+         })
+   }
+};
+
+export const actionCreators = { login, logout, updateUser, updateEnrolled };
 

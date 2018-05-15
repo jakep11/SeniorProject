@@ -12,11 +12,16 @@ router.baseURL = '/Exercise';
 router.get('/', function(req, res) {
    var vld = req.validator;
    var cnn = req.cnn;
+
+   const sectionId = req.query.sectionId;
+
+   const where = sectionId ? `WHERE sectionId = ${sectionId}` : '';
+   const query = `SELECT * FROM Exercise ${where}`;
    
    async.waterfall([
       function(cb) {
          if (vld.check(req.session, Tags.noLogin, null, cb))
-            cnn.chkQry('SELECT * FROM Exercise', cb);
+            cnn.chkQry(query, null, cb);
       },
       function(exerciseArr, fields, cb) {
          if (vld.check(exerciseArr.length, Tags.notFound, null, cb)) {

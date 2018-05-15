@@ -1,5 +1,7 @@
 
 import React, { Component } from 'react';
+import Navbar from '../Navbar/Navbar';
+import './Login.css';
 
 export default class Login extends Component {
    constructor(props) {
@@ -19,6 +21,7 @@ export default class Login extends Component {
 
    handleChange(event) {
       this.setState({[event.target.name]: event.target.value});
+      console.log("New state:", this.state);
    }
 
    submit() {
@@ -30,11 +33,16 @@ export default class Login extends Component {
    render() {
       return (
          <div>
-            <h1>Login</h1>
-            <input type="text" placeholder="Username" name="username" onKeyUp={this.handleChange} />
-            <input type="password" placeholder="Password" name="password" onKeyUp={this.handleChange} />
-            <br />
-            <button type="button" onClick={() => this.submit()}>Submit</button>
+            <Navbar {...this.props} />
+            
+            <div className="login-wrapper">
+               <h1>Login</h1>
+               <div className="login-body">
+                  <input type="text" placeholder="Username" name="username" onKeyUp={this.handleChange} />
+                  <input type="password" placeholder="Password" name="password" onKeyUp={this.handleChange} />
+                  <button type="button" onClick={() => this.submit()}>Submit</button>
+               </div>
+            </div>
          </div>
       )
 

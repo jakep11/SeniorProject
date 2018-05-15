@@ -1,0 +1,19 @@
+.login-wrapper {
+    padding: 35px 0px;
+}
+
+.login-wrapper h1 {
+    text-align: center;
+    border-bottom: 2px solid rgb(0,166,255);
+    width: 75%;
+    margin: auto;
+    padding: 15px 10px;
+    font-weight: bolder;
+}
+
+.login-wrapper div {
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+}
+

@@ -1,5 +1,10 @@
 
 .navbar {
+    background-color: rgb(157, 221, 255);
+    display: flex;
+}
+
+.navbar-reverse {
     background-color: deepskyblue;
     display: flex;
 }

@@ -7,11 +7,12 @@
 
 .cs-sidebar-container {
     flex: 0 0 350px;
-    border-right: 2px solid blue;
+    border-right: 2px solid rgb(0,166,255);
+    padding-left: 10px;
 }
 
 .cs-header {
-    border-bottom: 2px solid blue;
+    border-bottom: 2px solid rgb(0,166,255);
     padding: 10px;
     display: flex;
     justify-content: center;
@@ -25,17 +26,12 @@
 
 .cs-main {
     flex: 1 1 auto;
-
-
 }
-
 
 .cs-filter-header {
-   padding-left: 10px;
-}
-
-.cs-filter-wrapper {
-   padding-left: 10px;
+   padding: 10px;
+   display: flex;
+   font-weight: bolder;
 }
 
 .cs-filter-type {
