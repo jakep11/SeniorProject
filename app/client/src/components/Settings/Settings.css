@@ -20,17 +20,14 @@
     justify-content: center;
 }
 
-.settings-border {
-   width: 75%;
-   border-bottom: 2px solid rgb(0,166,255);
-}
-
 .settings-wrapper button {
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-
-
+.settings-border {
+   width: 75%;
+   border-bottom: 2px solid rgb(0,166,255);
+}
 

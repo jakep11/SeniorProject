@@ -5,6 +5,7 @@ import { withRouter, Switch, Route, Redirect } from 'react-router-dom';
 // import * as actionCreators from '../actions/user-actions';
 import { actionCreators as userActionCreators } from '../redux/users';
 import { actionCreators as courseActionCreators } from '../redux/courses';
+import { actionCreators as errorActionCreators } from '../redux/error';
 import Main from './Main/Main';
 import React from 'react';
 import Login from './Login/Login'
@@ -14,12 +15,13 @@ import LoggedIn from './LoggedIn/LoggedIn'
 function mapStateToProps(state) {
    return {
       User: state.User,
-      Courses: state.Courses
+      Courses: state.Courses,
+      Error: state.Error
    };
 }
 
 function mapDispatchToProps(dispatch) {
-   return bindActionCreators({...userActionCreators, ...courseActionCreators}, dispatch);
+   return bindActionCreators({...userActionCreators, ...courseActionCreators, ...errorActionCreators}, dispatch);
 }
 
 const App = withRouter(connect(

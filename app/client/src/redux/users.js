@@ -14,6 +14,7 @@ export const UPDATE_ENROLLED = 'UPDATE_ENROLLED';
 
 let defaultState = {
    isLoggedIn: false,
+   info: null
 };
 
 /* Reducer */
