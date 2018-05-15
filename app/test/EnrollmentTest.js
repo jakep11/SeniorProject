@@ -409,11 +409,10 @@ describe('Enrollment Management', () => {
          //       });
          // });
 
-         it('not enrolled userId should return 200', (done) => {
+         it('not enrolled userId should return 404', (done) => {
             agent
                .delete('/Enrollment/2/4')
                .end((err, res) => {
-                  // res.should.have.status(200); changed
                   res.should.have.status(404);
                   res.body.should.be.empty;
                
@@ -518,11 +517,10 @@ describe('Enrollment Management', () => {
       });
 
       describe('/DELETE w/ nonAdminAU', () => {
-         it('not enrolled sectionId should return 200', (done) => {
+         it('not enrolled sectionId should return 404', (done) => {
             agent
                .delete('/Enrollment/2/4')
                .end((err, res) => {
-                  // res.should.have.status(200); changed
                   res.should.have.status(404);
                   res.body.should.be.empty;
                
