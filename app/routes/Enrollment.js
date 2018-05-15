@@ -49,7 +49,10 @@ router.post('/', (req, res) => {
 
    async.waterfall([
       function(cb) { // Check that the userId is valid
-         if (vld.checkPrsOK(body.userId, cb)) {
+         if (vld.hasOnlyFields(body, vldFields, cb) &&
+            vld.chain(body.userId, Tags.missingField, ['userId'])
+               .check(body.sectionId, Tags.missingField, ['sectionId'], cb) && 
+            vld.checkPrsOK(body.userId, cb)) {
             cnn.chkQry('SELECT * FROM User WHERE id = ?', body.userId, cb);
          }
       },
@@ -86,7 +89,7 @@ router.delete('/:sectionId/:userId', (req, res) => {
    let userId = req.params.userId;
    let vld = req.validator;
 
-   if (vld.checkAdmin()) {
+   if (vld.checkPrsOK(userId)) {
       req.cnn.query('DELETE from Enrollment where sectionId = ? and userId = ?', [sectionId, userId],
          function (err, result) {
             if (!err && !result.affectedRows)
