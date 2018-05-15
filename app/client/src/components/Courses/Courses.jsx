@@ -35,8 +35,9 @@ export default class Courses extends Component {
 
    renderCourse(course, idx) {
       return (
-         <Link key={course.id} to={`/courses/${course.id}`}>
-            <CourseBlock title={course.name}
+         <Link key={course.id} to={`/courses/${course.id}`} className='cs-course-link'>
+            <CourseBlock course={course}
+                         title={course.name}
                          progress={0}
                          showProgress={this.props.Courses.showProgress}
                          showEnroll={false}
@@ -106,6 +107,8 @@ export default class Courses extends Component {
                term: cQuater + cYear
             }
          });
+
+         console.log('filteredCourses:', filteredCourses);
 
       return (
          <div className="cs-wrapper">

@@ -9,9 +9,21 @@
 }
 
 .cb-icon {
-    width: 75px;
+    width: 75px!important;
+    /*height: ;*/
+    flex: 0 0 auto;
     background-color: orange;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
+
+.cb-title {
+    font-size: 24px;
+    padding-right: 20px;
+
+}
+
 .cb-body {
     flex: 1 1 auto;
     padding: 5px 0 5px 10px;

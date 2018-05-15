@@ -22,6 +22,11 @@ function safeFetch(...params) {
             store.dispatch({ type: LOGOUT });
             return Promise.reject([{tag: 'notAuthorized'}]);
          }
+
+         else if (res.status === 404) {
+            store.dispatch({ type: SET_ERROR, message: 'Page not Found' });
+            return Promise.reject([{tag: 'pageNotFound'}]);
+         }
          return res.ok ? res : res.json().then((body) => Promise.reject(body))
       })
       .catch((err) => {
@@ -549,6 +554,8 @@ export function getSections(term, name) {
       endpoint = addQueryArg(endpoint, 'name', name);
    }
 
+   console.log(`getSections(term:${term}, name:${name})`);
+   console.log(`endpoint:${endpoint}`);
    return get(endpoint)
       .then(res => {
          return res.ok ? res.json() : createErrorPromise(res);

@@ -2,9 +2,64 @@
 .navbar {
     background-color: rgb(157, 221, 255);
     display: flex;
+    align-items: stretch!important;
+    justify-content: space-between!important;
+    height: 50px;
+    padding: 0 10px!important;
+}
+
+.display-name {
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
 }
 
 .navbar-reverse {
     background-color: deepskyblue;
     display: flex;
+}
+
+.navbar .navbar-left {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+.navbar .navbar-right {
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-end;
+}
+
+.navbar .navbar-left .navbar-el {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+    padding: 0 5px;
+    margin: 0 5px;
+    white-space: nowrap;
+}
+
+.navbar .navbar-right .navbar-el {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 5px;
+    margin: 0 5px;
+}
+
+.navbar .navbar-el.active {
+    border-bottom:  4px solid #00AEFF;
+    margin-top: 4px;
+}
+
+.navbar a {
+    color: black;
+    font-size: 20px;
+}
+
+.navbar a:hover {
+    text-decoration: none;
+
 }

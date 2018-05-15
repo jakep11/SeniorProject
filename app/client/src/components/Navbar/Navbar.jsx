@@ -26,9 +26,9 @@ class Main extends Component {
    }
    
    renderLoggedIn() {
-      console.log("PROPS:", this.props.User);
-      let loggedInDisplayName = 
-         <div>{this.props.User.info.email} &nbsp;
+      console.log("PROPS:", this.props);
+      let loggedInDisplayName =
+         <div className="navbar-el display-name">{this.props.User.info.email} &nbsp;
             <a href="" onClick={() => this.logout()}>
                Logout
             </a>
@@ -36,26 +36,31 @@ class Main extends Component {
          
       return (
          <nav className="navbar">
-            <Link to={'/home'}>
-               <div>Home</div>
-            </Link>
+            <div className="navbar-left">
+               <Link to={'/home'} className={this.props.location.pathname.includes('/home') ? 'active navbar-el': 'navbar-el'}>
+                  <div>Home</div>
+               </Link>
 
-            <Link to={'/courses'}>
-               <div>Courses</div>
-            </Link>
+               <Link to={'/courses'} className={this.props.location.pathname.includes('/courses') ? 'active navbar-el': 'navbar-el'}>
+                  <div>Course Sections</div>
+               </Link>
 
-            <Link to={'/help'}>
-               <div>Help</div>
-            </Link>
+               <Link to={'/help'} className={this.props.location.pathname.includes('/help') ? 'active navbar-el': 'navbar-el'}>
+                  <div>Help</div>
+               </Link>
 
-            <Link to={'/settings'}>
-               <div>Settings</div>
-            </Link>
+               <Link to={'/settings'} className={this.props.location.pathname.includes('/settings') ? 'active navbar-el': 'navbar-el'}>
+                  <div>Settings</div>
+               </Link>
 
-            <Link to={'/about'}>
-               <div>About</div>
-            </Link>
-            {loggedInDisplayName}
+               <Link to={'/about'} className={this.props.location.pathname.includes('/about') ? 'active navbar-el': 'navbar-el'}>
+                  <div>About</div>
+               </Link>
+            </div>
+
+            <div className="navbar-right">
+               {loggedInDisplayName}
+            </div>
          </nav>
       );
    }
