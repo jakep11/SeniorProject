@@ -18,7 +18,7 @@ function safeFetch(...params) {
    return fetch(...params)
       .then(res => {
          if (res.status === 401) {
-            // store.dispatch({ type: SET_ERROR, message: 'Not Authorized' });
+            store.dispatch({ type: SET_ERROR, message: 'Not Authorized' });
             store.dispatch({ type: LOGOUT });
             return Promise.reject([{tag: 'notAuthorized'}]);
          }
@@ -751,6 +751,7 @@ const errMap = {
  */
 export function errorTranslate(errTag, lang = 'en') {
    console.log('errTag:', errTag)
+   store.dispatch({ type: SET_ERROR, message: errMap[lang][errTag] });
    // console.log(errMap[lang][errTag])
    return errMap[lang][errTag] || 'Unknown Error!';
 }

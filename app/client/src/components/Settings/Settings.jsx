@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react';
-import {Overlay} from 'react-bootstrap';
 import './Settings.css';
 
 export default class Settings extends Component {
@@ -11,7 +10,7 @@ export default class Settings extends Component {
          password: "",
          oldPassword: "",
          oldPasswordAgain: "",
-         show: false,
+         show: true,
          success: false
       };
       
@@ -65,8 +64,7 @@ export default class Settings extends Component {
                <div>Enter current password again:</div>
                <div><input type="password" placeholder="Current password again" name="oldPasswordAgain" onKeyUp={this.handleChange} /></div>
             </div>
-                <button className="settings-button" type="button" onClick={() => this.submit()}>Submit</button>
-
+               <button className="settings-button" type="button" onClick={() => this.submit()}>Submit</button>
          </div>
       );
 

@@ -1,6 +1,8 @@
 
 import React, { Component } from 'react';
+import { ListGroup, ListGroupItem, Modal, Button } from 'react-bootstrap';
 import Navbar from '../Navbar/Navbar';
+import ConfDialog from '../ConfDialog/ConfDialog';
 import './Login.css';
 
 export default class Login extends Component {
@@ -17,6 +19,7 @@ export default class Login extends Component {
       }
 
       this.handleChange = this.handleChange.bind(this)
+      console.log("Login Props:", this.props);
    }
 
    handleChange(event) {
@@ -43,6 +46,18 @@ export default class Login extends Component {
                   <button type="button" onClick={() => this.submit()}>Submit</button>
                </div>
             </div>
+
+            <ConfDialog
+               show={this.props.Error.message !== ''}
+               title="Error Notice"
+               body={"hello"/*<ListGroup>
+                  <ListGroupItem bsStyle="danger">
+                     {this.props.Error.message}
+                  </ListGroupItem>
+               </ListGroup>*/}
+               buttons={['OK']}
+               onClose={() => {this.props.clearError(); console.log("New props:", this.props)}}
+            />
          </div>
       )
 
