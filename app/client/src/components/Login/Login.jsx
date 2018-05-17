@@ -46,17 +46,18 @@ export default class Login extends Component {
                   <button type="button" onClick={() => this.submit()}>Submit</button>
                </div>
             </div>
-
+            
             <ConfDialog
                show={this.props.Error.message !== ''}
                title="Error Notice"
-               body={"hello"/*<ListGroup>
-                  <ListGroupItem bsStyle="danger">
-                     {this.props.Error.message}
-                  </ListGroupItem>
-               </ListGroup>*/}
-               buttons={['OK']}
-               onClose={() => {this.props.clearError(); console.log("New props:", this.props)}}
+               body={
+                  <ListGroup>
+                     <ListGroupItem bsStyle="danger">
+                        {this.props.Error.message}
+                     </ListGroupItem>
+                  </ListGroup>}
+               button='OK'
+               onClose={() => {this.props.clearError()}}
             />
          </div>
       )

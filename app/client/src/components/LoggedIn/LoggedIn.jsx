@@ -1,5 +1,6 @@
 
 import { withRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import React, { Component } from 'react';
 import Home from '../Home/Home';
 import Courses from '../Courses/Courses';
@@ -9,6 +10,7 @@ import Settings from '../Settings/Settings';
 import About from '../About/About';
 import './LoggedIn.css';
 import CourseDetail from "../CourseDetail/CourseDetail";
+import ConfDialog from '../ConfDialog/ConfDialog';
 
 export default class LoggedIn extends Component {
    constructor(props) {
@@ -37,6 +39,19 @@ export default class LoggedIn extends Component {
                <Route exact path="/settings" render={() => <Settings {...this.props} />}/>
                <Route exact path="/about" component={About} />
             </Switch>
+            
+            <ConfDialog
+               show={this.props.Error.message !== ''}
+               title="Error Notice"
+               body={
+                  <ListGroup>
+                     <ListGroupItem bsStyle="danger">
+                        {this.props.Error.message}
+                     </ListGroupItem>
+                  </ListGroup>}
+               button='OK'
+               onClose={() => {this.props.clearError()}}
+            />
          </div>
 
       )

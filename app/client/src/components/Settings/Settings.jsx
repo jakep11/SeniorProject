@@ -24,7 +24,7 @@ export default class Settings extends Component {
    submit() {
       let body = {};
       //console.log("Props:", this.props);
-      let userId = this.props.User.userId;
+      let userId = this.props.User.info.id;
       
       
       for (var key in this.state) {

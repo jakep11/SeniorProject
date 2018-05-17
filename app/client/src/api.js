@@ -27,6 +27,10 @@ function safeFetch(...params) {
             store.dispatch({ type: SET_ERROR, message: 'Page not Found' });
             return Promise.reject([{tag: 'pageNotFound'}]);
          }
+         else if (res.status === 500) {
+            store.dispatch({ type: SET_ERROR, message: 'Server Error' });
+            return Promise.reject([{tag: 'serverErr'}]);
+         }
          return res.ok ? res : res.json().then((body) => Promise.reject(body))
       })
       .catch((err) => {
@@ -745,7 +749,9 @@ const errMap = {
       dupEnrollment: 'Duplicate enrollment',
       forbiddenField: 'Field in body not allowed.',
       queryFailed: 'Query failed (server problem).',
-      cnnErr: 'Server Connect Error'
+      cnnErr: 'Server Connect Error',
+      pageNotFound: "Page not found.",
+      serverErr: "Server Error"
    }
 };
 

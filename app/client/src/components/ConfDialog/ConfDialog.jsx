@@ -14,19 +14,24 @@ export default class ConfDialog extends PureComponent {
 
    render() {
       console.log("Rendering ConfDialog,", this.props.show);
+      let dialogStyle = this.props.show ? 
+         {display: "block", backgroundColor: "RGBA(100, 100, 100, 0.5)"} : 
+         {display: "none"};
+      
       return (
-         <Modal show={this.props.show} onHide={() => this.close("Dismissed")}>
-            <Modal.Header closeButton>
+         <Modal.Dialog style={dialogStyle}>
+            <Modal.Header>
                <Modal.Title>{this.props.title}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-               {this.props.body}
-            </Modal.Body>
+
+            <Modal.Body>{this.props.body}</Modal.Body>
+
             <Modal.Footer>
-               {this.props.buttons.map((btn, i) => <Button key={i}
-               onClick={() => this.props.onClose(btn)}>{btn}</Button>)}
+               <Button onClick={() => this.props.onClose(this.props.button)}>
+                  {this.props.button}
+               </Button>
             </Modal.Footer>
-         </Modal>
+         </Modal.Dialog>
       )
    }
 }
