@@ -4,10 +4,13 @@ import * as api from '../api';
 const ADD_TOPICS = 'ADD_TOPICS';
 const ADD_ACTIVITIES = 'ADD_ACTIVITIES';
 const TOGGLE_ACTIVITY = 'TOGGLE_ACTIVITY';
+const TOGGLE_DOCUMENT = 'TOGGLE_DOCUMENT';
+const TOGGLE_EXERCISE = 'TOGGLE_EXERCISE';
+const TOGGLE_VIDEO = 'TOGGLE_VIDEO';
 
 const initialState = {
    topics: {
-      byId: { },
+      byId: {},
       allIds: []
    }
 };
@@ -173,7 +176,15 @@ export function addTopics(sectionId, cb) {
    };
 }
 
-export function toggleActivity() {
+export function toggleExercise(id, cb) {
+
+}
+
+export function toggleDocument(id, cb) {
+
+}
+
+export function toggleVideo(id, cb) {
 
 }
 
