@@ -24,16 +24,18 @@ export default function Topics(state = initialState, action) {
 
       action.topics.forEach(topic => {
          const topicId = topic.id;
-         clone.topics.byId[topicId] = topic;
-         clone.topics.allIds.push(topicId);
 
-
+         /* adding activities object to topic */
          topic.activities = {
             exercises: [],
             documents: [],
             videos: []
          }
-      })
+
+         /* updating store by adding new topic */
+         clone.topics.byId[topicId] = topic;
+         clone.topics.allIds.push(topicId);
+      });
 
       return clone;
 
@@ -42,8 +44,13 @@ export default function Topics(state = initialState, action) {
 
       action.documents.forEach(document => {
          let topicId = document.topicId;
+
+         /* adding properties to document */
+         document.expanded = false;
+
+         /* adding document to topic's document list */
          clone.topics.byId[topicId].activities.documents.push(document);
-      })
+      });
 
       return clone;
 
@@ -52,8 +59,13 @@ export default function Topics(state = initialState, action) {
 
       action.exercises.forEach(exercise => {
          let topicId = exercise.topicId;
+
+         /* adding properties to exercise */
+         exercise.expanded = false;
+
+         /* adding exercise to topic's exercise list */
          clone.topics.byId[topicId].activities.exercises.push(exercise);
-      })
+      });
 
       return clone;
 
@@ -62,18 +74,34 @@ export default function Topics(state = initialState, action) {
 
       action.videos.forEach(video => {
          let topicId = video.topicId;
+
+         /* adding properties to video */
+         video.expanded = false;
+
+         /* adding video to topic's video list */
          clone.topics.byId[topicId].activities.videos.push(video);
-      })
+      });
 
       return clone;
 
-   case TOGGLE_ACTIVITY:
+   case TOGGLE_DOCUMENT:
       return {
          
       }
 
+   case TOGGLE_EXERCISE:
+      return {
+
+      }
+
+   case TOGGLE_VIDEO:
+      return {
+
+      }
+
    default:
       return state;
+
    }
 }
 
