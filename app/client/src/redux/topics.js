@@ -85,9 +85,21 @@ export default function Topics(state = initialState, action) {
       return clone;
 
    case TOGGLE_DOCUMENT:
-      return {
-         
-      }
+      let clone = Object.assign({}, state);
+      const topicId = action.topicId;
+      const documentId = action.documentId;
+      let documents = clone.topics.byId[topicId].activities.documents;
+
+      clone.topics.byId[topicId].activities.documents = documents.map((doc, index) => {
+         if (index === action.index) {
+            return Object.assign({}, doc, {
+               expanded: !doc.expanded
+            });
+         }
+         return doc;
+      });
+
+      return clone;
 
    case TOGGLE_EXERCISE:
       return {
