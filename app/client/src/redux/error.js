@@ -15,13 +15,12 @@ export default function Error(state = initialState, action) {
 
       case SET_ERROR:
          return {
-            ...state,
             message: action.message
          };
 
       case CLEAR_ERROR:
+         console.log("Clearing errors");
          return {
-            ...state,
             message: ''
          };
 

@@ -51,7 +51,6 @@ export default function Topics(state = initialState, action) {
          /* adding document to topic's document list */
          clone.topics.byId[topicId].activities.documents.push(document);
       });
-
       return clone;
 
    case ADD_TOPICS_EXERCISES:
@@ -66,7 +65,6 @@ export default function Topics(state = initialState, action) {
          /* adding exercise to topic's exercise list */
          clone.topics.byId[topicId].activities.exercises.push(exercise);
       });
-
       return clone;
 
    case ADD_TOPICS_VIDEOS:

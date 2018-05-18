@@ -22,12 +22,14 @@ export default class CourseBlock extends Component {
       return (
          <div className="cb-wrapper">
 
-            <div className="cb-icon"></div>
+            <div className="cb-icon">
+               <div>{this.props.course.name}</div>
+            </div>
 
             <div className="cb-body">
 
                <div className="cb-body-row1">
-                  <h2 className="cb-title">{this.props.title}</h2>
+                  <h2 className="cb-title">{this.props.course.description}</h2>
                   <div className="term">{this.props.term}</div>
                </div>
 

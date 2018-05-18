@@ -18,9 +18,18 @@ function safeFetch(...params) {
    return fetch(...params)
       .then(res => {
          if (res.status === 401) {
-            // store.dispatch({ type: SET_ERROR, message: 'Not Authorized' });
+            store.dispatch({ type: SET_ERROR, message: 'Not Authorized' });
             store.dispatch({ type: LOGOUT });
             return Promise.reject([{tag: 'notAuthorized'}]);
+         }
+
+         else if (res.status === 404) {
+            store.dispatch({ type: SET_ERROR, message: 'Page not Found' });
+            return Promise.reject([{tag: 'pageNotFound'}]);
+         }
+         else if (res.status === 500) {
+            store.dispatch({ type: SET_ERROR, message: 'Server Error' });
+            return Promise.reject([{tag: 'serverErr'}]);
          }
          return res.ok ? res : res.json().then((body) => Promise.reject(body))
       })
@@ -272,7 +281,7 @@ export function getExercises(sectionId) {
    /* add query paremeters if they exist */
    if (sectionId) {     // check if queries exist
       endpoint += '?';
-      addQueryArg(endpoint, 'sectionId', sectionId);
+      endpoint = addQueryArg(endpoint, 'sectionId', sectionId);
    }
 
    return get(endpoint)
@@ -370,7 +379,7 @@ export function getVideos(sectionId) {
    /* add query paremeters if they exist */
    if (sectionId) {     // check if queries exist
       endpoint += '?';
-      addQueryArg(endpoint, 'sectionId', sectionId);
+      endpoint = addQueryArg(endpoint, 'sectionId', sectionId);
    }
    return get(endpoint)
       .then(res => {
@@ -456,7 +465,7 @@ export function getDocuments(sectionId) {
    /* add query paremeters if they exist */
    if (sectionId) {     // check if queries exist
       endpoint += '?';
-      addQueryArg(endpoint, 'sectionId', sectionId);
+      endpoint = addQueryArg(endpoint, 'sectionId', sectionId);
    }
 
    return get(endpoint)
@@ -545,10 +554,12 @@ export function getSections(term, name) {
    /* add query paremeters if they exist */
    if (term || name) {     // check if queries exist
       endpoint += '?';
-      addQueryArg(endpoint, 'term', term);
-      addQueryArg(endpoint, 'name', name);
+      endpoint = addQueryArg(endpoint, 'term', term);
+      endpoint = addQueryArg(endpoint, 'name', name);
    }
 
+   console.log(`getSections(term:${term}, name:${name})`);
+   console.log(`endpoint:${endpoint}`);
    return get(endpoint)
       .then(res => {
          return res.ok ? res.json() : createErrorPromise(res);
@@ -666,14 +677,15 @@ export function modifyUserProgress(userId, body) {
  */
 export function getEnrollment(userId, sectionId) {
    let endpoint = 'Enrollment';
+   console.log(`getEnrollment userId: ${userId}, sectionId: ${sectionId}`);
 
    /* add query parameters if they exist */
    if (userId || sectionId) {     // check if queries exist
       endpoint += '?';
       console.log('endpoint1: ', endpoint);
-      addQueryArg(endpoint, 'userId', userId);
+      endpoint = addQueryArg(endpoint, 'userId', userId);
       console.log('endpoint2: ', endpoint);
-      addQueryArg(endpoint, 'sectionId', sectionId);
+      endpoint = addQueryArg(endpoint, 'sectionId', sectionId);
       console.log('endpoint3: ', endpoint);
    }
 
@@ -737,7 +749,9 @@ const errMap = {
       dupEnrollment: 'Duplicate enrollment',
       forbiddenField: 'Field in body not allowed.',
       queryFailed: 'Query failed (server problem).',
-      cnnErr: 'Server Connect Error'
+      cnnErr: 'Server Connect Error',
+      pageNotFound: "Page not found.",
+      serverErr: "Server Error"
    }
 };
 
@@ -750,18 +764,21 @@ const errMap = {
  */
 export function errorTranslate(errTag, lang = 'en') {
    console.log('errTag:', errTag)
+   store.dispatch({ type: SET_ERROR, message: errMap[lang][errTag] });
    // console.log(errMap[lang][errTag])
    return errMap[lang][errTag] || 'Unknown Error!';
 }
 
 function addQueryArg(endpoint, query, arg) {
+   let newEndpoint = endpoint;
    const lastChar = endpoint[endpoint.length - 1];
 
    if (!arg)               // no argument exists
-      return;
+      return endpoint;
 
    if (lastChar !== '?')   // previous argument exists
-      endpoint += '&';
+      newEndpoint += '&';
       
-   endpoint += `${query}=${arg}`;
+   newEndpoint += `${query}=${arg}`;
+   return newEndpoint;
 }

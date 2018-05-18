@@ -28,6 +28,14 @@
     flex: 1 1 auto;
 }
 
+.cs-course-link {
+    color: black;
+}
+.cs-course-link:hover {
+    text-decoration: none;
+    color: black;
+}
+
 .cs-filter-header {
    padding: 10px;
    display: flex;

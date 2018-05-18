@@ -6,7 +6,7 @@ export default class Home extends Component {
    constructor(props) {
       super(props);
 
-      this.props.updateEnrolled();
+     // this.props.updateEnrolled();
 
       this.state = {
          enrolled: [],
