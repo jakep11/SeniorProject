@@ -90,26 +90,53 @@ export default function Topics(state = initialState, action) {
       const documentId = action.documentId;
       let documents = clone.topics.byId[topicId].activities.documents;
 
-      clone.topics.byId[topicId].activities.documents = documents.map((doc) => {
-         if (doc.id === action.documentId) {
-            return Object.assign({}, doc, {
-               expanded: !doc.expanded
-            });
-         }
-         return doc;
+      clone.topics.byId[topicId].activities.documents = 
+         documents.map((document) => {
+            if (document.id === action.documentId) {
+               return Object.assign({}, doc, {
+                  expanded: !document.expanded
+               });
+            }
+            return doc;
       });
 
       return clone;
 
    case TOGGLE_EXERCISE:
-      return {
+      let clone = Object.assign({}, state);
+      const topicId = action.topicId;
+      const exerciseId = action.exerciseId;
+      let exercises = clone.topics.byId[topicId].activities.exercises;
 
-      }
+      clone.topics.byId[topicId].activities.exercises = 
+         exercises.map((exercise) => {
+            if (exercise.id === action.exerciseId) {
+               return Object.assign({}, doc, {
+                  expanded: !exercise.expanded
+               });
+            }
+            return exercise;
+      });
+
+      return clone;
 
    case TOGGLE_VIDEO:
-      return {
+      let clone = Object.assign({}, state);
+      const topicId = action.topicId;
+      const videoId = action.videoId;
+      let videos = clone.topics.byId[topicId].activities.videos;
 
-      }
+      clone.topics.byId[topicId].activities.videos = 
+      videos.map((video) => {
+            if (video.id === action.videoId) {
+               return Object.assign({}, doc, {
+                  expanded: !video.expanded
+               });
+            }
+            return video;
+      });
+
+      return clone;
 
    default:
       return state;
