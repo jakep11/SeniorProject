@@ -6,3 +6,6 @@ connection.json
 *.swp
 .history/
 *.log
+app/package.json
+app/client/package.json
+app/client/package-lock.json
