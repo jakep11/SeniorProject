@@ -90,8 +90,8 @@ export default function Topics(state = initialState, action) {
       const documentId = action.documentId;
       let documents = clone.topics.byId[topicId].activities.documents;
 
-      clone.topics.byId[topicId].activities.documents = documents.map((doc, index) => {
-         if (index === action.index) {
+      clone.topics.byId[topicId].activities.documents = documents.map((doc) => {
+         if (doc.id === action.documentId) {
             return Object.assign({}, doc, {
                expanded: !doc.expanded
             });
