@@ -42,10 +42,10 @@ export default class LoggedIn extends Component {
             
             <ConfDialog
                show={this.props.Error.message !== ''}
-               title="Error Notice"
+               title="Notice"
                body={
                   <ListGroup>
-                     <ListGroupItem bsStyle="danger">
+                     <ListGroupItem bsStyle={this.props.Error.style}>
                         {this.props.Error.message}
                      </ListGroupItem>
                   </ListGroup>}

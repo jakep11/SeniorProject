@@ -49,7 +49,7 @@ export default class Login extends Component {
             
             <ConfDialog
                show={this.props.Error.message !== ''}
-               title="Error Notice"
+               title="Notice"
                body={
                   <ListGroup>
                      <ListGroupItem bsStyle="danger">

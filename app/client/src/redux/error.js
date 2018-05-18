@@ -7,6 +7,7 @@ export const CLEAR_ERROR = 'CLEAR_ERROR';
 
 const initialState = {
    message: '',
+   style: 'danger'
 };
 
 /* Reducer */
@@ -15,13 +16,15 @@ export default function Error(state = initialState, action) {
 
       case SET_ERROR:
          return {
-            message: action.message
+            message: action.message,
+            style: action.style
          };
 
       case CLEAR_ERROR:
          console.log("Clearing errors");
          return {
-            message: ''
+            message: '',
+            style: 'danger'
          };
 
       default:

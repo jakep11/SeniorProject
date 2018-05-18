@@ -18,17 +18,17 @@ function safeFetch(...params) {
    return fetch(...params)
       .then(res => {
          if (res.status === 401) {
-            store.dispatch({ type: SET_ERROR, message: 'Not Authorized' });
+            store.dispatch({ type: SET_ERROR, message: 'Not Authorized', style: 'danger' });
             store.dispatch({ type: LOGOUT });
             return Promise.reject([{tag: 'notAuthorized'}]);
          }
 
          else if (res.status === 404) {
-            store.dispatch({ type: SET_ERROR, message: 'Page not Found' });
+            store.dispatch({ type: SET_ERROR, message: 'Page not Found', style: 'danger' });
             return Promise.reject([{tag: 'pageNotFound'}]);
          }
          else if (res.status === 500) {
-            store.dispatch({ type: SET_ERROR, message: 'Server Error' });
+            store.dispatch({ type: SET_ERROR, message: 'Server Error', style: 'danger' });
             return Promise.reject([{tag: 'serverErr'}]);
          }
          return res.ok ? res : res.json().then((body) => Promise.reject(body))
@@ -165,6 +165,7 @@ export function modifyUser(userId, body) {
    return put(`User/${userId}`, body)
       .then(res => {
          if (res.ok) {
+            store.dispatch({ type: SET_ERROR, message: 'Password Changed', style: 'success'});
             return get(`User/${userId}`);
          }
          else
@@ -745,6 +746,7 @@ const errMap = {
       forbiddenRole: 'Role specified is not permitted.',
       noOldPwd: 'Change of password requires an old password',
       oldPwdMismatch: 'Old password that was provided is incorrect.',
+      oldPasswordMismatch: 'Old password that was provided is incorrect.',
       dupTitle: 'Conversation title duplicates an existing one',
       dupEnrollment: 'Duplicate enrollment',
       forbiddenField: 'Field in body not allowed.',
@@ -764,7 +766,7 @@ const errMap = {
  */
 export function errorTranslate(errTag, lang = 'en') {
    console.log('errTag:', errTag)
-   store.dispatch({ type: SET_ERROR, message: errMap[lang][errTag] });
+   store.dispatch({ type: SET_ERROR, message: errMap[lang][errTag], style: 'danger' });
    // console.log(errMap[lang][errTag])
    return errMap[lang][errTag] || 'Unknown Error!';
 }

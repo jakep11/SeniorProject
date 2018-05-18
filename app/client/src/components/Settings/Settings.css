@@ -26,6 +26,13 @@
     margin-right: auto;
 }
 
+.settings-message {
+   text-align: center;
+   padding: 15px 0;
+   width: 25%;
+   margin: auto;
+}
+
 .settings-border {
    width: 75%;
    border-bottom: 2px solid rgb(0,166,255);
