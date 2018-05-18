@@ -243,16 +243,37 @@ export function addTopics(sectionId, cb) {
    };
 }
 
-export function toggleExercise(id, cb) {
-
+export function toggleExercise(exerciseId, topicId, cb) {
+   return (dispatch, prevState) => {
+      dispatch({
+         type: TOGGLE_EXERCISE,
+         exerciseId: exerciseId,
+         topicId: topicId
+      });
+      if (cb) cb();
+   }
 }
 
-export function toggleDocument(id, cb) {
-
+export function toggleDocument(documentId, topicId, cb) {
+   return (dispatch, prevState) => {
+      dispatch({
+         type: TOGGLE_DOCUMENT,
+         documentId: documentId,
+         topicId: topicId
+      });
+      if (cb) cb();
+   }
 }
 
-export function toggleVideo(id, cb) {
-
+export function toggleVideo(videoId, topicId, cb) {
+   return (dispatch, prevState) => {
+      dispatch({
+         type: TOGGLE_DOCUMENT,
+         videoId: videoId,
+         topicId: topicId
+      });
+      if (cb) cb();
+   }
 }
 
 export const actionCreators = {
@@ -261,5 +282,7 @@ export const actionCreators = {
    addDocuments,
    addExercises,
    addVideos,
-   toggleActivity
+   toggleExercise,
+   toggleDocument,
+   toggleVideo
 };
