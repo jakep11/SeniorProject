@@ -25,7 +25,6 @@ export default class Courses extends Component {
          default:
             newState[ev.target.id] = ev.target.value;
       }
-      console.log("New state of", ev.target.id,":", newState[ev.target.id]);
       this.setState(newState);
    }
 
@@ -34,19 +33,34 @@ export default class Courses extends Component {
    }
 
    renderCourse(course, idx) {
+      let isEnrolled = this.props.User.enrolled.find((id) => id === course.id) == null;
       return (
          <Link key={course.id} to={`/courses/${course.id}`} className='cs-course-link'>
             <CourseBlock course={course}
-                         title={course.name}
                          progress={0}
-                         showProgress={this.props.Courses.showProgress}
-                         showEnroll={false}
+                         showProgress={this.props.Courses.showProgress && !isEnrolled}
+                         showEnroll={isEnrolled}
                          term={course.term}
-                         isEnrolled={true} />
+                         isEnrolled={true}
+                         {...this.props} />
          </Link>
       )
 
    }
+
+   // renderCourse(course, idx) {
+   //    return (
+   //       <Link key={course.id} to={`/courses/${course.id}`} className='cs-course-link'>
+   //          <CourseBlock course={course}
+   //                       progress={0}
+   //                       showProgress={this.props.Courses.showProgress}
+   //                       showEnroll={false}
+   //                       term={course.term}
+   //                       isEnrolled={true} />
+   //       </Link>
+   //    )
+   //
+   // }
 
    render() {
       let filter = this.props.Courses.filter;

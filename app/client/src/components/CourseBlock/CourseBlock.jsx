@@ -2,6 +2,7 @@
 import './CourseBlock.css';
 import React, { Component } from 'react';
 import { Line, Circle } from 'rc-progress';
+import {Button} from "react-bootstrap";
 
 export default class CourseBlock extends Component {
    constructor(props) {
@@ -23,7 +24,8 @@ export default class CourseBlock extends Component {
          <div className="cb-wrapper">
 
             <div className="cb-icon">
-               <div>{this.props.course.name}</div>
+               <div className="ico"><i className="fas fa-tachometer-alt"></i></div>
+               <div className="name">{this.props.course.name}</div>
             </div>
 
             <div className="cb-body">
@@ -44,7 +46,13 @@ export default class CourseBlock extends Component {
 
                   { this.props.showEnroll &&
                      <div className="cb-enroll">
-                        <button className="cb-enroll-button">Enroll</button>
+                        <Button bsStyle="info"
+                                className="cb-enroll-button"
+                                onClick={(e) => {
+                                   this.props.enrollInCourse(this.props.course.id);
+                                   e.stopPropagation();
+                                   e.preventDefault();
+                                }}>Enroll</Button>
                      </div>
                   }
                </div>

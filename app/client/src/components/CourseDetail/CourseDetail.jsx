@@ -10,8 +10,14 @@ export default class CourseDetail extends Component {
    constructor(props) {
       super(props);
 
-      this.state = { };
-      
+      let courseId = +this.props.location.pathname.split('/').slice(-1)[0];
+      let course = this.props.Courses.sections.find((s) => s.id === courseId);
+      console.log('course: ', course);
+
+      this.state = {
+         course
+      };
+
       //this.props.addTopicsAndActivities(4);
       this.props.addVideos(4);
    }
@@ -19,13 +25,13 @@ export default class CourseDetail extends Component {
    render() {
       return (
          <div className="cd-wrapper">
-            <h1>CourseDetail page header</h1>
+            <h1>{this.state.course.description}</h1>
 
             <div className="cd-main-wrapper">
 
                <div className="cd-sidebar-container">
-                  <h2>Course Name</h2>
-                  <CourseSidebar title="Number Systems" {...this.props}/>
+                  <h2>{this.state.course.name}</h2>
+                  <CourseSidebar title="Topics" {...this.props}/>
                </div>
 
                <div className="cd-main-body">

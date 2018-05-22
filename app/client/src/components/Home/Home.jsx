@@ -1,17 +1,38 @@
 
 import './Home.css';
 import React, { Component } from 'react';
+import Link from "react-router-dom/es/Link";
+import CourseBlock from "../CourseBlock/CourseBlock";
 
 export default class Home extends Component {
    constructor(props) {
       super(props);
 
-     // this.props.updateEnrolled();
+     this.props.updateEnrolled();
+
+     console.log(this.props);
 
       this.state = {
          enrolled: [],
          tasks: [],
       }
+   }
+
+   renderCourse(courseId, idx) {
+      let course = this.props.Courses.sections.filter((c) => c.id === courseId)[0];
+      let isEnrolled = this.props.User.enrolled.find((id) => id === course.id) == null;
+      console.log('Render Course Home Course: ', course);
+      return (
+         <Link key={course.id} to={`/courses/${course.id}`} className='hm-course-link'>
+            <CourseBlock course={course}
+                         progress={0}
+                         showProgress={this.props.Courses.showProgress}
+                         showEnroll={isEnrolled}
+                         term={course.term}
+                         isEnrolled={true} />
+         </Link>
+      )
+
    }
 
    render() {
@@ -22,9 +43,9 @@ export default class Home extends Component {
                <h1>Enrolled</h1>
 
                <div className="hm-section-body">
-                  { this.state.enrolled.length === 0
+                  { this.props.User.enrolled && this.props.User.enrolled.length === 0
                      ? 'You are not enrolled in any classes.'
-                     : 'you are enrolled in some classes. wip'
+                     : this.props.User.enrolled.map((courseId, idx) => this.renderCourse(courseId, idx))
                   }
                </div>
 

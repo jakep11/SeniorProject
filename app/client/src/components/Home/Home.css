@@ -18,6 +18,26 @@
 }
 
 .hm-wrapper section div {
-    padding: 10px 0;
+    /*padding: 10px 0;*/
     text-align: center;
 }
+
+.hm-section-body {
+    /*text-align: left!important;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+}
+
+.hm-course-link {
+    color: black;
+    display: flex;
+    justify-content: center;
+}
+
+.hm-course-link:hover {
+    text-decoration: none;
+    color: black;
+}
+

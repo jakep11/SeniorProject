@@ -9,8 +9,10 @@ export default class Login extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         username: 'admin@example.com',
-         password: 'password'
+         // username: 'admin@example.com',
+         // password: 'password'
+         username: 'userB@example.com',
+         password: 'passwordB'
       };
 
       if (this.props.User.isLoggedIn) {
