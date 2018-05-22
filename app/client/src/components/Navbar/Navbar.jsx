@@ -18,9 +18,12 @@ class Main extends Component {
    renderNotLoggedIn() {
       return (
          <nav className="navbar">
-            <Link to={'/login'}>
-               <div>Login</div>
-            </Link>
+            <div className="navbar-left"> </div>
+            <div className="navbar-right">
+               <Link to={'/login'} className='active navbar-el'>
+                  <div>Login</div>
+               </Link>
+            </div>
          </nav>
       );
    }

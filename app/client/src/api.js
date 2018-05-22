@@ -184,6 +184,8 @@ export function getTopics(sectionId) {
 
    if (sectionId) // add sectionId query if not null
       endpoint += `?sectionId=${sectionId}`;
+      
+   console.log("Endpoint?", endpoint);
 
    return get(endpoint)
       .then(res => {

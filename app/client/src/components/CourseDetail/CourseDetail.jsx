@@ -11,6 +11,9 @@ export default class CourseDetail extends Component {
       super(props);
 
       this.state = { };
+      
+      //this.props.addTopicsAndActivities(4);
+      this.props.addVideos(4);
    }
 
    render() {

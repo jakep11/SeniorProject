@@ -2,6 +2,9 @@ import * as api from '../api';
 
 /* Actions */
 const ADD_TOPICS = 'ADD_TOPICS';
+const ADD_TOPICS_DOCUMENTS = 'ADD_TOPICS_DOCUMENTS';
+const ADD_TOPICS_EXERCISES = 'ADD_TOPICS_EXERCISES';
+const ADD_TOPICS_VIDEOS = 'ADD_TOPICS_VIDEOS';
 const ADD_ACTIVITIES = 'ADD_ACTIVITIES';
 const TOGGLE_ACTIVITY = 'TOGGLE_ACTIVITY';
 
@@ -30,10 +33,11 @@ export default function Topics(state = initialState, action) {
             videos: []
          }
       });
+      console.log("Clone is..", clone);
       return clone;
 
    case ADD_TOPICS_DOCUMENTS:
-      let clone = Object.assign({}, state);
+      clone = Object.assign({}, state);
 
       action.documents.forEach(document => {
          let topicId = document.topicId;
@@ -42,7 +46,7 @@ export default function Topics(state = initialState, action) {
       return clone;
 
    case ADD_TOPICS_EXERCISES:
-      let clone = Object.assign({}, state);
+      clone = Object.assign({}, state);
 
       action.exercises.forEach(exercise => {
          let topicId = exercise.topicId;
@@ -51,7 +55,7 @@ export default function Topics(state = initialState, action) {
       return clone;
 
    case ADD_TOPICS_VIDEOS:
-      let clone = Object.assign({}, state);
+      clone = Object.assign({}, state);
 
       action.videos.forEach(video => {
          let topicId = video.topicId;
