@@ -95,8 +95,7 @@ CREATE TABLE Progress (
     grade REAL,
     attempted BOOLEAN,
     whenCompleted DATETIME,
-    PRIMARY KEY (activityType, activityId),
-    UNIQUE (userId, topicId, activityId),
+    PRIMARY KEY (userId, activityType, activityId),
     FOREIGN KEY (userId) REFERENCES User(id) on delete cascade 
     on update cascade,
     FOREIGN KEY (topicId) REFERENCES Topic(id) on delete cascade 

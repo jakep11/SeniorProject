@@ -173,13 +173,6 @@ INSERT INTO Video SET name = 'Dynamic 2-D array', link = 'Bt9rTV6je3w',
 -- ----------------------------------------------------------------------------
 -- Exercise
 -- ----------------------------------------------------------------------------
--- Question src: 
--- CSC357 https://www.tutorialspoint.com/cprogramming/cprogramming_interview_questions.htm
--- CSC365
--- CPE233
--- CPE133
--- CSC437
--- ----------------------------------------------------------------------------
 
 -- CSC357
 INSERT INTO Exercise SET name = 'Problem A', 
@@ -187,7 +180,7 @@ INSERT INTO Exercise SET name = 'Problem A',
  answer = 'Dennis M Ritchie', type = 'FreeResponse', points = 1, 
  dueDate = '2016-01-16 23:59:59', topicId = 8;
 INSERT INTO Exercise SET name = 'Problem B', 
- question = 'S++ / S = S+1, which can be recommended to increment the value', 
+ question = 'S++ or S = S+1, which can be recommended to increment the value', 
  answer = 'S++', type = 'FreeResponse', points = 1, 
  dueDate = '2016-01-16 23:59:59', topicId = 8;
 INSERT INTO Exercise SET name = 'Problem C', 
@@ -228,7 +221,7 @@ INSERT INTO Exercise SET name = 'Problem A',
 -- ----------------------------------------------------------------------------
 -- CSC365
 INSERT INTO Exercise SET name = 'Problem A', 
- question = 'A base operation defined by T ={t|t∈R and !(t∈S)}', 
+ question = 'A base operation defined by T ={t|tER and !(tES)}', 
  answer = 'Difference', type = 'FreeResponse', points = 1, 
  dueDate = '2016-10-26 23:59:59', topicId = 13;
 INSERT INTO Exercise SET name = 'Problem B', 
@@ -258,88 +251,173 @@ INSERT INTO Exercise SET name = 'Problem B',
 
 -- ----------------------------------------------------------------------------
 -- CPE233
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'List 4 different conditional branches (separated by comma)', 
+ answer = 'Equal,Not Equal,Carry Set,Carry clear', type = 'FreeResponse', points = 1, 
  dueDate = '2017-01-15 23:59:59', topicId = 21;
 
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A',
+ question = 'List 4 different logic operations as mentioned in the video (separated by comma)', 
+ answer = 'AND,OR,ERROR,Test', type = 'FreeResponse', points = 1, 
  dueDate = '2017-01-25 23:59:59', topicId = 22;
 
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'MultipleChoice', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A',
+ question = 'How many operations does RAT ALU support?', 
+ answer = '16', type = 'MultipleChoice', points = 1, 
  dueDate = '2017-02-10 23:59:59', topicId = 23;
 
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A',
+ question = 'What does FSM stand for?', 
+ answer = 'Finite State Machine', type = 'FreeResponse', points = 1, 
  dueDate = '2017-02-28 23:59:59', topicId = 24;
 
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'MultipleChoice', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A',
+ question = 'What are the 3 I/O signals drawn in the video', 
+ answer = 'IN_PORT,OUT_PORT,PORT_ID', type = 'MultipleChoice', points = 1, 
  dueDate = '2017-03-05 23:59:59', topicId = 25;
 
 -- ----------------------------------------------------------------------------
 -- CPE133
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'Convert 100 to binary.', 
+ answer = '1100100', type = 'FreeResponse', points = 1, 
+ dueDate = '2018-04-10 23:00:00', topicId = 1;
+INSERT INTO Exercise SET name = 'Problem B', 
+ question = 'Convert 1111 to decimal', 
+ answer = '15', type = 'FreeResponse', points = 1, 
  dueDate = '2018-04-10 23:00:00', topicId = 1;
 
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'Evaluate 1 XOR 0', 
+ answer = '1', type = 'FreeResponse', points = 1, 
+ dueDate = '2018-04-17 23:00:00', topicId = 2;
+INSERT INTO Exercise SET name = 'Problem B', 
+ question = 'Evaluate (A+B+C)(D+E)! + (A+B+C)(D+E), where * = AND, + = OR, ! = NOT', 
+ answer = 'A + B + C', type = 'FreeResponse', points = 1, 
  dueDate = '2018-04-17 23:00:00', topicId = 2;
 
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'Number of cells in a 4-variable K-map', 
+ answer = '16', type = 'FreeResponse', points = 1, 
  dueDate = '2018-04-25 23:00:00', topicId = 3;
-INSERT INTO Exercise SET name = 'Problem B', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
+INSERT INTO Exercise SET name = 'Problem B', 
+ question = 'The K-map based Boolean reduction is based on the following Unifying Theorem: A + A’ = 1', 
+ answer = 'Non Impact', type = 'FreeResponse', points = 1, 
  dueDate = '2018-04-25 23:00:00', topicId = 3;
 
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = '3 bits full adder contains', 
+ answer = '8 combinational inputs', type = 'FreeResponse', points = 1, 
  dueDate = '2018-05-03 23:00:00', topicId = 4;
 
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'MultipleChoice', points = 1, 
- dueDate = '2018-05-15 23:00:00', topicId = 5;
-INSERT INTO Exercise SET name = 'Problem B', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'Total number of inputs in a half adder is', 
+ answer = '2', type = 'MultipleChoice', points = 1, 
  dueDate = '2018-05-15 23:00:00', topicId = 5;
 
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'How many stable state in a latch', 
+ answer = '2', type = 'FreeResponse', points = 1, 
  dueDate = '2018-05-20 23:00:00', topicId = 6;
 
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'MultipleChoice', points = 1, 
- dueDate = '2018-06-01 23:00:00', topicId = 7;
-INSERT INTO Exercise SET name = 'Problem B', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
- dueDate = '2018-06-01 23:00:00', topicId = 7;
+-- INSERT INTO Exercise SET name = 'Problem A', question = '', 
+--  answer = '', type = 'MultipleChoice', points = 1, 
+--  dueDate = '2018-06-01 23:00:00', topicId = 7;
 
 -- ----------------------------------------------------------------------------
 -- CSC437
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
- dueDate = '2017-01-10 23:59:59', topicId = 17;
-
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'MultipleChoice', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'Fill in the equality check: f.__proto__ === ______________________', 
+ answer = 'Function.prototype. f', type = 'MultipleChoice', points = 1, 
  dueDate = '2017-01-15 23:59:59', topicId = 18;
 
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
+INSERT INTO Exercise SET name = 'Problem A', 
+ question = 'In the method call list.add(42), how many parameters does add tuly have?', 
+ answer = '2', type = 'FreeResponse', points = 1, 
  dueDate = '2017-02-10 23:59:59', topicId = 19;
 
-INSERT INTO Exercise SET name = 'Problem A', question = '', 
- answer = '', type = 'FreeResponse', points = 1, 
- dueDate = '2017-03-12 23:59:59', topicId = 20;
+-- INSERT INTO Exercise SET name = 'Problem A', question = '', 
+--  answer = '', type = 'FreeResponse', points = 1, 
+--  dueDate = '2017-03-12 23:59:59', topicId = 20;
 
 -- ----------------------------------------------------------------------------
 -- Document
 -- ----------------------------------------------------------------------------
--- INSERT INTO Document SET name = "Writing Effective Test", 
- -- contentName =, contentPath= ,dueDate = '2017-01-20 23:59:59', topicId = 18;
+
+-- CPE133
+INSERT INTO Document SET name = "1.pdf", 
+ contentPath= "/1/", dueDate = '2018-04-10 23:00:00', topicId = 1;
+INSERT INTO Document SET name = "2.pdf", 
+ contentPath= "/2/", dueDate = '2018-04-17 23:00:00', topicId = 2;
+INSERT INTO Document SET name = "3.pdf", 
+ contentPath= "/3/", dueDate = '2018-04-25 23:00:00', topicId = 3;
+INSERT INTO Document SET name = "4.pdf", 
+ contentPath= "/4/", dueDate = '2018-05-03 23:00:00', topicId = 4; 
+INSERT INTO Document SET name = "5.pdf", 
+ contentPath= "/5/", dueDate = '2018-05-15 23:00:00', topicId = 5;
+INSERT INTO Document SET name = "6.pdf", 
+ contentPath= "/6/", dueDate = '2018-05-20 23:00:00', topicId = 6;
+INSERT INTO Document SET name = "7.pdf", 
+ contentPath= "/7/", dueDate = '2018-06-01 23:00:00', topicId = 7;
+
+-- ----------------------------------------------------------------------------
+-- CPE357
+INSERT INTO Document SET name = "1.pdf", 
+ contentPath= "/8/", dueDate = '2016-01-15 23:59:59', topicId = 8;
+INSERT INTO Document SET name = "2.pdf", 
+ contentPath= "/9/", dueDate = '2016-01-25 23:59:59', topicId = 9;
+INSERT INTO Document SET name = "3.pdf", 
+ contentPath= "/10/", dueDate = '2016-02-10 23:59:59', topicId = 10;
+INSERT INTO Document SET name = "4.pdf", 
+ contentPath= "/11/", dueDate = '2016-02-17 23:59:59', topicId = 11;
+INSERT INTO Document SET name = "5.pdf", 
+ contentPath= "/12/", dueDate = '2016-02-25 23:59:59', topicId = 12;
+
+-- ----------------------------------------------------------------------------
+-- CPE365
+INSERT INTO Document SET name = "6.pdf", 
+ contentPath= "/13/", dueDate = '2016-10-25 23:59:59', topicId = 13;
+INSERT INTO Document SET name = "7.pdf", 
+ contentPath= "/14/", dueDate = '2016-11-05 23:59:59', topicId = 14;
+INSERT INTO Document SET name = "1.pdf", 
+ contentPath= "/15/", dueDate = '2016-11-15 23:59:59', topicId = 15;
+INSERT INTO Document SET name = "2.pdf", 
+ contentPath= "/16/", dueDate = '2016-11-20 23:59:59', topicId = 16;
+
+-- ----------------------------------------------------------------------------
+-- CPE437
+INSERT INTO Document SET name = "3.pdf", 
+ contentPath= "/17/", dueDate = '2017-01-10 23:00:00', topicId = 17;
+INSERT INTO Document SET name = "4.pdf", 
+ contentPath= "/18/", dueDate = '2017-01-15 23:59:59', topicId = 18;
+INSERT INTO Document SET name = "5.pdf", 
+ contentPath= "/19/", dueDate = '2017-02-10 23:59:59', topicId = 19;
+INSERT INTO Document SET name = "6.pdf", 
+ contentPath= "/20/", dueDate = '2017-03-12 23:59:59', topicId = 20;
+
+-- ----------------------------------------------------------------------------
+-- CPE233
+INSERT INTO Document SET name = "7.pdf", 
+ contentPath= "/21/", dueDate = '2017-01-15 23:59:59', topicId = 21;
+INSERT INTO Document SET name = "1.pdf", 
+ contentPath= "/22/", dueDate = '2017-01-25 23:59:59', topicId = 22;
+INSERT INTO Document SET name = "2.pdf", 
+ contentPath= "/23/", dueDate = '2017-02-10 23:59:59', topicId = 23;
+INSERT INTO Document SET name = "3.pdf", 
+ contentPath= "/24/", dueDate = '2017-02-28 23:59:59', topicId = 24;
+INSERT INTO Document SET name = "4.pdf", 
+ contentPath= "/25/", dueDate = '2017-03-05 23:59:59', topicId = 25;
+
 -- ----------------------------------------------------------------------------
 -- Progress
 -- ----------------------------------------------------------------------------
+source populateProgress.sql; -- populate Progress
+-- CPE133
+-- ----------------------------------------------------------------------------
+-- CPE357
+-- ----------------------------------------------------------------------------
+-- CPE365
+-- ----------------------------------------------------------------------------
+-- CSC437
+-- ----------------------------------------------------------------------------
+-- CPE233
