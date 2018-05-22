@@ -13,9 +13,9 @@ router.get('/', function(req, res) {
    var vld = req.validator;
    var cnn = req.cnn;
 
-   const sectionId = req.query.sectionId;
+   const topicId = req.query.topicId;
 
-   const where = sectionId ? `WHERE sectionId = ${sectionId}` : '';
+   const where = topicId ? `WHERE topicId = ${topicId}` : '';
    const query = `SELECT * FROM Exercise ${where}`;
    
    async.waterfall([

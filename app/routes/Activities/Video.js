@@ -7,9 +7,9 @@ router.baseURL = '/Video';
 
 router.get('/', (req, res) => {
    let vld = req.validator;
-   const sectionId = req.query.sectionId;
+   const topicId = req.query.topicId;
 
-   const where = sectionId ? `WHERE sectionId = ${sectionId}` : '';
+   const where = topicId ? `WHERE topicId = ${topicId}` : '';
    const query = `SELECT * FROM Video ${where}`;
 
 
