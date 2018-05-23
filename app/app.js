@@ -70,6 +70,8 @@ app.use('/Video', require('./routes/Activities/Video'));
 app.use('/Section', require('./routes/Section'));
 app.use('/Topic', require('./routes/Topic'));
 app.use('/Enrollment', require('./routes/Enrollment'));
+app.use('/Progress', require('./routes/Progress'));
+
 
 
 // Special debugging route for /DB DELETE.  Clears all table contents, resets 
