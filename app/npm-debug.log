@@ -1,33 +1,36 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'start' ]
-2 info using npm@3.5.2
-3 info using node@v6.11.4
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'run',
+1 verbose cli   'start' ]
+2 info using npm@3.10.10
+3 info using node@v6.10.0
 4 verbose run-script [ 'prestart', 'start', 'poststart' ]
 5 info lifecycle seniorProject@0.0.0~prestart: seniorProject@0.0.0
 6 silly lifecycle seniorProject@0.0.0~prestart: no script for prestart, continuing
 7 info lifecycle seniorProject@0.0.0~start: seniorProject@0.0.0
 8 verbose lifecycle seniorProject@0.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle seniorProject@0.0.0~start: PATH: /usr/share/npm/bin/node-gyp-bin:/home/bshutt/school/SeniorProject/app/node_modules/.bin:/home/bshutt/bin:/bin:/usr/bin:/usr/local/bin
-10 verbose lifecycle seniorProject@0.0.0~start: CWD: /home/bshutt/school/SeniorProject/app
-11 silly lifecycle seniorProject@0.0.0~start: Args: [ '-c', 'PORT=4000 node app' ]
+9 verbose lifecycle seniorProject@0.0.0~start: PATH: C:\Program Files\nodejs\node_modules\npm\bin\node-gyp-bin;C:\Users\Jake\Documents\seniorProject\app\node_modules\.bin;C:\Users\Jake\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Program Files\Microsoft SQL Server\110\Tools\Binn;C:\Program Files (x86)\Microsoft SDKs\TypeScript\1.0;C:\XAMPP\php;C:\ProgramData\ComposerSetup\bin;C:\mongodb\bin;C:\Program Files (x86)\Skype\Phone;C:\sqlite;C:\Program Files\nodejs;C:\Program Files (x86)\Sublime Text 2;C:\Program Files\nodejs;C:\Program Files\Java\jdk1.8.0_101\bin;C:\Program Files\MariaDB 10.1\bin;C:\Program Files (x86)\Gow\bin;C:\Program Files\Git\usr\bin;C:\Python35\Scripts;C:\Python35;C:\Users\Jake\AppData\Local\Programs\Python\Python36-32\Scripts;C:\Users\Jake\AppData\Local\Programs\Python\Python36-32;C:\Program Files (x86)\SSH Communications Security\SSH Secure Shell;C:\Program Files\nodejs;C:\Users\Jake\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Apache\apache-maven-3.3.9\bin;C:\Python27;C:\Python27\Scripts;C:\Users\Jake\AppData\Roaming\npm;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+10 verbose lifecycle seniorProject@0.0.0~start: CWD: C:\Users\Jake\Documents\seniorProject\app
+11 silly lifecycle seniorProject@0.0.0~start: Args: [ '/d /s /c', 'PORT=4000 node app' ]
 12 silly lifecycle seniorProject@0.0.0~start: Returned: code: 1  signal: null
 13 info lifecycle seniorProject@0.0.0~start: Failed to exec start script
 14 verbose stack Error: seniorProject@0.0.0 start: `PORT=4000 node app`
 14 verbose stack Exit status 1
-14 verbose stack     at EventEmitter.<anonymous> (/usr/share/npm/lib/utils/lifecycle.js:232:16)
+14 verbose stack     at EventEmitter.<anonymous> (C:\Program Files\nodejs\node_modules\npm\lib\utils\lifecycle.js:255:16)
 14 verbose stack     at emitTwo (events.js:106:13)
 14 verbose stack     at EventEmitter.emit (events.js:191:7)
-14 verbose stack     at ChildProcess.<anonymous> (/usr/share/npm/lib/utils/spawn.js:24:14)
+14 verbose stack     at ChildProcess.<anonymous> (C:\Program Files\nodejs\node_modules\npm\lib\utils\spawn.js:40:14)
 14 verbose stack     at emitTwo (events.js:106:13)
 14 verbose stack     at ChildProcess.emit (events.js:191:7)
-14 verbose stack     at maybeClose (internal/child_process.js:920:16)
-14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:230:5)
+14 verbose stack     at maybeClose (internal/child_process.js:877:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
 15 verbose pkgid seniorProject@0.0.0
-16 verbose cwd /home/bshutt/school/SeniorProject/app
-17 error Linux 4.13.0-41-generic
-18 error argv "/usr/bin/node" "/usr/bin/npm" "start"
-19 error node v6.11.4
-20 error npm  v3.5.2
+16 verbose cwd C:\Users\Jake\Documents\seniorProject\app
+17 error Windows_NT 10.0.16299
+18 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "run" "start"
+19 error node v6.10.0
+20 error npm  v3.10.10
 21 error code ELIFECYCLE
 22 error seniorProject@0.0.0 start: `PORT=4000 node app`
 22 error Exit status 1

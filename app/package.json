@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "PORT=4000 node app",
+    "start": "nodemon app",
     "test": "mocha --exit",
     "test-cov": "nyc --all -x '**/client**' mocha --exit",
     "test-cov-html": "nyc --reporter=html --all mocha --exit",

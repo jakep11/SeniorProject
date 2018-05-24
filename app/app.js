@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next) {
    console.log("Handling " + req.path + '/' + req.method);
-   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+   res.header("Access-Control-Allow-Origin", "http://localhost:80");
    res.header("Access-Control-Allow-Credentials", true);
    res.header("Access-Control-Allow-Headers", "Location, Content-Type, Authorization, Accept, X-HTTP-Method-Override, X-Requested-With");
    res.header("Access-Control-Allow-Methods", 'POST, GET, PUT, DELETE, OPTIONS');
@@ -143,6 +143,6 @@ app.use(function (err, req, res) {
    res.render('error');
 });
 
-app.listen(process.env.PORT || 4000, () => console.log(`App listening on port ${process.env.PORT || 4000}`));
+app.listen(80, () => console.log(`App listening on port 80`));
 
 module.exports = app;
