@@ -47,7 +47,7 @@ export default class CoursesFilterSidebar extends Component {
       return (
          <div className="cf-wrapper">
             <h2 className="cs-filter-header">Filter</h2>
-            <div>
+            <div className="cs-filter-body">
                <div className="cs-filter-type">Date Order</div>
                <FormGroup>
 
