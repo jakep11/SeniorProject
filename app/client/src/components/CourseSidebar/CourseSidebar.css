@@ -1,0 +1,12 @@
+.cd-sidebar-wrapper {
+   display: flex;
+   flex-direction: column;
+}
+
+.cd-sidebar-wrapper a {
+    color: black;
+    font-size: 30px;
+    padding: 20px;
+}
+
+
