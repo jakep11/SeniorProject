@@ -6,3 +6,4 @@ connection.json
 *.swp
 .history/
 *.log
+npm-debug.log
