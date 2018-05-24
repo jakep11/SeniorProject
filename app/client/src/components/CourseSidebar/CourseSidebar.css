@@ -9,4 +9,6 @@
     padding: 20px;
 }
 
-
+.cd-sidebar-wrapper a:hover {
+    text-decoration: none;
+}
