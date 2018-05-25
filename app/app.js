@@ -5,7 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// var index = require('./routes/index');
 var Session = require('./routes/Session.js');
 var Validator = require('./routes/Validator.js');
 var CnnPool = require('./routes/CnnPool.js');
@@ -56,10 +55,8 @@ app.get('/', function (req, res) {
 // Check general login.  If OK, add Validator to |req| and continue processing,
 // otherwise respond immediately with 401 and noLogin error tag.
 app.use(function (req, res, next) {
-   console.log("Req.path: ", req.path);
    if (req.session || (req.method === 'POST' &&
       (req.path === '/api/User' || req.path === '/api/Session'))) {
-      console.log("JAKE");
       req.validator = new Validator(req, res);
       next();
    } 
@@ -143,11 +140,7 @@ app.get('/*', function (req, res) {
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-   console.log("JAKE SHOULD BE 404");
    res.render('index', { title: 'Express' });
-   // var err = new Error('Not Found');
-   // err.status = 404;
-   // next(err);
 });
 
 
