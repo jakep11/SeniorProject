@@ -31,8 +31,7 @@ export default class Home extends Component {
                          term={course.term}
                          isEnrolled={true} />
          </Link>
-      )
-
+      );
    }
 
    render() {
@@ -43,9 +42,9 @@ export default class Home extends Component {
                <h1>Enrolled</h1>
 
                <div className="hm-section-body">
-                  { this.props.User.enrolled && this.props.User.enrolled.length === 0
-                     ? 'You are not enrolled in any classes.'
-                     : this.props.User.enrolled.map((courseId, idx) => this.renderCourse(courseId, idx))
+                  { this.props.User.enrolled && this.props.User.enrolled.length !== 0
+                     ? this.props.User.enrolled.map((courseId, idx) => this.renderCourse(courseId, idx))
+                     : 'You are not enrolled in any classes.'
                   }
                </div>
 
@@ -62,9 +61,6 @@ export default class Home extends Component {
             </section>
 
          </div>
-
-
-      )
-
+      );
    }
 }
