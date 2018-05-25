@@ -26,6 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "rm -rf ../public/static/ && mv -v ./build/* ../public/",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
