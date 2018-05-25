@@ -155,6 +155,6 @@ app.use(function (err, req, res) {
    res.render('error');
 });
 
-app.listen(process.env.PORT || 80, () => console.log(`App listening on port ${process.env.PORT || 80}`));
+app.listen(process.env.PORT || 4000, () => console.log(`App listening on port ${process.env.PORT || 4000}`));
 
 module.exports = app;
