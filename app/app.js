@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
+// var index = require('./routes/index');
 var Session = require('./routes/Session.js');
 var Validator = require('./routes/Validator.js');
 var CnnPool = require('./routes/CnnPool.js');
@@ -14,16 +14,13 @@ var async = require('async');
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+//For Production, need to copy contents of client build folder into public folder
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next) {
@@ -46,11 +43,23 @@ app.use(function(req, res, next) {
 // Set up Session on req if available
 app.use(Session.router);
 
+app.get('/', function (req, res) {
+   console.log("Home page");
+   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+ });
+
+ app.get('/login', function (req, res) {
+   console.log("Login page");
+   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+ });
+
 // Check general login.  If OK, add Validator to |req| and continue processing,
 // otherwise respond immediately with 401 and noLogin error tag.
 app.use(function (req, res, next) {
+   console.log("Req.path: ", req.path);
    if (req.session || (req.method === 'POST' &&
-      (req.path === '/User' || req.path === '/Session'))) {
+      (req.path === '/api/User' || req.path === '/api/Session'))) {
+      console.log("JAKE");
       req.validator = new Validator(req, res);
       next();
    } 
@@ -60,23 +69,25 @@ app.use(function (req, res, next) {
 
 app.use(CnnPool.router);
 
-app.use('/', index);
+// I think I can get rid of this
+//app.use('/', index);
+
 // Load all subroutes
-app.use('/User', require('./routes/Account/User'));
-app.use('/Session', require('./routes/Account/Sessions'));
-app.use('/Document', require('./routes/Activities/Document'));
-app.use('/Exercise', require('./routes/Activities/Exercise'));
-app.use('/Video', require('./routes/Activities/Video'));
-app.use('/Section', require('./routes/Section'));
-app.use('/Topic', require('./routes/Topic'));
-app.use('/Enrollment', require('./routes/Enrollment'));
-app.use('/Progress', require('./routes/Progress'));
+app.use('/api/User', require('./routes/Account/User'));
+app.use('/api/Session', require('./routes/Account/Sessions'));
+app.use('/api/Document', require('./routes/Activities/Document'));
+app.use('/api/Exercise', require('./routes/Activities/Exercise'));
+app.use('/api/Video', require('./routes/Activities/Video'));
+app.use('/api/Section', require('./routes/Section'));
+app.use('/api/Topic', require('./routes/Topic'));
+app.use('/api/Enrollment', require('./routes/Enrollment'));
+app.use('/api/Progress', require('./routes/Progress'));
 
 
 
 // Special debugging route for /DB DELETE.  Clears all table contents, resets 
 // all auto_increment keys to start at 1, and reinserts one admin user.
-app.delete('/DB', function(req, res) {
+app.delete('/api/DB', function(req, res) {
 
    // Callbacks to clear tables
    var cbs = ["Document", "Enrollment", "Exercise", "Progress", "Section", "Topic", "User", "Video"].map(function(tblName) {
@@ -124,11 +135,19 @@ app.delete('/DB', function(req, res) {
    req.cnn.release();
 });
 
+// Gets any routes that don't match 
+app.get('/*', function (req, res) {
+   console.log("CLIENT SIDE PATH");
+   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+ });
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-   var err = new Error('Not Found');
-   err.status = 404;
-   next(err);
+   console.log("JAKE SHOULD BE 404");
+   res.render('index', { title: 'Express' });
+   // var err = new Error('Not Found');
+   // err.status = 404;
+   // next(err);
 });
 
 
@@ -143,6 +162,6 @@ app.use(function (err, req, res) {
    res.render('error');
 });
 
-app.listen(process.env.PORT || 4000, () => console.log(`App listening on port ${process.env.PORT || 4000}`));
+app.listen(process.env.PORT || 80, () => console.log(`App listening on port ${process.env.PORT || 80}`));
 
 module.exports = app;
