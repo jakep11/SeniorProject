@@ -35,13 +35,13 @@ describe('Video Management', () => {
          'sectionId': 1,
       }
 
-      agent.post('/Session')
+      agent.post('/api/Session')
          .send({email: 'admin@example.com', password: 'password'})
          .end((err, res) => {
             res.should.have.status(200);
             
             agent
-               .delete('/DB')
+               .delete('/api/DB')
                .end((err, res) => {
                   connection.query('insert into Section set ?', section437);
                   connection.query('insert into Topic set ?', topic1);
@@ -64,7 +64,7 @@ describe('Video Management', () => {
 
       it('results in 200 and registers a new student account', (done) => {
          agent
-            .post('/User')
+            .post('/api/User')
             .send(user)
             .end((err, res) => {
                res.should.have.status(200);
@@ -75,7 +75,7 @@ describe('Video Management', () => {
 
       it('results in 200 and logs in as student', (done) => {
          agent
-            .post('/Session')
+            .post('/api/Session')
             .send({email: 'UserA@domainA', password: 'passwordA'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -90,7 +90,7 @@ describe('Video Management', () => {
       it('results in 200 and empty array', (done) => {
          
          agent
-            .get('/Video')
+            .get('/api/Video')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -111,7 +111,7 @@ describe('Video Management', () => {
          }
 
          agent
-            .post('/Video')
+            .post('/api/Video')
             .send(videoData)
             .end((err, res) => {
                res.should.have.status(403);
@@ -128,7 +128,7 @@ describe('Video Management', () => {
          };
 
          agent
-            .post('/Session')
+            .post('/api/Session')
             .send(session)
             .end((err, res) => {
                res.should.have.status(200);
@@ -152,7 +152,7 @@ describe('Video Management', () => {
          }
 
          agent
-            .post('/Video')
+            .post('/api/Video')
             .send(videoData)
             .end((err, res) => {
                res.should.have.status(200);
@@ -172,7 +172,7 @@ describe('Video Management', () => {
          }
 
          agent
-            .post('/Video')
+            .post('/api/Video')
             .send(videoData)
             .end((err, res) => {
                res.should.have.status(200);
@@ -184,7 +184,7 @@ describe('Video Management', () => {
    describe('/GET 2 videos', () => {
       it('results in 200 and 2 videos returned', (done) => {
          agent
-            .get('/Video')
+            .get('/api/Video')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -198,7 +198,7 @@ describe('Video Management', () => {
    describe('/GET /video/2', () => {
       it('results in 200 and returns video with id = 2', (done) => {
          agent
-            .get('/Video/2')
+            .get('/api/Video/2')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.have.property('id', 2);
@@ -218,7 +218,7 @@ describe('Video Management', () => {
          }
 
          agent
-            .put('/Video/1')
+            .put('/api/Video/1')
             .send(videoUpdateInfo)
             .end((err, res) => {
                res.should.have.status(200);
@@ -230,7 +230,7 @@ describe('Video Management', () => {
    describe('/GET /video/1', () => {
       it('results in 200 and confirms the updates to video 1', (done) => {
          agent
-            .get('/Video/1')
+            .get('/api/Video/1')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.have.property('id', 1);
@@ -244,7 +244,7 @@ describe('Video Management', () => {
    describe('/DELETE /video/1', () => {
       it('results in 200 and deletes video 1', (done) => {
          agent
-            .delete('/Video/1')
+            .delete('/api/Video/1')
             .end((err, res) => {
                res.should.have.status(200);
                done();
@@ -255,7 +255,7 @@ describe('Video Management', () => {
    describe('/GET 1 video', () => {
       it('results in 200 and 1 video returned', (done) => {
          agent
-            .get('/Video')
+            .get('/api/Video')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -269,7 +269,7 @@ describe('Video Management', () => {
    describe('/GET /video/1 will not work', () => {
       it('results in 404 because video was deleted', (done) => {
          agent
-            .get('/Video/1')
+            .get('/api/Video/1')
             .end((err, res) => {
                res.should.have.status(404);
                

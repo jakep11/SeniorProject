@@ -74,11 +74,11 @@ describe('Enrollment Management', () => {
 
          // admin login, nuke, add test user and section
          agent
-            .post('/Session')
+            .post('/api/Session')
             .send({'email': 'admin@example.com', 'password': 'password'})
             .end(() => {
                agent
-                  .delete('/DB')
+                  .delete('/api/DB')
                   .end(() => {
                      connection.query('insert into User set ?', adminUser);
                      connection.query('insert into User set ?', studentUser1);
@@ -98,7 +98,7 @@ describe('Enrollment Management', () => {
       describe('/POST add Enrollment w/o AU' , () => {
          it('should return 401', (done) => {
             chai.request(server)
-               .post('/Enrollment')
+               .post('/api/Enrollment')
                .send({'userId': 3, 'sectionId': 1})
                .end((err, res) => {
                   res.should.have.status(401);
@@ -111,7 +111,7 @@ describe('Enrollment Management', () => {
       describe('/GET w/o AU', () => {
          it('should return 401', (done) => {
             chai.request(server)
-               .get('/Enrollment')
+               .get('/api/Enrollment')
                .end((err, res) => {
                   res.should.have.status(401);
                
@@ -123,7 +123,7 @@ describe('Enrollment Management', () => {
       describe('/GET with query param w/o AU', () => {
          it('should return 401', (done) => {
             chai.request(server)
-               .get('/Enrollment/?userId=1')
+               .get('/api/Enrollment/?userId=1')
                .end((err, res) => {
                   res.should.have.status(401);
                
@@ -133,7 +133,7 @@ describe('Enrollment Management', () => {
 
          it('should return 401', (done) => {
             chai.request(server)
-               .get('/Enrollment/?sectionId=1')
+               .get('/api/Enrollment/?sectionId=1')
                .end((err, res) => {
                   res.should.have.status(401);
                
@@ -145,7 +145,7 @@ describe('Enrollment Management', () => {
       describe('/DELETE w/o AU', () => {
          it('should return 401', (done) => {
             chai.request(server)
-               .delete('/Enrollment/1/3')
+               .delete('/api/Enrollment/1/3')
                .end((err, res) => {
                   res.should.have.status(401);
                
@@ -158,7 +158,7 @@ describe('Enrollment Management', () => {
    describe('Admin Test Cases', () => {
       before('Login Admin', (done) => {
          agent
-            .post('/Session')
+            .post('/api/Session')
             .send({'email': 'admin@example.com', 'password': 'password'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -170,7 +170,7 @@ describe('Enrollment Management', () => {
       describe('/POST w/ admin', () => {
          it('should return 200', (done) => {
             agent
-               .post('/Enrollment')
+               .post('/api/Enrollment')
                .send({'userId': 3, 'sectionId': 2})
                .end((err, res) => {
                   res.should.have.status(200);
@@ -182,7 +182,7 @@ describe('Enrollment Management', () => {
 
          it('should return 200', (done) => {
             agent
-               .post('/Enrollment')
+               .post('/api/Enrollment')
                .send({'userId': 3, 'sectionId': 3})
                .end((err, res) => {
                   res.should.have.status(200);
@@ -195,7 +195,7 @@ describe('Enrollment Management', () => {
          // bad cases
          it('should return 400 - duplicate enrollment', (done) => {
             agent
-               .post('/Enrollment')
+               .post('/api/Enrollment')
                .send({'userId': 3, 'sectionId': 2})
                .end((err, res) => {
                   res.should.have.status(400);
@@ -207,7 +207,7 @@ describe('Enrollment Management', () => {
 
          it('should return 400 - missing userId', (done) => {
             agent
-               .post('/Enrollment')
+               .post('/api/Enrollment')
                .send({'sectionId': 2})
                .end((err, res) => {
                   res.should.have.status(400);
@@ -221,7 +221,7 @@ describe('Enrollment Management', () => {
 
          it('should return 400 - null userId', (done) => {
             agent
-               .post('/Enrollment')
+               .post('/api/Enrollment')
                .send({'userId': null, 'sectionId': 2})
                .end((err, res) => {
                   res.should.have.status(400);
@@ -235,7 +235,7 @@ describe('Enrollment Management', () => {
 
          it('should return 400 - missing sectionId', (done) => {
             agent
-               .post('/Enrollment')
+               .post('/api/Enrollment')
                .send({'userId': 3})
                .end((err, res) => {
                   res.should.have.status(400);
@@ -249,7 +249,7 @@ describe('Enrollment Management', () => {
 
          it('should return 400 - empty sectionId', (done) => {
             agent
-               .post('/Enrollment')
+               .post('/api/Enrollment')
                .send({'userId': 3, 'sectionId': ''})
                .end((err, res) => {
                   res.should.have.status(400);
@@ -263,7 +263,7 @@ describe('Enrollment Management', () => {
 
          it('should return 400 - otherField', (done) => {
             agent
-               .post('/Enrollment')
+               .post('/api/Enrollment')
                .send({'userId': 1, 'sectionId': 2, 'term' : 'S18'})
                .end((err, res) => {
                   res.should.have.status(400);
@@ -279,7 +279,7 @@ describe('Enrollment Management', () => {
       describe('/GET w/ admin', () => {
          it('should return 200', (done) =>{
             agent
-               .get('/Enrollment')
+               .get('/api/Enrollment')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
@@ -296,7 +296,7 @@ describe('Enrollment Management', () => {
 
          it('valid userId should return 200', (done) => {
             agent
-               .get('/Enrollment/?userId=3')
+               .get('/api/Enrollment/?userId=3')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
@@ -313,7 +313,7 @@ describe('Enrollment Management', () => {
 
          it('valid sectionId should return 200', (done) => {
             agent
-               .get('/Enrollment/?sectionId=2')
+               .get('/api/Enrollment/?sectionId=2')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
@@ -327,7 +327,7 @@ describe('Enrollment Management', () => {
 
          it('nonExisting userId should return 200', (done) => {
             agent
-               .get('/Enrollment/?userId=100')
+               .get('/api/Enrollment/?userId=100')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
@@ -339,7 +339,7 @@ describe('Enrollment Management', () => {
 
          it('nonExisting sectionId should return 200', (done) => {
             agent
-               .get('/Enrollment/?sectionId=100')
+               .get('/api/Enrollment/?sectionId=100')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
@@ -353,7 +353,7 @@ describe('Enrollment Management', () => {
       describe('/DELETE w/ admin', () => {
          // it('missing userId should return 400', (done) => {
          //    agent
-         //       .delete('/Enrollment')
+         //       .delete('/api/Enrollment')
          //       .send({'sectionId': 2})
          //       .end((err, res) => {
          //          res.should.have.status(400);
@@ -372,7 +372,7 @@ describe('Enrollment Management', () => {
 
          // it('missing sectionId should return 400', (done) => {
          //    agent
-         //       .delete('/Enrollment')
+         //       .delete('/api/Enrollment')
          //       .send({'userId' : 3, 'sectionId': ''})
          //       .end((err, res) => {
          //          res.should.have.status(400);
@@ -392,7 +392,7 @@ describe('Enrollment Management', () => {
 
          // it('otherField should return 400', (done) => {
          //    agent
-         //       .delete('/Enrollment')
+         //       .delete('/api/Enrollment')
          //       .send({'userId' : 3, 'other': ''})
          //       .end((err, res) => {
          //          res.should.have.status(400);
@@ -411,7 +411,7 @@ describe('Enrollment Management', () => {
 
          it('not enrolled userId should return 404', (done) => {
             agent
-               .delete('/Enrollment/2/4')
+               .delete('/api/Enrollment/2/4')
                .end((err, res) => {
                   res.should.have.status(404);
                   res.body.should.be.empty;
@@ -423,7 +423,7 @@ describe('Enrollment Management', () => {
          // Confirming no deletes
          it('should have no rows missing', (done) => {
             agent
-               .get('/Enrollment')
+               .get('/api/Enrollment')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
@@ -435,7 +435,7 @@ describe('Enrollment Management', () => {
 
          it('should return 200', (done) =>{
             agent
-               .delete('/Enrollment/3/3')
+               .delete('/api/Enrollment/3/3')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.empty;
@@ -446,7 +446,7 @@ describe('Enrollment Management', () => {
          // Confirming deletes
          it('should have no rows missing', (done) => {
             agent
-               .get('/Enrollment')
+               .get('/api/Enrollment')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
@@ -461,7 +461,7 @@ describe('Enrollment Management', () => {
    describe('User Test Cases', () => {
       before('Login user2', (done) => {
          agent
-            .post('/Session')
+            .post('/api/Session')
             .send({'email': 'user2@student.com', 'password': 'student2'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -473,7 +473,7 @@ describe('Enrollment Management', () => {
       describe('/POST w/ nonAdminAU', () => {
          it('should return 200', (done) => {
             agent
-               .post('/Enrollment')
+               .post('/api/Enrollment')
                .send({'userId': 4, 'sectionId': 1})
                .end((err, res) => {
                   res.should.have.status(200);
@@ -485,7 +485,7 @@ describe('Enrollment Management', () => {
 
          // it('enrolling not logged in student should return 403', (done) => {
          //    agent
-         //     .post('/Enrollment')
+         //     .post('/api/Enrollment')
          //     .send({'userId': 3, 'sectionId': 1})
          //     .end((err, res) => {
          //       res.should.have.status(403);
@@ -499,7 +499,7 @@ describe('Enrollment Management', () => {
       describe('/GET w/ nonAdminAU', () => {
          it('should return 200', (done) =>{
             agent
-               .get('/Enrollment')
+               .get('/api/Enrollment')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
@@ -519,7 +519,7 @@ describe('Enrollment Management', () => {
       describe('/DELETE w/ nonAdminAU', () => {
          it('not enrolled sectionId should return 404', (done) => {
             agent
-               .delete('/Enrollment/2/4')
+               .delete('/api/Enrollment/2/4')
                .end((err, res) => {
                   res.should.have.status(404);
                   res.body.should.be.empty;
@@ -530,7 +530,7 @@ describe('Enrollment Management', () => {
 
          // it('deleting not logged in student should return 403', (done) => {
          //    agent
-         //     .delete('/Enrollment')
+         //     .delete('/api/Enrollment')
          //     .send({'userId' : 3, 'sectionId': 2})
          //     .end((err, res) => {
          //       res.should.have.status(403);
@@ -543,7 +543,7 @@ describe('Enrollment Management', () => {
          // Confirming no deletes
          it('should have no rows missing', (done) => {
             agent
-               .get('/Enrollment')
+               .get('/api/Enrollment')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
@@ -556,7 +556,7 @@ describe('Enrollment Management', () => {
 
          it('should return 200', (done) => {
             agent
-               .delete('/Enrollment/1/4')
+               .delete('/api/Enrollment/1/4')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.empty;
@@ -568,7 +568,7 @@ describe('Enrollment Management', () => {
          // Confirming deletes
          it('should have no rows missing', (done) => {
             agent
-               .get('/Enrollment')
+               .get('/api/Enrollment')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
