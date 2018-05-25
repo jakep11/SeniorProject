@@ -129,8 +129,8 @@ export default class Courses extends Component {
             <div className="cs-sidebar-container">
                <CoursesFilterSidebar {...this.props} />
             </div>
+            
             <div className="cs-main">
-               
                <div className="cs-header">
                   <input type="text"
                          placeholder="Search Classes..."
@@ -138,7 +138,6 @@ export default class Courses extends Component {
                          value={this.props.Courses.searchQuery == null ? '' : this.props.Courses.searchQuery}
                          onChange={(e) => this.updateQuery(e.target.value)}/>
                </div>
-
 
                {/*<CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" isEnrolled={true} />*/}
                {/*<CourseBlock title="CPE-453" progress={this.state.progress} term="Fall 2018" />*/}

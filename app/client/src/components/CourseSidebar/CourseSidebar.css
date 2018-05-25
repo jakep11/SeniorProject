@@ -1,6 +1,8 @@
 .cd-sidebar-wrapper {
    display: flex;
    flex-direction: column;
+   overflow-y: scroll;
+   height: 60vh;
 }
 
 .cd-sidebar-wrapper a {

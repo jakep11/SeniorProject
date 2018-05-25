@@ -26,7 +26,7 @@ export default class CourseDetail extends Component {
    }
 
    render() {
-      const topicList = ["Topic 1", "Topic 2", "Topic 3", "Topic 4"];
+      const topicList = ["Topic 1", "Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6"];
       
       return (
          <div className="cd-wrapper">
