@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './CourseDetail.css';
 import { Link } from "react-router-dom";
 import Video from '../Video/Video';
+import Exercise from '../Exercise/Exercise';
 import Activity from '../Activity/Activity';
 import CourseSidebar from '../CourseSidebar/CourseSidebar';
 
@@ -46,21 +47,21 @@ export default class CourseDetail extends Component {
                                type="video"
                                right="5 minutes, 31 seconds"
                                content={
-                                  <Video videoId="dQw4w9WgXcQ"></Video>
+                                  <Video videoId="dQw4w9WgXcQ"/>
                                } />
 
                      <Activity title="Boolean Algebra Basics"
                                type="problems"
                                right="4 Problems"
                                content={
-                                  <h2 style={{backgroundColor: "blue", color: "white"}}>pROBLEMS hERE</h2>
+                                  <Exercise {...this.props}/>
                                } />
 
                      <Activity title="Boolean Algebra Forms"
                                type="form"
                                right="321 Words"
                                content={
-                                  <Video videoId="dQw4w9WgXcQ"></Video>
+                                  <Video videoId="dQw4w9WgXcQ"/>
                                } />
                   </div>
 
@@ -70,21 +71,21 @@ export default class CourseDetail extends Component {
                                type="video"
                                right="5 minutes, 31 seconds"
                                content={
-                                  <Video videoId="dQw4w9WgXcQ"></Video>
+                                  <Video videoId="dQw4w9WgXcQ"/>
                                } />
 
                      <Activity title="Boolean Algebra Basics"
                                type="problems"
                                right="4 Problems"
                                content={
-                                  <h2 style={{backgroundColor: "blue", color: "white"}}>pROBLEMS hERE</h2>
+                                  <Exercise {...this.props}/>
                                } />
 
                      <Activity title="Boolean Algebra Forms"
                                type="form"
                                right="321 Words"
                                content={
-                                  <Video videoId="dQw4w9WgXcQ"></Video>
+                                  <Video videoId="dQw4w9WgXcQ"/>
                                } />
                           
                   </div>
@@ -95,21 +96,21 @@ export default class CourseDetail extends Component {
                                type="video"
                                right="5 minutes, 31 seconds"
                                content={
-                                  <Video videoId="dQw4w9WgXcQ"></Video>
+                                  <Video videoId="dQw4w9WgXcQ"/>
                                } />
 
                      <Activity title="Boolean Algebra Basics"
                                type="problems"
                                right="4 Problems"
                                content={
-                                  <h2 style={{backgroundColor: "blue", color: "white"}}>pROBLEMS hERE</h2>
+                                  <Exercise {...this.props}/>
                                } />
 
                      <Activity title="Boolean Algebra Forms"
                                type="form"
                                right="321 Words"
                                content={
-                                  <Video videoId="dQw4w9WgXcQ"></Video>
+                                  <Video videoId="dQw4w9WgXcQ"/>
                                } />
                           
                   </div>
@@ -120,21 +121,21 @@ export default class CourseDetail extends Component {
                                type="video"
                                right="5 minutes, 31 seconds"
                                content={
-                                  <Video videoId="dQw4w9WgXcQ"></Video>
+                                  <Video videoId="dQw4w9WgXcQ"/>
                                } />
 
                      <Activity title="Boolean Algebra Basics"
                                type="problems"
                                right="4 Problems"
                                content={
-                                  <h2 style={{backgroundColor: "blue", color: "white"}}>pROBLEMS hERE</h2>
+                                  <Exercise {...this.props}/>
                                } />
 
                      <Activity title="Boolean Algebra Forms"
                                type="form"
                                right="321 Words"
                                content={
-                                  <Video videoId="dQw4w9WgXcQ"></Video>
+                                  <Video videoId="dQw4w9WgXcQ"/>
                                } />
                           
                   </div>
