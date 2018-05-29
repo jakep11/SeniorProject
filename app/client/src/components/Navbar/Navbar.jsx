@@ -48,10 +48,6 @@ class Main extends Component {
                   <div>Course Sections</div>
                </Link>
 
-               <Link to={'/help'} className={this.props.location.pathname.includes('/help') ? 'active navbar-el': 'navbar-el'}>
-                  <div>Help</div>
-               </Link>
-
                <Link to={'/settings'} className={this.props.location.pathname.includes('/settings') ? 'active navbar-el': 'navbar-el'}>
                   <div>Settings</div>
                </Link>
