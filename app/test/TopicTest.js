@@ -67,11 +67,11 @@ describe('Topic Management', () => {
 
       // admin login, nuke, add test user and section
       agent
-       .post('/Session')
+       .post('/api/Session')
        .send({'email': 'admin@example.com', 'password': 'password'})
        .end(() => {
          agent
-          .delete('/DB')
+          .delete('/api/DB')
           .end(() => {
             connection.query('insert into User set ?', adminUser);
             connection.query('insert into User set ?', studentUser);
@@ -95,7 +95,7 @@ describe('Topic Management', () => {
             }
 
             chai.request(server)
-             .post('/Topic')
+             .post('/api/Topic')
              .send(topic)
              .end((err, res) => {
                res.should.have.status(401);
@@ -108,7 +108,7 @@ describe('Topic Management', () => {
       describe('/GET with no login', () => {
          it('results in 401', (done) => {
             chai.request(server)
-             .get('/Topic')
+             .get('/api/Topic')
              .end((err, res) => {
                res.should.have.status(401);
                res.body.should.be.empty;
@@ -120,7 +120,7 @@ describe('Topic Management', () => {
       describe('/GET Id with no login', () => {
          it('results in 401', (done) => {
             chai.request(server)
-             .get('/Topic/' + '2')
+             .get('/api/Topic/' + '2')
              .end((err, res) => {
                res.should.have.status(401);
                res.body.should.be.empty;
@@ -136,7 +136,7 @@ describe('Topic Management', () => {
             }
 
             chai.request(server)
-             .put('/Topic/' + '2')
+             .put('/api/Topic/' + '2')
              .send(newTopic)
              .end((err, res) => {
                res.should.have.status(401);
@@ -150,7 +150,7 @@ describe('Topic Management', () => {
          it('results in 401', (done) => {
 
             chai.request(server)
-             .put('/Topic/' + '2')
+             .put('/api/Topic/' + '2')
              .end((err, res) => {
                res.should.have.status(401);
                res.body.should.be.empty;
@@ -163,7 +163,7 @@ describe('Topic Management', () => {
          it('results in 401', (done) => {
            
             chai.request(server)
-             .get('/Topic/' + '2/Activities')
+             .get('/api/Topic/' + '2/Activities')
              .end((err, res) => {
                res.should.have.status(401);
                res.body.should.be.empty;
@@ -180,7 +180,7 @@ describe('Topic Management', () => {
 
       before('Login admin', (done) =>{
          agent
-          .post('/Session')
+          .post('/api/Session')
           .send({
             'email':'userB@admin.com',
             'password':'admin'
@@ -196,7 +196,7 @@ describe('Topic Management', () => {
 
       after('Admin logout', (done) => {
          agent
-          .delete('/Session/' + adminCookie)
+          .delete('/api/Session/' + adminCookie)
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.empty;
@@ -212,7 +212,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .post('/Topic')
+             .post('/api/Topic')
              .send(topic1)
              .end((err, res) => {
                res.should.have.status(200);
@@ -230,7 +230,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .post('/Topic')
+             .post('/api/Topic')
              .send(topic2)
              .end((err, res) => {
                res.should.have.status(200);
@@ -248,7 +248,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .post('/Topic')
+             .post('/api/Topic')
              .send(topic3)
              .end((err, res) => {
                res.should.have.status(200);
@@ -266,7 +266,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .post('/Topic')
+             .post('/api/Topic')
              .send(topic4)
              .end((err, res) => {
                res.should.have.status(200);
@@ -284,7 +284,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .post('/Topic')
+             .post('/api/Topic')
              .send(badTopic1)
              .end((err, res) => {
                res.should.have.status(400);
@@ -306,7 +306,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .post('/Topic')
+             .post('/api/Topic')
              .send(badTopic2)
              .end((err, res) => {
                res.should.have.status(400);
@@ -329,7 +329,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .post('/Topic')
+             .post('/api/Topic')
              .send(badTopic3)
              .end((err, res) => {
                res.should.have.status(400);
@@ -358,7 +358,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .post('/Topic')
+             .post('/api/Topic')
              .send(badTopic4)
              .end((err, res) => {
                res.should.have.status(400);
@@ -379,7 +379,7 @@ describe('Topic Management', () => {
       describe('/GET admin login with sectionId', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic' + '?sectionId=1')
+             .get('/api/Topic' + '?sectionId=1')
              .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -398,7 +398,7 @@ describe('Topic Management', () => {
       describe('/GET admin login without sectionId', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic')
+             .get('/api/Topic')
              .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -417,7 +417,7 @@ describe('Topic Management', () => {
       describe('/GET admin login without sectionId value', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic' + '?sectionId=')
+             .get('/api/Topic' + '?sectionId=')
              .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -435,7 +435,7 @@ describe('Topic Management', () => {
       describe('/GET admin login with sectionId value as string', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic' + '?sectionId=\'1\'')
+             .get('/api/Topic' + '?sectionId=\'1\'')
              .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -454,7 +454,7 @@ describe('Topic Management', () => {
       describe('/GET admin login with non existing sectionId', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic' + '?sectionId=10000')
+             .get('/api/Topic' + '?sectionId=10000')
              .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -468,7 +468,7 @@ describe('Topic Management', () => {
       describe('/GET/:Id admin login with topicId', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic/' + '1')
+             .get('/api/Topic/' + '1')
              .end((err, res) => {
                res.should.have.status(200);
                // res.body.should.be.a('array');
@@ -487,7 +487,7 @@ describe('Topic Management', () => {
       describe('/GET/:Id admin login with non-existing topicId', () => {
          it('results in 404', (done) => {
             agent
-             .get('/Topic/' + '666')
+             .get('/api/Topic/' + '666')
              .end((err, res) => {
                res.should.have.status(404);
                res.body.should.be.empty;
@@ -505,7 +505,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .put('/Topic/' + '1')
+             .put('/api/Topic/' + '1')
              .send(newTopic1)
              .end((err, res) => {
                res.should.have.status(200);
@@ -522,7 +522,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .put('/Topic/' + '1')
+             .put('/api/Topic/' + '1')
              .send(newTopic2)
              .end((err, res) => {
                res.should.have.status(400);
@@ -545,7 +545,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .put('/Topic/' + '1')
+             .put('/api/Topic/' + '1')
              .send(newTopic3)
              .end((err, res) => {
                res.should.have.status(400);
@@ -563,7 +563,7 @@ describe('Topic Management', () => {
       describe('/GET/:Id to confirm update', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic/' + '1')
+             .get('/api/Topic/' + '1')
              .end((err, res) => {
                res.should.have.status(200);
                // res.body.should.be.a('array');
@@ -583,7 +583,7 @@ describe('Topic Management', () => {
       describe('/DELETE/:Id admin login', () => {
          it('results in 200', (done) => {
             agent
-             .delete('/Topic/' + '4')
+             .delete('/api/Topic/' + '4')
              .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
@@ -595,7 +595,7 @@ describe('Topic Management', () => {
       describe('/DELETE/:Id admin login with non-existing id', () => {
          it('results in 404', (done) => {
             agent
-             .delete('/Topic/' + '1000')
+             .delete('/api/Topic/' + '1000')
              .end((err, res) => {
                res.should.have.status(404);
                res.body.should.be.empty;
@@ -608,7 +608,7 @@ describe('Topic Management', () => {
       describe('/GET to verify delete', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic/')
+             .get('/api/Topic/')
              .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -652,7 +652,7 @@ describe('Topic Management', () => {
 
          it('results in 200', (done) => {
             agent
-             .get('/Topic/1/Activities')
+             .get('/api/Topic/1/Activities')
              .end((err, res) => {
                res.should.have.status(200);
 
@@ -679,7 +679,7 @@ describe('Topic Management', () => {
 
       before('student login', (done) =>{
          agent
-          .post('/Session')
+          .post('/api/Session')
           .send({
             'email':'userB@student.com',
             'password':'student'
@@ -695,7 +695,7 @@ describe('Topic Management', () => {
 
       after('Student logout', (done) => {
          agent
-          .delete('/Session/' + studentCookie)
+          .delete('/api/Session/' + studentCookie)
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.empty;
@@ -712,7 +712,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .post('/Topic')
+             .post('/api/Topic')
              .send(topicA)
              .end((err, res) => {
                res.should.have.status(403);
@@ -726,7 +726,7 @@ describe('Topic Management', () => {
       describe('/GET with student login', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic')
+             .get('/api/Topic')
              .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -744,7 +744,7 @@ describe('Topic Management', () => {
       describe('/GET student login with sectionId', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic/' + '?sectionId=1')
+             .get('/api/Topic/' + '?sectionId=1')
              .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -761,7 +761,7 @@ describe('Topic Management', () => {
       describe('/GET/:Id student login with topicId', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic/' + '1')
+             .get('/api/Topic/' + '1')
              .end((err, res) => {
                res.should.have.status(200);
                // res.body.should.be.a('array');
@@ -784,7 +784,7 @@ describe('Topic Management', () => {
             }
 
             agent
-             .put('/Topic/' + '1')
+             .put('/api/Topic/' + '1')
              .send(newTopicA)
              .end((err, res) => {
                res.should.have.status(403);
@@ -797,7 +797,7 @@ describe('Topic Management', () => {
       describe('/GET/:Id to confirm update', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic/' + '1')
+             .get('/api/Topic/' + '1')
              .end((err, res) => {
                res.should.have.status(200);
                // res.body.should.be.a('array');
@@ -815,7 +815,7 @@ describe('Topic Management', () => {
       describe('/DELETE/:Id with student login', () => {
          it('results in 403', (done) => {
             agent
-             .delete('/Topic/' + '1')
+             .delete('/api/Topic/' + '1')
              .end((err, res) => {
                res.should.have.status(403);
                res.body.should.be.empty;
@@ -827,7 +827,7 @@ describe('Topic Management', () => {
       describe('/GET to confirm no update', () => {
          it('results in 200', (done) => {
             agent
-             .get('/Topic')
+             .get('/api/Topic')
              .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -846,7 +846,7 @@ describe('Topic Management', () => {
 
          it('results in 200', (done) => {
             agent
-             .get('/Topic/1/Activities')
+             .get('/api/Topic/1/Activities')
              .end((err, res) => {
                res.should.have.status(200);
                

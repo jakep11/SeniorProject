@@ -35,13 +35,13 @@ describe('Document Management', () => {
          'sectionId': 1,
       }
 
-      agent.post('/Session')
+      agent.post('/api/Session')
          .send({email: 'admin@example.com', password: 'password'})
          .end((err, res) => {
             res.should.have.status(200);
             
             agent
-               .delete('/DB')
+               .delete('/api/DB')
                .end((err, res) => {
                   connection.query('insert into Section set ?', section437);
                   connection.query('insert into Topic set ?', topic1);
@@ -64,7 +64,7 @@ describe('Document Management', () => {
 
       it('results in 200 and registers a new student account', (done) => {
          agent
-            .post('/User')
+            .post('/api/User')
             .send(user)
             .end((err, res) => {
                res.should.have.status(200);
@@ -75,7 +75,7 @@ describe('Document Management', () => {
 
       it('results in 200 and logs in as student', (done) => {
          agent
-            .post('/Session')
+            .post('/api/Session')
             .send({email: 'UserA@domainA', password: 'passwordA'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -91,7 +91,7 @@ describe('Document Management', () => {
       it('results in 200 and empty array', (done) => {
          
          agent
-            .get('/Document')
+            .get('/api/Document')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -112,7 +112,7 @@ describe('Document Management', () => {
          }
 
          agent
-            .post('/Document')
+            .post('/api/Document')
             .send(documentData)
             .end((err, res) => {
                res.should.have.status(403);
@@ -130,7 +130,7 @@ describe('Document Management', () => {
          };
 
          agent
-            .post('/Session')
+            .post('/api/Session')
             .send(session)
             .end((err, res) => {
                res.should.have.status(200);
@@ -153,7 +153,7 @@ describe('Document Management', () => {
          }
 
          agent
-            .post('/Document')
+            .post('/api/Document')
             .send(documentData)
             .end((err, res) => {
                res.should.have.status(200);
@@ -173,7 +173,7 @@ describe('Document Management', () => {
          }
 
          agent
-            .post('/Document')
+            .post('/api/Document')
             .send(documentData)
             .end((err, res) => {
                res.should.have.status(200);
@@ -185,7 +185,7 @@ describe('Document Management', () => {
    describe('/GET 2 documents', () => {
       it('results in 200 and 2 documents returned', (done) => {
          agent
-            .get('/Document')
+            .get('/api/Document')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -198,7 +198,7 @@ describe('Document Management', () => {
    describe('/GET /document/2', () => {
       it('results in 200 and returns document with id = 2', (done) => {
          agent
-            .get('/Document/2')
+            .get('/api/Document/2')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.have.property('id', 2);
@@ -218,7 +218,7 @@ describe('Document Management', () => {
          }
 
          agent
-            .put('/Document/1')
+            .put('/api/Document/1')
             .send(documentUpdateInfo)
             .end((err, res) => {
                res.should.have.status(200);
@@ -230,7 +230,7 @@ describe('Document Management', () => {
    describe('/GET /document/1', () => {
       it('results in 200 and confirms the updates to document 1', (done) => {
          agent
-            .get('/Document/1')
+            .get('/api/Document/1')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.have.property('id', 1);
@@ -244,7 +244,7 @@ describe('Document Management', () => {
    describe('/DELETE /document/1', () => {
       it('results in 200 and deletes document 1', (done) => {
          agent
-            .delete('/Document/1')
+            .delete('/api/Document/1')
             .end((err, res) => {
                res.should.have.status(200);
                done();
@@ -255,7 +255,7 @@ describe('Document Management', () => {
    describe('/GET 1 document', () => {
       it('results in 200 and 1 document returned', (done) => {
          agent
-            .get('/Document')
+            .get('/api/Document')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -269,7 +269,7 @@ describe('Document Management', () => {
    describe('/GET /document/1 will not work', () => {
       it('results in 404 because document was deleted', (done) => {
          agent
-            .get('/Document/1')
+            .get('/api/Document/1')
             .end((err, res) => {
                res.should.have.status(404);
                

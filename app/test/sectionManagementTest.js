@@ -17,13 +17,13 @@ describe('Section Management', () => {
    let defaultAdminCookie;
 
    before('Nuke and preparation', (done) => {
-      agent.post('/Session')
+      agent.post('/api/Session')
          .send({email: 'admin@example.com', password: 'password'})
          .end((err, res) => {
             res.should.have.status(200);
             
             agent
-               .delete('/DB')
+               .delete('/api/DB')
                .end((err, res) => {
                   res.should.have.status(200);
                   done();
@@ -44,7 +44,7 @@ describe('Section Management', () => {
 
       it('results in 200 and registers a new student account', (done) => {
          agent
-            .post('/User')
+            .post('/api/User')
             .send(user)
             .end((err, res) => {
                res.should.have.status(200);
@@ -55,7 +55,7 @@ describe('Section Management', () => {
 
       it('results in 200 and logs in as student', (done) => {
          agent
-            .post('/Session')
+            .post('/api/Session')
             .send({email: 'UserA@domainA', password: 'passwordA'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -71,7 +71,7 @@ describe('Section Management', () => {
       it('results in 200 and empty array', (done) => {
          
          agent
-            .get('/Section')
+            .get('/api/Section')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -91,7 +91,7 @@ describe('Section Management', () => {
          }
 
          agent
-            .post('/Section')
+            .post('/api/Section')
             .send(sectionData)
             .end((err, res) => {
                res.should.have.status(403);
@@ -108,7 +108,7 @@ describe('Section Management', () => {
          };
 
          agent
-            .post('/Session')
+            .post('/api/Session')
             .send(session)
             .end((err, res) => {
                res.should.have.status(200);
@@ -131,7 +131,7 @@ describe('Section Management', () => {
          }
 
          agent
-            .post('/Section')
+            .post('/api/Section')
             .send(sectionData)
             .end((err, res) => {
                res.should.have.status(200);
@@ -150,7 +150,7 @@ describe('Section Management', () => {
          }
 
          agent
-            .post('/Section')
+            .post('/api/Section')
             .send(sectionData)
             .end((err, res) => {
                res.should.have.status(200);
@@ -162,7 +162,7 @@ describe('Section Management', () => {
    describe('/GET 2 sections', () => {
       it('results in 200 and 2 sections returned', (done) => {
          agent
-            .get('/Section')
+            .get('/api/Section')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -176,7 +176,7 @@ describe('Section Management', () => {
    describe('/GET section specified by term', () => {
       it('results in 200 and sections in S18', (done) => {
          agent
-            .get('/Section')
+            .get('/api/Section')
             .query({'term': 'S18'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -191,7 +191,7 @@ describe('Section Management', () => {
    describe('/GET section specified by name', () => {
       it('results in 200 and CSC101 section returned', (done) => {
          agent
-            .get('/Section')
+            .get('/api/Section')
             .query({'name': 'CSC102'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -212,7 +212,7 @@ describe('Section Management', () => {
    describe('/GET /section/2', () => {
       it('results in 200 and returns section with id = 2', (done) => {
          agent
-            .get('/Section/2')
+            .get('/api/Section/2')
             .end((err, res) => {
                res.should.have.status(200);
                //res.body.should.have.lengthOf(1);
@@ -231,7 +231,7 @@ describe('Section Management', () => {
             'description': 'Introduction to Computer Science is now CSC201'
          }
 
-         agent.put('/Section/1')
+         agent.put('/api/Section/1')
          .send(sectionUpdateInfo)
          .end((err, res) => {
             res.should.have.status(200);
@@ -244,7 +244,7 @@ describe('Section Management', () => {
    describe('/GET /section/1', () => {
       it('results in 200 and confirms the updates to section 1', (done) => {
          agent
-            .get('/Section/1')
+            .get('/api/Section/1')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.have.property('id', 1);
@@ -258,7 +258,7 @@ describe('Section Management', () => {
    describe('/DELETE /section/1', () => {
       it('results in 200 and deletes section 1', (done) => {
          agent
-            .delete('/Section/1')
+            .delete('/api/Section/1')
             .end((err, res) => {
                res.should.have.status(200);
                done();
@@ -269,7 +269,7 @@ describe('Section Management', () => {
    describe('/GET 1 section', () => {
       it('results in 200 and 1 section returned', (done) => {
          agent
-            .get('/Section')
+            .get('/api/Section')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -283,7 +283,7 @@ describe('Section Management', () => {
    describe('/GET /section/1 will not work', () => {
       it('results in 404 because section was deleted', (done) => {
          agent
-            .get('/Section/1')
+            .get('/api/Section/1')
             .end((err, res) => {
                res.should.have.status(404);
                
