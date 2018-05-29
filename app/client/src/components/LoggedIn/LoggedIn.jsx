@@ -8,6 +8,7 @@ import Help from '../Help/Help';
 import Navbar from '../Navbar/Navbar';
 import Settings from '../Settings/Settings';
 import About from '../About/About';
+import NotFound from '../NotFound/NotFound';
 import './LoggedIn.css';
 import CourseDetail from "../CourseDetail/CourseDetail";
 import ConfDialog from '../ConfDialog/ConfDialog';
@@ -38,6 +39,7 @@ export default class LoggedIn extends Component {
                <Route exact path="/help" render={() => <Help {...this.props} />} />
                <Route exact path="/settings" render={() => <Settings {...this.props} />}/>
                <Route exact path="/about" component={About} />
+               <Route path="*" component={NotFound} />
             </Switch>
             
             <ConfDialog

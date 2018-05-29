@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import './CourseDetail.css';
 import { Link } from "react-router-dom";
 import Video from '../Video/Video';
+import Exercise from '../Exercise/Exercise';
 import Activity from '../Activity/Activity';
 import CourseSidebar from '../CourseSidebar/CourseSidebar';
 
 export default class CourseDetail extends Component {
+   
    constructor(props) {
       super(props);
 
@@ -19,47 +21,127 @@ export default class CourseDetail extends Component {
       };
 
       // this.props.addTopicsAndActivities(4);
-      this.props.addVideos(4);
+      // this.props.addVideos(4);
+
+      //this.props.addTopicsAndActivities(4);
+      //this.props.addVideos(4);
+      
    }
 
    render() {
+      const topicList = ["Topic 1", "Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6"];
+      
       return (
          <div className="cd-wrapper">
-            <h1>{this.state.course.description}</h1>
 
             <div className="cd-main-wrapper">
 
                <div className="cd-sidebar-container">
-                  <h2>{this.state.course.name}</h2>
-                  <CourseSidebar title="Topics" {...this.props}/>
+                  <h2>{this.state.course.description}</h2>
+                  <CourseSidebar title="Topics" topics={topicList} {...this.props}/>
                </div>
 
                <div className="cd-main-body">
-                  course detail main body
-                  <p>course detail main body has lots of content</p> <p>course detail main body has lots of content</p>
+               
+                  <div className="cd-topic-container">
+                     <h3 id={topicList[0]}>Topic name 1</h3>
+                     <Activity title="Intro to Boolean Algebra"
+                               type="video"
+                               right="5 minutes, 31 seconds"
+                               content={
+                                  <Video videoId="dQw4w9WgXcQ"/>
+                               } />
 
-                  <Activity title="Intro to Boolean Algebra"
-                            type="video"
-                            right="5 minutes, 31 seconds"
-                            content={
-                               <Video videoId="dQw4w9WgXcQ"></Video>
-                            } />
+                     <Activity title="Boolean Algebra Basics"
+                               type="problems"
+                               right="4 Problems"
+                               content={
+                                  <Exercise {...this.props}/>
+                               } />
 
-                  <Activity title="Boolean Algebra Basics"
-                            type="problems"
-                            right="4 Problems"
-                            content={
-                               <h2 style={{backgroundColor: "blue", color: "white"}}>pROBLEMS hERE</h2>
-                            } />
+                     <Activity title="Boolean Algebra Forms"
+                               type="form"
+                               right="321 Words"
+                               content={
+                                  <Video videoId="dQw4w9WgXcQ"/>
+                               } />
+                  </div>
 
-                  <Activity title="Boolean Algebra Forms"
-                            type="form"
-                            right="321 Words"
-                            content={
-                               <Video videoId="dQw4w9WgXcQ"></Video>
-                            } />
+                  <div className="cd-topic-container">
+                     <h3 id={topicList[1]}>Topic name 2</h3>
+                     <Activity title="Intro to Boolean Algebra"
+                               type="video"
+                               right="5 minutes, 31 seconds"
+                               content={
+                                  <Video videoId="dQw4w9WgXcQ"/>
+                               } />
 
+                     <Activity title="Boolean Algebra Basics"
+                               type="problems"
+                               right="4 Problems"
+                               content={
+                                  <Exercise {...this.props}/>
+                               } />
 
+                     <Activity title="Boolean Algebra Forms"
+                               type="form"
+                               right="321 Words"
+                               content={
+                                  <Video videoId="dQw4w9WgXcQ"/>
+                               } />
+                          
+                  </div>
+                  
+                  <div className="cd-topic-container">
+                     <h3 id={topicList[2]}>Topic name 3</h3>
+                     <Activity title="Intro to Boolean Algebra"
+                               type="video"
+                               right="5 minutes, 31 seconds"
+                               content={
+                                  <Video videoId="dQw4w9WgXcQ"/>
+                               } />
+
+                     <Activity title="Boolean Algebra Basics"
+                               type="problems"
+                               right="4 Problems"
+                               content={
+                                  <Exercise {...this.props}/>
+                               } />
+
+                     <Activity title="Boolean Algebra Forms"
+                               type="form"
+                               right="321 Words"
+                               content={
+                                  <Video videoId="dQw4w9WgXcQ"/>
+                               } />
+                          
+                  </div>
+                  
+                  <div className="cd-topic-container">
+                     <h3 id={topicList[3]}>Topic name 4</h3>
+                     <Activity title="Intro to Boolean Algebra"
+                               type="video"
+                               right="5 minutes, 31 seconds"
+                               content={
+                                  <Video videoId="dQw4w9WgXcQ"/>
+                               } />
+
+                     <Activity title="Boolean Algebra Basics"
+                               type="problems"
+                               right="4 Problems"
+                               content={
+                                  <Exercise {...this.props}/>
+                               } />
+
+                     <Activity title="Boolean Algebra Forms"
+                               type="form"
+                               right="321 Words"
+                               content={
+                                  <Video videoId="dQw4w9WgXcQ"/>
+                               } />
+                          
+                  </div>
+            
                   {/*<Video videoId="dQw4w9WgXcQ"></Video>*/}
                   {/*<Video videoId="dQw4w9WgXcQ"></Video>*/}
                   {/*<Video videoId="dQw4w9WgXcQ"></Video>*/}
@@ -67,6 +149,7 @@ export default class CourseDetail extends Component {
 
                   {/*videoId=""*/}
                </div>
+               
             </div>
 
             {/*<Switch>*/}

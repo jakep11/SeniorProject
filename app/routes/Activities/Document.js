@@ -12,9 +12,9 @@ router.baseURL = '/Document';
 router.get('/', function(req, res) {
    const vld = req.validator;
    const cnn = req.cnn;
-   const sectionId = req.query.sectionId;
+   const topicId = req.query.topicId;
 
-   const where = sectionId ? `WHERE sectionId = ${sectionId}` : '';
+   const where = topicId ? `WHERE topicId = ${topicId}` : '';
    const query = `SELECT * FROM Document ${where}`;
 
    async.waterfall([

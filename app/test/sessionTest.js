@@ -41,11 +41,11 @@ describe('Session Management', () => {
       };
 
       agent
-         .post('/Session')
+         .post('/api/Session')
          .send({'email': 'admin@example.com', 'password': 'password'})
          .end(() => {
             agent
-               .delete('/DB')
+               .delete('/api/DB')
                .end(() => {
                   connection.query('insert into User set ?', adminUser);
                   connection.query('insert into User set ?', studentUser, function() {
@@ -63,7 +63,7 @@ describe('Session Management', () => {
          };
 
          chai.request(server)
-            .post('/Session')
+            .post('/api/Session')
             .send(session)
             .end((err, res) => {
                res.should.have.status(400);
@@ -78,7 +78,7 @@ describe('Session Management', () => {
    describe('/GET without AU', () => {
       it('results in 401', (done) => {
          chai.request(server)
-            .get('/Session')
+            .get('/api/Session')
             .end((err, res) => {
                res.should.have.status(401);
                res.body.should.be.empty;
@@ -90,7 +90,7 @@ describe('Session Management', () => {
    describe('/GET/:cookie without AU', () => {
       it('results in 401', (done) => {
          chai.request(server)
-            .get('/Session/' + 'doesntreallymatter')
+            .get('/api/Session/' + 'doesntreallymatter')
             .end((err, res) => {
                res.should.have.status(401);
                res.body.should.be.empty;
@@ -107,7 +107,7 @@ describe('Session Management', () => {
          };
 
          agent
-            .post('/Session')
+            .post('/api/Session')
             .send(session)
             .end((err, res) => {
                res.should.have.status(200);
@@ -125,7 +125,7 @@ describe('Session Management', () => {
    describe('/GET with AU - student', () => {
       it('results in 403', (done) => {
          agent
-            .get('/Session')
+            .get('/api/Session')
             .end((err, res) => {
                res.should.have.status(403);
                res.body.should.be.empty;
@@ -137,7 +137,7 @@ describe('Session Management', () => {
    describe('/GET/:cookie invalid with AU - student', () => {
       it('results in 404', (done) => {
          agent
-            .get('/Session/invalidCookie')
+            .get('/api/Session/invalidCookie')
             .end((err, res) => {
                res.should.have.status(404);
                res.body.should.be.empty;
@@ -149,7 +149,7 @@ describe('Session Management', () => {
    describe('/GET/:cookie own with AU - student', () => {
       it('results in 200 and gets single own Session', (done) => {
          agent
-            .get('/Session/' + studentCookie)
+            .get('/api/Session/' + studentCookie)
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.not.be.a('array');
@@ -165,13 +165,13 @@ describe('Session Management', () => {
    describe('/GET/:cookie other with AU - student', () => {
       it('results in 403', (done) => {
          chai.request(server)
-            .post('/Session')
+            .post('/api/Session')
             .send({'email': 'admin@example.com', 'password': 'password'})
             .end((err, res) => {
                defaultAdminCookie = res.header.location.replace('/Session/', '');
                
                agent
-                  .get('/Session/' + defaultAdminCookie)
+                  .get('/api/Session/' + defaultAdminCookie)
                   .end((err, res) => {
                      res.should.have.status(403);
                      res.body.should.be.empty;
@@ -189,7 +189,7 @@ describe('Session Management', () => {
          };
 
          agent
-            .post('/Session')
+            .post('/api/Session')
             .send(session)
             .end((err, res) => {
                res.should.have.status(200);
@@ -207,7 +207,7 @@ describe('Session Management', () => {
    describe('/GET with AU - admin', () => {
       it('results in a GET for all sessions', (done) => {
          agent
-            .get('/Session')
+            .get('/api/Session')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -220,7 +220,7 @@ describe('Session Management', () => {
    describe('/GET/:cookie invalid with AU - admin', () => {
       it('results in 404', (done) => {
          agent
-            .get('/Session/invalidCookie')
+            .get('/api/Session/invalidCookie')
             .end((err, res) => {
                res.should.have.status(404);
                res.body.should.be.empty;
@@ -232,7 +232,7 @@ describe('Session Management', () => {
    describe('/GET/:cookie own with AU - admin', () => {
       it('results in 200 and gets single own admin Session', (done) => {
          agent
-            .get('/Session/' + adminCookie)
+            .get('/api/Session/' + adminCookie)
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.not.be.a('array');
@@ -248,7 +248,7 @@ describe('Session Management', () => {
    describe('/GET/:cookie other with AU - admin', () => {
       it('results in 200 and gets single student Session', (done) => {
          agent
-            .get('/Session/' + studentCookie)
+            .get('/api/Session/' + studentCookie)
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.not.be.a('array');
@@ -264,7 +264,7 @@ describe('Session Management', () => {
    describe('/DELETE/:cookie invalid with AU - admin', () => {
       it('results in 404', (done) => {
          agent
-            .delete('/Session/invalidCookie')
+            .delete('/api/Session/invalidCookie')
             .end((err, res) => {
                res.should.have.status(404);
                res.body.should.be.empty;
@@ -276,7 +276,7 @@ describe('Session Management', () => {
    describe('/DELETE/:cookie other with AU - admin', () => {
       it('results in 200 and logs out the student', (done) => {
          agent
-            .delete('/Session/' + studentCookie)
+            .delete('/api/Session/' + studentCookie)
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
@@ -288,7 +288,7 @@ describe('Session Management', () => {
    describe('/DELETE/:cookie own with AU - admin', () => {
       it('results in 200 and logs out the admin', (done) => {
          agent
-            .delete('/Session/' + adminCookie)
+            .delete('/api/Session/' + adminCookie)
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
@@ -300,13 +300,13 @@ describe('Session Management', () => {
    describe('/DELETE/:cookie other with AU - student', () => {
       it('results in 403', (done) => {
          agent
-            .post('/Session')
+            .post('/api/Session')
             .send({'email': 'ben@student.com', 'password': 'student'})
             .end((err, res) => {
                studentCookie = res.header.location.replace('/Session/', '');
 
                agent
-                  .delete('/Session/' + defaultAdminCookie)
+                  .delete('/api/Session/' + defaultAdminCookie)
                   .end((err, res) => {
                      res.should.have.status(403);
                      res.body.should.be.empty;
@@ -319,7 +319,7 @@ describe('Session Management', () => {
    describe('/DELETE/:cookie invalid with AU - student', () => {
       it('results in 404', (done) => {
          agent
-            .delete('/Session/invalidCookie')
+            .delete('/api/Session/invalidCookie')
             .end((err, res) => {
                res.should.have.status(404);
                res.body.should.be.empty;
@@ -331,7 +331,7 @@ describe('Session Management', () => {
    describe('/DELETE/:cookie own with AU - student', () => {
       it('results in 200 and logs out the student', (done) => {
          agent
-            .delete('/Session/' + studentCookie)
+            .delete('/api/Session/' + studentCookie)
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;

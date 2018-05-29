@@ -1,0 +1,16 @@
+.cd-sidebar-wrapper {
+   display: flex;
+   flex-direction: column;
+   overflow-y: scroll;
+   height: 60vh;
+}
+
+.cd-sidebar-wrapper a {
+    color: black;
+    font-size: 30px;
+    padding: 20px;
+}
+
+.cd-sidebar-wrapper a:hover {
+    text-decoration: none;
+}

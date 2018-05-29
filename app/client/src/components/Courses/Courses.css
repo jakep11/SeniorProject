@@ -8,12 +8,12 @@
 .cs-sidebar-container {
     flex: 0 0 350px;
     border-right: 2px solid rgb(0,166,255);
-    padding-left: 10px;
+    padding: 0 20px 0 20px;
 }
 
 .cs-header {
-    border-bottom: 2px solid rgb(0,166,255);
-    padding: 10px;
+    /*border-bottom: 2px solid rgb(0,166,255);*/
+    padding: 20px 20px 10px 20px;
     display: flex;
     justify-content: center;
 }
@@ -24,8 +24,14 @@
     background-color: #ddd;
 }
 
+.cs-mm {
+   flex: 1 1 auto;
+}
+
 .cs-main {
     flex: 1 1 auto;
+    overflow-y: scroll;
+    height: 90vh;
 }
 
 .cs-course-link {
@@ -37,12 +43,17 @@
 }
 
 .cs-filter-header {
-   padding: 10px;
+   padding: 20px;
    display: flex;
    font-weight: bolder;
+   border-bottom: 2px solid rgb(0,166,255);
 }
 
 .cs-filter-type {
    font-weight: bold;
+}
+
+.cs-filter-body {
+   padding: 10px 20px 0 20px;
 }
 

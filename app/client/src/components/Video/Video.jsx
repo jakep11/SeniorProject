@@ -19,19 +19,13 @@ export default class Video extends Component {
       };
 
       return (
-         <Grid>
-            <Row>
-               <div>
-                  <h1>Video</h1>
-                  <hr />
-                  <YouTube
-                     videoId={this.props.videoId}
-                     opts={opts}
-                  />
-                  {/*videoId="dQw4w9WgXcQ"*/}
-                  </div>
-               </Row>
-         </Grid>
+         <div>
+            <YouTube
+               videoId={this.props.videoId}
+               opts={opts}
+            />
+         </div>
+
       );
    }
 }

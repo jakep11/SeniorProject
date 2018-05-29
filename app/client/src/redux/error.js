@@ -48,7 +48,16 @@ export const clearError = (cb) => {
    };
 };
 
-export const actionCreators = { setError, clearError };
+export const setMessage = (message, style, cb) => {
+   return (dispatch, prevState) => {
+      dispatch({ type: SET_ERROR, message: message, style: style});
+      cb && cb();
+   };
+};
+
+
+
+export const actionCreators = { setError, clearError, setMessage };
 
 
 

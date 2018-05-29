@@ -1,3 +1,6 @@
+.cd-wrapper {
+
+}
 
 .cd-main-wrapper {
     display: flex;
@@ -5,14 +8,31 @@
     min-height: 90vh;
 }
 
+
 .cd-sidebar-container {
     flex: 0 0 350px;
     border-right: 2px solid rgb(0,166,255);
-    padding-left: 10px;
+    padding: 0 20px 0 20px;
+}
+
+.cd-sidebar-container h2{
+   padding: 20px;
+   display: flex;
+   font-weight: bolder;
+   border-bottom: 2px solid rgb(0,166,255);
 }
 
 .cd-main-body {
     flex: 1 1 auto;
     overflow-y: scroll;
     height: 90vh;
+}
+
+.cd-topic-container {
+   padding: 20px 0 0 0;
+   
+}
+
+.cd-topic-container h3 {
+   padding: 0 10px 0 30px;
 }

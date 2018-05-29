@@ -2,7 +2,7 @@ import store from './redux/store';
 import {SET_ERROR} from "./redux/error";
 import {LOGOUT} from "./redux/users";
 
-const baseURL = 'http://localhost:4000/';
+const baseURL = '/api/';
 const headers = new Headers();
 
 var cookie;

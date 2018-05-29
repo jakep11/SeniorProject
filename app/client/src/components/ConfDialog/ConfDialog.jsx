@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Modal, Button, FormControl } from 'react-bootstrap';
+import './ConfDialog.css';
 
 /**
  * Properties expected:
