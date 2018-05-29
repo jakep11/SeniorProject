@@ -7,7 +7,6 @@ import { actionCreators as userActionCreators } from '../redux/users';
 import { actionCreators as courseActionCreators } from '../redux/courses';
 import { actionCreators as topicActionCreators } from '../redux/topics';
 import { actionCreators as errorActionCreators } from '../redux/error';
-import Main from './Main/Main';
 import React from 'react';
 import Login from './Login/Login'
 import LoggedIn from './LoggedIn/LoggedIn'
