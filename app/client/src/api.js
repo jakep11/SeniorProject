@@ -37,9 +37,9 @@ function safeFetch(...params) {
          if (err.toString() === 'TypeError: Failed to fetch')
             return Promise.reject(['Server Connect Error']);
          else {
-            console.log('err:', err);
-            let msgs = err.map((e) => errorTranslate(e.tag));
-            console.log('errMsgs:', msgs);
+            // console.log('err:', err);
+            // let msgs = err.map((e) => errorTranslate(e.tag));
+            // console.log('errMsgs:', msgs);
             return Promise.reject(err.map(e => errorTranslate(e.tag)));
          }
       })
