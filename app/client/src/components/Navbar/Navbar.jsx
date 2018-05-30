@@ -20,8 +20,11 @@ class Main extends Component {
          <nav className="navbar">
             <div className="navbar-left"> </div>
             <div className="navbar-right">
-               <Link to={'/login'} className='active navbar-el'>
+               <Link to={'/login'} className={this.props.location.pathname.includes('/login') ? 'active navbar-el': 'navbar-el'}>
                   <div>Login</div>
+               </Link>
+               <Link to={'/signup'} className={this.props.location.pathname.includes('/signup') ? 'active navbar-el': 'navbar-el'}>
+                  <div>Sign Up</div>
                </Link>
             </div>
          </nav>

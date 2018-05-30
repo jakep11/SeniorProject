@@ -9,6 +9,7 @@ import { actionCreators as topicActionCreators } from '../redux/topics';
 import { actionCreators as errorActionCreators } from '../redux/error';
 import React from 'react';
 import Login from './Login/Login'
+import SignUp from './SignUp/SignUp'
 import LoggedIn from './LoggedIn/LoggedIn'
 
 // These are the properties we'll automatically pass to Main
@@ -40,6 +41,7 @@ function AppComponent(props) {
    return (
       <Switch>
          <Route exact path="/login" render={() => <Login {...props} />} />
+         <Route exact path="/signup" render={() => <SignUp {...props} />} />
          <Route path="" render={() => <LoggedIn {...props} />} />
          <Redirect from="*" to="/login" />
       </Switch>

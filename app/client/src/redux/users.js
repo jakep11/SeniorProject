@@ -74,6 +74,17 @@ export const login = (credentials, cb) => {
    };
 };
 
+export const signUp = (credentials, cb) => {
+   return (dispatch, prevState) => {
+      api.register(credentials)
+         .then((userInfo) => {
+            dispatch({ info: userInfo, type: LOGIN });
+            cb();
+         }
+      )
+   };
+};
+
 export const logout = (cb) => {
    return (dispatch, prevState) => {
       dispatch({ type: LOGOUT });
@@ -125,5 +136,5 @@ export const unenrollInCourse = (courseId, cb) => {
 
 
 
-export const actionCreators = { login, logout, updateUser, updateEnrolled, enrollInCourse, unenrollInCourse };
+export const actionCreators = { login, logout, signUp, updateUser, updateEnrolled, enrollInCourse, unenrollInCourse };
 

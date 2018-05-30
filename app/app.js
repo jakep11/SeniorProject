@@ -60,14 +60,12 @@ app.use(function (req, res, next) {
       req.validator = new Validator(req, res);
       next();
    } 
-   else
+   else {
       res.status(401).end();
+   }
 });
 
 app.use(CnnPool.router);
-
-// I think I can get rid of this
-//app.use('/', index);
 
 // Load all subroutes
 app.use('/api/User', require('./routes/Account/User'));
