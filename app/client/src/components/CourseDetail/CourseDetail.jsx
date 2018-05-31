@@ -4,6 +4,7 @@ import './CourseDetail.css';
 import { Link } from "react-router-dom";
 import Video from '../Video/Video';
 import Exercise from '../Exercise/Exercise';
+import Document from '../Document/Document';
 import Activity from '../Activity/Activity';
 import CourseSidebar from '../CourseSidebar/CourseSidebar';
 
@@ -61,7 +62,7 @@ export default class CourseDetail extends Component {
                                type="form"
                                right="321 Words"
                                content={
-                                  <Video videoId="dQw4w9WgXcQ"/>
+                                  <Document />
                                } />
                   </div>
 
@@ -85,7 +86,7 @@ export default class CourseDetail extends Component {
                                type="form"
                                right="321 Words"
                                content={
-                                  <Video videoId="dQw4w9WgXcQ"/>
+                                  <Document />
                                } />
                           
                   </div>
@@ -110,7 +111,7 @@ export default class CourseDetail extends Component {
                                type="form"
                                right="321 Words"
                                content={
-                                  <Video videoId="dQw4w9WgXcQ"/>
+                                  <Document />
                                } />
                           
                   </div>
@@ -135,7 +136,7 @@ export default class CourseDetail extends Component {
                                type="form"
                                right="321 Words"
                                content={
-                                  <Video videoId="dQw4w9WgXcQ"/>
+                                  <Document />
                                } />
                           
                   </div>
