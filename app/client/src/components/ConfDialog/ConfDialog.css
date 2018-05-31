@@ -1,0 +1,4 @@
+.modal-dialog {
+  top: 30%;
+  transform: translateY(-30%);
+}

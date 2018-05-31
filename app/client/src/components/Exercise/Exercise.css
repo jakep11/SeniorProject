@@ -1,0 +1,27 @@
+.exercise-wrapper {
+   
+}
+
+.exercise-question {
+   text-align: center;
+   padding-bottom: 10px;
+}
+
+.exercise-border {
+   width: 400px;
+   border-bottom: 2px solid rgb(0,166,255);
+}
+
+.exercise-body {
+   display: grid;
+   grid-template-columns: repeat(2, 180px);
+   margin: auto;
+   justify-content: center;
+   padding: 10px;
+}
+
+.exercise-wrapper button{
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+}

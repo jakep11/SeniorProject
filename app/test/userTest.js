@@ -10,13 +10,13 @@ chai.use(chaiHttp);
 
 describe('User Management', () => {
    before('Nuke and preparation', (done) => {
-      agent.post('/Session')
+      agent.post('/api/Session')
          .send({email: 'admin@example.com', password: 'password'})
          .end((err, res) => {
             res.should.have.status(200);
             
             agent
-               .delete('/DB')
+               .delete('/api/DB')
                .end((err, res) => {
                   res.should.have.status(200);
                   done();
@@ -27,7 +27,7 @@ describe('User Management', () => {
    describe('/GET without AU', () => {
       it('should return 401', (done) => {
          chai.request(server)
-            .get('/User')
+            .get('/api/User')
             .end((err, res) => {
                res.should.have.status(401);
                done();
@@ -38,7 +38,7 @@ describe('User Management', () => {
    describe('/GET/:id without AU', () => {
       it('should return 401', (done) => {
          chai.request(server)
-            .get('/User/1')
+            .get('/api/User/1')
             .end((err, res) => {
                res.should.have.status(401);
                done();
@@ -58,7 +58,7 @@ describe('User Management', () => {
 
       it('results in 200 and registers a new student account', (done) => {
          agent
-            .post('/User')
+            .post('/api/User')
             .send(user)
             .end((err, res) => {
                res.should.have.status(200);
@@ -69,7 +69,7 @@ describe('User Management', () => {
 
       it('results in 400 if tried again', (done) => {
          agent
-            .post('/User')
+            .post('/api/User')
             .send(user)
             .end((err, res) => {
                res.should.have.status(400);
@@ -81,7 +81,7 @@ describe('User Management', () => {
    
    describe('/GET User normal AU', () => {
       before('login user A', (done) => {
-         agent.post('/Session')
+         agent.post('/api/Session')
             .send({email: 'UserA@domainA', password: 'passwordA'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -94,7 +94,7 @@ describe('User Management', () => {
 
       it('should return just the AU', (done) => {
          agent
-            .get('/User')
+            .get('/api/User')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -105,7 +105,7 @@ describe('User Management', () => {
 
       it('results in 200 and returns empty array', (done) => {
          agent
-            .get('/User?email=a')
+            .get('/api/User?email=a')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -127,7 +127,7 @@ describe('User Management', () => {
 
       it('results in 403', (done) => {
          agent
-            .post('/User')
+            .post('/api/User')
             .send(user)
             .end((err, res) => {
                res.should.have.status(403);
@@ -148,7 +148,7 @@ describe('User Management', () => {
 
       it('results in 400 with dupEmail tag', (done) => {
          agent
-            .post('/User')
+            .post('/api/User')
             .send(user)
             .end((err, res) => {
                res.should.have.status(400);
@@ -170,7 +170,7 @@ describe('User Management', () => {
 
       it('results in 400 with noTerms tag', (done) => {
          agent
-            .post('/User')
+            .post('/api/User')
             .send(user)
             .end((err, res) => {
                res.should.have.status(400);
@@ -191,7 +191,7 @@ describe('User Management', () => {
 
       it('results in 400 with missingField tag and params containing password', (done) => {
          agent
-            .post('/User')
+            .post('/api/User')
             .send(user)
             .end((err, res) => {
                res.should.have.status(400);
@@ -204,7 +204,7 @@ describe('User Management', () => {
       it('results in 400 with missingField tag and params containing password', (done) => {
          user.password = '';
          agent
-            .post('/User')
+            .post('/api/User')
             .send(user)
             .end((err, res) => {
                res.should.have.status(400);
@@ -217,7 +217,7 @@ describe('User Management', () => {
       it('results in 400 with missingField tag and params containing password', (done) => {
          user.password = null;
          agent
-            .post('/User')
+            .post('/api/User')
             .send(user)
             .end((err, res) => {
                res.should.have.status(400);
@@ -231,7 +231,7 @@ describe('User Management', () => {
    describe('/GET/:id own - student AU', () => {
       it('results in 200 and returns the single user', (done) => {
          agent
-            .get('/User/2')
+            .get('/api/User/2')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -248,7 +248,7 @@ describe('User Management', () => {
    describe('/GET/:id other - student AU', () => {
       it('results in 403', (done) => {
          agent
-            .get('/User/1')
+            .get('/api/User/1')
             .end((err, res) => {
                res.should.have.status(403);
                res.body.should.be.empty;
@@ -260,7 +260,7 @@ describe('User Management', () => {
    describe('/GET/:id invalid - student AU', () => {
       it('results in 404', (done) => {
          agent
-            .get('/User/0')
+            .get('/api/User/0')
             .end((err, res) => {
                res.should.have.status(404);
                res.body.should.be.empty;
@@ -272,7 +272,7 @@ describe('User Management', () => {
    describe('/PUT/:id own with AU - student', () => {
       it('results in 200 and changed name', (done) => {
          agent
-            .put('/User/2')
+            .put('/api/User/2')
             .send({'lastName': 'Married'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -283,7 +283,7 @@ describe('User Management', () => {
 
       it('results in 400 with forbiddenField error for id and terms', (done) => {
          agent
-            .put('/User/2')
+            .put('/api/User/2')
             .send({'id': 15, 'email': 'not@allowed', 'termsAccepted': Date.now()})
             .end((err, res) => {
                res.should.have.status(400);
@@ -299,7 +299,7 @@ describe('User Management', () => {
 
       it('results in 400 with forbiddenField error for passHash', (done) => {
          agent
-            .put('/User/2')
+            .put('/api/User/2')
             .send({'passHash': 'thiswouldbebad'})
             .end((err, res) => {
                res.should.have.status(400);
@@ -313,7 +313,7 @@ describe('User Management', () => {
    describe('/PUT/:id own role with AU - student', () => {
       it('results in 400 with badValue tag', (done) => {
          agent
-            .put('/User/2')
+            .put('/api/User/2')
             .send({'role': 1})
             .end((err, res) => {
                res.should.have.status(400);
@@ -327,7 +327,7 @@ describe('User Management', () => {
    describe('/PUT/:id own password with AU - student', () => {
       it('results in 400 with noOldPassword tag', (done) => {
          agent
-            .put('/User/2')
+            .put('/api/User/2')
             .send({'password': 'test'})
             .end((err, res) => {
                res.should.have.status(400);
@@ -339,7 +339,7 @@ describe('User Management', () => {
 
       it('results in 400 with oldPasswordMismatch', (done) => {
          agent
-            .put('/User/2')
+            .put('/api/User/2')
             .send({'password': 'test', 'oldPassword': 'wrong'})
             .end((err, res) => {
                res.should.have.status(400);
@@ -351,7 +351,7 @@ describe('User Management', () => {
 
       it('results in 200 and updated password', (done) => {
          agent
-            .put('/User/2')
+            .put('/api/User/2')
             .send({'password': 'newPasswordA', 'oldPassword': 'passwordA'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -364,7 +364,7 @@ describe('User Management', () => {
    describe('/PUT/:id other with AU - student', () => {
       it('results in 403', (done) => {
          agent
-            .put('/User/1')
+            .put('/api/User/1')
             .send({'firstName': 'Imposter'})
             .end((err, res) => {
                res.should.have.status(403);
@@ -377,7 +377,7 @@ describe('User Management', () => {
    describe('/DELETE/:id other with AU - student', () => {
       it('results in 403', (done) => {
          agent
-            .delete('/User/1')
+            .delete('/api/User/1')
             .end((err, res) => {
                res.should.have.status(403);
                res.body.should.be.empty;
@@ -389,7 +389,7 @@ describe('User Management', () => {
    describe('/DELETE/:id own with AU - student', () => {
       it('results in 403', (done) => {
          agent
-            .delete('/User/2')
+            .delete('/api/User/2')
             .end((err, res) => {
                res.should.have.status(403);
                res.body.should.be.empty;
@@ -401,7 +401,7 @@ describe('User Management', () => {
    describe('/DELETE/:id invalid with AU - student', () => {
       it('results in 403', (done) => {
          agent
-            .delete('/User/0')
+            .delete('/api/User/0')
             .end((err, res) => {
                res.should.have.status(403);
                res.body.should.be.empty;
@@ -412,7 +412,7 @@ describe('User Management', () => {
 
    describe('/GET/:id own - admin', () => {
       before('login admin', (done) => {
-         agent.post('/Session')
+         agent.post('/api/Session')
             .send({'email': 'admin@example.com', 'password': 'password'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -422,7 +422,7 @@ describe('User Management', () => {
 
       it('results in 200 and returns the single user', (done) => {
          agent
-            .get('/User/1')
+            .get('/api/User/1')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -439,7 +439,7 @@ describe('User Management', () => {
    describe('/GET/:id other - admin', () => {
       it('results in 200 and returns the single user', (done) => {
          agent
-            .get('/User/2')
+            .get('/api/User/2')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -456,7 +456,7 @@ describe('User Management', () => {
    describe('/GET/:id invalid - admin AU', () => {
       it('results in 404', (done) => {
          agent
-            .get('/User/0')
+            .get('/api/User/0')
             .end((err, res) => {
                res.should.have.status(404);
                res.body.should.be.empty;
@@ -476,7 +476,7 @@ describe('User Management', () => {
 
       it('results in 200 and a new user created', (done) => {
          agent
-            .post('/User')
+            .post('/api/User')
             .send(user)
             .end((err, res) => {
                res.should.have.status(200);
@@ -489,7 +489,7 @@ describe('User Management', () => {
    describe('/GET with AU - admin', () => {
       it('reuslts in 200 and returns all users', (done) => {
          agent
-            .get('/User')
+            .get('/api/User')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.a('array');
@@ -505,7 +505,7 @@ describe('User Management', () => {
 
       it('results in 200 and returns 2 admin users', (done) => {
          agent
-            .get('/User?email=admin')
+            .get('/api/User?email=admin')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.have.length(2);
@@ -517,7 +517,7 @@ describe('User Management', () => {
    describe('/PUT/:id own with AU - admin', () => {
       it('results in 200 and changed name', (done) => {
          agent
-            .put('/User/1')
+            .put('/api/User/1')
             .send({'firstName': 'Bobby'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -530,7 +530,7 @@ describe('User Management', () => {
    describe('/PUT/:id own missing oldPswd with AU - admin', () => {
       after('Reset admin pass', (done) => {
          agent
-            .put('/User/1')
+            .put('/api/User/1')
             .send({'password': 'password'})
             .end((err, res) => {
                res.should.have.status(200);
@@ -540,14 +540,14 @@ describe('User Management', () => {
       });
       it('results in 200 and password updated', (done) => {
          agent
-            .put('/User/1')
+            .put('/api/User/1')
             .send({'password': 'missingold'})
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
 
                chai.request(server)
-                  .post('/Session')
+                  .post('/api/Session')
                   .send({'email': 'admin@example.com', 'password': 'missingold'})
                   .end((err, res) => {
                      res.should.have.status(200);
@@ -560,14 +560,14 @@ describe('User Management', () => {
    describe('/PUT/:id other with AU - admin', () => {
       it('results in 200', (done) => {
          agent
-            .put('/User/3')
+            .put('/api/User/3')
             .send({'password': 'nonblocking', 'role': 0})
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
 
                chai.request(server)
-                  .post('/Session')
+                  .post('/api/Session')
                   .send({'email': 'admin2@test', 'password': 'nonblocking'})
                   .end((err, res) => {
                      res.should.have.status(200);
@@ -580,7 +580,7 @@ describe('User Management', () => {
    describe('/PUT/:id invalid with AU - admin', () => {
       it('results in 404', (done) => {
          agent
-            .put('/User/0')
+            .put('/api/User/0')
             .send({'firstName': 'Invalid'})
             .end((err, res) => {
                res.should.have.status(404);
@@ -593,7 +593,7 @@ describe('User Management', () => {
    describe('/DELETE/:id with AU - admin', () => {
       it('results in 200 and empty body', (done) => {
          agent
-            .delete('/User/3')
+            .delete('/api/User/3')
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
@@ -605,7 +605,7 @@ describe('User Management', () => {
    describe('/DELETE/:id invalid with AU - admin', () => {
       it('results in 404', (done) => {
          agent
-            .delete('/User/0')
+            .delete('/api/User/0')
             .end((err, res) => {
                res.should.have.status(404);
                res.body.should.be.empty;
@@ -617,7 +617,7 @@ describe('User Management', () => {
    describe('/PUT/:id without AU', () => {
       it('results in 401 and empty body', (done) => {
          chai.request(server)
-            .put('/User/1')
+            .put('/api/User/1')
             .send({'firstName': 'Guest'})
             .end((err, res) => {
                res.should.have.status(401);
@@ -630,7 +630,7 @@ describe('User Management', () => {
    describe('/DELETE/:id without AU', () => {
       it('results in 401 and empty body', (done) => {
          chai.request(server)
-            .delete('/User/1')
+            .delete('/api/User/1')
             .end((err, res) => {
                res.should.have.status(401);
                res.body.should.be.empty;

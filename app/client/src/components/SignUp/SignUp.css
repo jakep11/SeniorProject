@@ -1,8 +1,8 @@
-.help-wrapper {
-    padding: 35px 10px;
+.signup-wrapper {
+    margin: 5% 10% 10% 10%;
 }
 
-.help-wrapper h1 {
+.signup-wrapper h1 {
     text-align: center;
     border-bottom: 2px solid rgb(0,166,255);
     width: 75%;
@@ -11,9 +11,7 @@
     font-weight: bolder;
 }
 
-.help-wrapper div {
-    padding: 10px 0;
-    display: flex;
-    justify-content: center;
+label.control-label {
+    font-weight: bold;
 }
 
