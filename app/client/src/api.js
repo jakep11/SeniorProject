@@ -732,8 +732,8 @@ export function createEnrollment(body) {
  * @param {Integer} sectionId 
  * @returns {Promise}
  */
-export function deleteEnrollment(userId, sectionId) {
-   return del(`Enrollment/${sectionId}/${userId}`)
+export function deleteEnrollment(body) {
+   return del(`Enrollment/${body.sectionId}/${body.userId}`)
       .then(res => {
          if (!res.ok) {
             return createErrorPromise(res);

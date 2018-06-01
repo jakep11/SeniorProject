@@ -8,9 +8,8 @@ export default class Home extends Component {
    constructor(props) {
       super(props);
 
-     this.props.updateEnrolled();
-
-     console.log(this.props);
+      this.props.updateSections();
+      this.props.updateEnrolled();
 
       this.state = {
          enrolled: [],

@@ -16,7 +16,8 @@ export const UNENROLL_IN_COURSE = 'UNENROLL_IN_COURSE';
 
 let defaultState = {
    isLoggedIn: false,
-   info: null
+   info: null,
+   enrolled: []
 };
 
 /* Reducer */
@@ -50,6 +51,7 @@ export default function User(state = defaultState, action) {
          };
 
       case UNENROLL_IN_COURSE:
+         console.log('action.courseId: ', action.courseId);
          return {
             ...state,
             enrolled: state.enrolled.filter((cid) => cid === action.courseId)
@@ -129,7 +131,11 @@ export const enrollInCourse = (courseId, cb) => {
 
 export const unenrollInCourse = (courseId, cb) => {
    return (dispatch, prevState) => {
-      console.log('prevStatE: ', prevState);
+      let userId = prevState().User.info.id;
+      let body = { userId, sectionId: courseId};
+      console.log('body:', body)
+      api.deleteEnrollment(body)
+         .then(() => dispatch({ type: UNENROLL_IN_COURSE, courseId }));
       // api.createEnrollment({ userId: prevState. })
    }
 }

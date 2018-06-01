@@ -7,6 +7,7 @@ import Exercise from '../Exercise/Exercise';
 import Document from '../Document/Document';
 import Activity from '../Activity/Activity';
 import CourseSidebar from '../CourseSidebar/CourseSidebar';
+import {Button} from "react-bootstrap";
 
 export default class CourseDetail extends Component {
    
@@ -30,7 +31,7 @@ export default class CourseDetail extends Component {
    }
 
    render() {
-      const topicList = ["Topic 1", "Topic 2", "Topic 3", "Topic 4", "Topic 5", "Topic 6"];
+      const topicList = ["Topic1", "Topic2", "Topic3", "Topic4", "Topic5", "Topic6"];
       
       return (
          <div className="cd-wrapper">
@@ -39,6 +40,14 @@ export default class CourseDetail extends Component {
 
                <div className="cd-sidebar-container">
                   <h2>{this.state.course.description}</h2>
+                  <div className="enrollment-row">
+                     <Button
+                        onClick={(e) => {
+                           this.props.unenrollInCourse(this.state.course.id);
+                           e.stopPropagation();
+                           e.preventDefault();
+                        }}>Drop</Button>
+                  </div>
                   <CourseSidebar title="Topics" topics={topicList} {...this.props}/>
                </div>
 
