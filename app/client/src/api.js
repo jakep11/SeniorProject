@@ -149,9 +149,14 @@ export function signOut() {
  * @returns {Promise}
  */
 export function register(user) {
-   return post("User/", user)
+   return post("User", user)
       .then(res => {
-         return res.ok ? null : createErrorPromise(res);
+         if (res.ok) {
+            return signIn(user);
+         }
+         else {
+            createErrorPromise(res);
+         }
       })
 }
 
