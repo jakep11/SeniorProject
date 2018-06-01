@@ -54,7 +54,7 @@ export default function User(state = defaultState, action) {
          console.log('action.courseId: ', action.courseId);
          return {
             ...state,
-            enrolled: state.enrolled.filter((cid) => cid === action.courseId)
+            enrolled: state.enrolled.filter((cid) => cid !== action.courseId)
          };
 
       default:
