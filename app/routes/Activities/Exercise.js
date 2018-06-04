@@ -10,31 +10,19 @@ router.baseURL = '/Exercise';
  * Exercises have id, name, question, type, points, topicId
  */
 router.get('/', function(req, res) {
-   var vld = req.validator;
    var cnn = req.cnn;
 
    const topicId = req.query.topicId;
 
    const where = topicId ? `WHERE topicId = ${topicId}` : '';
-   const query = `SELECT * FROM Exercise ${where}`;
-   
-   async.waterfall([
-      function(cb) {
-         if (vld.check(req.session, Tags.noLogin, null, cb))
-            cnn.chkQry(query, null, cb);
-      },
-      function(exerciseArr, fields, cb) {
-         if (vld.check(exerciseArr.length, Tags.notFound, null, cb)) {
-            for (var exe in exerciseArr) {
-               delete exe.answer;
-            }
-            res.json(exerciseArr);
-            cb();
-         }
-      }
-   ], function(err) {
-      cnn.release();
-   });
+   const query = `SELECT id, name, question, type, points, topicId, dueDate FROM Exercise ${where}`;
+
+   var handler = function (err, prsArr) {
+      res.json(prsArr);
+      req.cnn.release();
+   };
+
+   cnn.chkQry(query, null, handler);
 });
 
 /* POST --
@@ -46,7 +34,6 @@ router.post('/', function(req, res) {
    var vld = req.validator;
    var body = req.body;
    var cnn = req.cnn;
-   var id = parseInt(req.session.id);
    
    async.waterfall([
       function(cb) {
@@ -54,7 +41,7 @@ router.post('/', function(req, res) {
             vld.hasFields(body, ['name', 'question', 'answer', 'type', 'points', 'topicId'], cb))
 
             cnn.chkQry('SELECT * FROM Exercise WHERE TopicId = ? AND Name = ? AND Question = ?', 
-            [body.topicId, body.name, body.question], cb); 
+               [body.topicId, body.name, body.question], cb); 
       },
       function(existingExe, fields, cb) {
          if (vld.check(!existingExe.length, Tags.dupExercise, null, cb)) {
@@ -67,7 +54,7 @@ router.post('/', function(req, res) {
          res.location(router.baseURL + '/' + insRes.insertId).end();
          cb();
       }
-   ], function(err) {
+   ], function() {
       cnn.release();
    }); 
 });
@@ -77,26 +64,19 @@ router.post('/', function(req, res) {
  * ??? - Same returned properties as above GET?
  */
 router.get('/:exerciseId', function(req, res) {
-   var vld = req.validator;
-   var body = req.body;
-   var cnn = req.cnn;
    var exerciseId = req.params.exerciseId;
-   
-   async.waterfall([
-      function(cb) {
-         if (vld.check(req.session, Tags.noLogin, null, cb))
-            cnn.chkQry('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
-      },
-      function(exerciseArr, fields, cb) {
-         if (vld.check(exerciseArr.length, Tags.notFound, null, cb))
-            delete exe.answer;
-            
-            res.json(exerciseArr);
-            cb();
-      }
-   ], function(err) {
-      cnn.release();
-   });
+
+   let handler = function(err, exerciseArray) {
+      if (!exerciseArray.length)
+         res.status(404).end(); 
+      else
+         res.json(exerciseArray);
+
+      req.cnn.release();
+   };
+
+   req.cnn.chkQry('SELECT id, name, question, type, points, topicId, dueDate ' +
+      'FROM Exercise WHERE id = ?', [exerciseId], handler);
 });
 
 /* PUT -- 
@@ -112,15 +92,21 @@ router.put('/:exerciseId', function(req, res) {
    
    async.waterfall([
       function(cb) {
-         cnn.chkQuery('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
+         if (vld.checkAdmin(cb))
+            cnn.chkQry('SELECT * FROM Exercise WHERE id = ?', [exerciseId], cb);
       },
       function(exerciseArr, fields, cb) {
-         if (vld.check(exerciseArr.length, Tags.notFound, null, cb) &&
-            vld.checkAdmin(cb))
-            cnn.chkQry('UPDATE Exercise SET ? WHERE Id = ?', 
+         if (exerciseArr.length)
+            cnn.chkQry('UPDATE Exercise SET ? WHERE id = ?', 
                [body, exerciseId], cb);
+         else {
+            res.status(404).end();
+            cnn.release();
+            return;
+         }
       }
-   ], function(err) {
+   ], function() {
+      res.status(200).end();
       cnn.release();
    });
 });
@@ -135,14 +121,20 @@ router.delete('/:exerciseId', function(req, res) {
    
    async.waterfall([
       function(cb) {
-         cnn.chkQuery('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
+         if (vld.checkAdmin(cb))
+            cnn.chkQry('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
       },
       function(exerciseArr, fields, cb) {
-         if (vld.check(exerciseArr.length, Tags.notFound, null, cb) &&
-            vld.checkAdmin(cb))
+         if (exerciseArr.length)
             cnn.chkQry('DELETE FROM Exercise WHERE Id = ?', [exerciseId], cb);
+         else {
+            res.status(404).end();
+            cnn.release();
+            return;
+         }
       }
-   ], function (err) {
+   ], function () {
+      res.status(200).end();
       cnn.release();
    });
 });
@@ -161,20 +153,24 @@ router.put('/:exerciseId/Grade', function(req, res) {
    
    async.waterfall([
       function(cb) {
-         cnn.chkQuery('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
+         cnn.chkQry('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
       },
       function(exerciseArr, fields, cb) {
-         if (vld.check(exerciseArr.length, Tags.notFound, null, cb) &&
-            vld.check(body.answer, Tags.missingValue, ["answer"], cb) &&
-            vld.checkAdmin(cb))
+         if (!exerciseArr.length) {
+            res.status(404).end();
+            cb();
+         }
+         else if (vld.check(body.answer, Tags.missingValue, ['answer'], cb)) {
             var correct = false;
             // Use trim to get rid of extra whitespace at end of answer string.
             if (body.answer.trim() === exerciseArr[0].answer.trim()) {
                correct = true;
             } 
             res.json({isCorrect : correct});
+            cb();
+         }
       }
-   ], function(err) {
+   ], function() {
       cnn.release();
    });
 });

@@ -117,6 +117,7 @@ router.put('/:id', function (req, res) {
       function (qRes, fields, cb) {
          if (!qRes.length) {
             res.status(404).end();
+            cnn.release();
             return;
          }
          else if (vld.check(admin || !body.password || 
