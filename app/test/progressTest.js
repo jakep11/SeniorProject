@@ -228,12 +228,14 @@ describe('Progress Management', () => {
                });
          });
 
-         it('userId not enrolled in any section should return 404', (done) => {
+         it('userId not enrolled in any section should return 200', (done) => {
             agent
                .get('/api/Progress/4')
                .end((err, res) => {
-                  res.should.have.status(404);
-       
+                  res.should.have.status(200);
+                  res.body.should.be.a('array');
+                  res.body.should.have.lengthOf(0);
+
                   done();
                });
          });
@@ -262,14 +264,16 @@ describe('Progress Management', () => {
                });
          });
 
+
          // bad cases
-         it('userId not enrolled in any section should return 404', (done) => {
+         it('userId not enrolled in any section should return 400', (done) => {
             agent
                .put('/api/Progress/1')
                .send({'activityType' : 3, 'activityId' : 1, 'grade' : 1.0})
                .end((err, res) => {
-                  res.should.have.status(404);
-       
+                  res.should.have.status(400);
+                  res.body[0].should.have.property('tag', 'progressNotFound');
+
                   done();
                });
          });
@@ -355,12 +359,12 @@ describe('Progress Management', () => {
                });
          });
 
-         it('userId not enrolled in any section should return 404', (done) => {
+         it('userId not enrolled in any section should return 403', (done) => {
             agent
                .get('/api/Progress/1')
                .end((err, res) => {
-                  res.should.have.status(404);
-       
+                  res.should.have.status(403);
+                  
                   done();
                });
          });
@@ -409,16 +413,6 @@ describe('Progress Management', () => {
                   res.body[0].should.have.property('attempted');
                   res.body[0].should.have.property('whenCompleted');
 
-                  done();
-               });
-         });
-
-         it('userId not enrolled in any section should return 403', (done) => {
-            agent
-               .get('/api/Progress/2')
-               .end((err, res) => {
-                  res.should.have.status(403);
-       
                   done();
                });
          });
