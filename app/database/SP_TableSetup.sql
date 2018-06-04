@@ -82,7 +82,7 @@ CREATE TABLE Document (
    contentPath VARCHAR(500),
    dueDate DATETIME,
    topicId INT,
-   UNIQUE (topicId, name, contentPath)
+   UNIQUE (topicId, name, contentPath),
    PRIMARY KEY (id),
    FOREIGN KEY (topicId) REFERENCES Topic(id) on delete cascade 
    on update cascade
