@@ -135,7 +135,6 @@ describe('Video Management', () => {
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
-               res.should.have.cookie('SPAuth');
                done();
             });
       });
