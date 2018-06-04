@@ -413,11 +413,11 @@ describe('Progress Management', () => {
                });
          });
 
-         it('userId not enrolled in any section should return 404', (done) => {
+         it('userId not enrolled in any section should return 403', (done) => {
             agent
                .get('/api/Progress/2')
                .end((err, res) => {
-                  res.should.have.status(404);
+                  res.should.have.status(403);
        
                   done();
                });
