@@ -21,8 +21,13 @@ export default class Exercise extends Component {
       api.modifyExerciseGrade(this.props.exercise.id, {answer: this.state.answer})
          .then((res) => {
             console.log('res:', res);
+            if (res.isCorrect) {
+               this.props.setMessage("Correct!", "success");
+            }
+            else {
+               this.props.setMessage("Incorrect! Please try again.", "danger");
+            }
          });
-      this.props.setMessage("Correct!", "success");
    }
    
    render() {

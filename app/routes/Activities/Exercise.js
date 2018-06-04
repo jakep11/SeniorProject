@@ -112,7 +112,7 @@ router.put('/:exerciseId', function(req, res) {
    
    async.waterfall([
       function(cb) {
-         cnn.chkQuery('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
+         cnn.chkQry('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
       },
       function(exerciseArr, fields, cb) {
          if (vld.check(exerciseArr.length, Tags.notFound, null, cb) &&
@@ -135,7 +135,7 @@ router.delete('/:exerciseId', function(req, res) {
    
    async.waterfall([
       function(cb) {
-         cnn.chkQuery('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
+         cnn.chkQry('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
       },
       function(exerciseArr, fields, cb) {
          if (vld.check(exerciseArr.length, Tags.notFound, null, cb) &&
@@ -161,18 +161,19 @@ router.put('/:exerciseId/Grade', function(req, res) {
    
    async.waterfall([
       function(cb) {
-         cnn.chkQuery('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
+         cnn.chkQry('SELECT * FROM Exercise WHERE Id = ?', [exerciseId], cb);
       },
       function(exerciseArr, fields, cb) {
          if (vld.check(exerciseArr.length, Tags.notFound, null, cb) &&
-            vld.check(body.answer, Tags.missingValue, ["answer"], cb) &&
-            vld.checkAdmin(cb))
-            var correct = false;
+            vld.check(body.answer, Tags.missingValue, ["answer"], cb)) {
+               var correct = false;
+            
             // Use trim to get rid of extra whitespace at end of answer string.
             if (body.answer.trim() === exerciseArr[0].answer.trim()) {
                correct = true;
             } 
             res.json({isCorrect : correct});
+         }
       }
    ], function(err) {
       cnn.release();
