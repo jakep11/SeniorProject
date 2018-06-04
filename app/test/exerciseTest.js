@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 const mysql = require('mysql');
 const connection = mysql.createConnection(require('../routes/connection.json'));
 
-describe.only('Enrollment Management', () => {
+describe('Enrollment Management', () => {
    before('Nuke and preparation', (done) => {
       connection.connect(function (err) {
          if (err)
