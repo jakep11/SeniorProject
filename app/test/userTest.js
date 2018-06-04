@@ -284,7 +284,7 @@ describe('User Management', () => {
       it('results in 400 with forbiddenField error for id and terms', (done) => {
          agent
             .put('/api/User/2')
-            .send({'id': 15, 'email': 'not@allowed', 'termsAccepted': Date.now()})
+            .send({'id': 15, 'email': 'not@allowed', 'termsAccepted': new Date()})
             .end((err, res) => {
                res.should.have.status(400);
                res.body[0].should.have.property('tag', 'forbiddenField');
