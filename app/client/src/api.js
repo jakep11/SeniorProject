@@ -37,9 +37,9 @@ function safeFetch(...params) {
          if (err.toString() === 'TypeError: Failed to fetch')
             return Promise.reject(['Server Connect Error']);
          else {
-            console.log('err:', err);
-            let msgs = err.map((e) => errorTranslate(e.tag));
-            console.log('errMsgs:', msgs);
+            // console.log('err:', err);
+            // let msgs = err.map((e) => errorTranslate(e.tag));
+            // console.log('errMsgs:', msgs);
             return Promise.reject(err.map(e => errorTranslate(e.tag)));
          }
       })
@@ -732,8 +732,8 @@ export function createEnrollment(body) {
  * @param {Integer} sectionId 
  * @returns {Promise}
  */
-export function deleteEnrollment(userId, sectionId) {
-   return del(`Enrollment/${sectionId}/${userId}`)
+export function deleteEnrollment(body) {
+   return del(`Enrollment/${body.sectionId}/${body.userId}`)
       .then(res => {
          if (!res.ok) {
             return createErrorPromise(res);

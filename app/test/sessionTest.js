@@ -55,6 +55,11 @@ describe('Session Management', () => {
          });
    });
 
+   after('close mysql connection', (done) => {
+      connection.end();
+      done();
+   });
+
    describe('/POST with invalid login', () => {
       it('results in 400 and badLogin tag', (done) => {
          let session = {

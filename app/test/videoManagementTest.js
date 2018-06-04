@@ -1,7 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../app');
-var bcrypt = require('bcrypt');
 
 const mysql = require('mysql');
 const connection = mysql.createConnection(require('../routes/connection.json'));
@@ -12,9 +11,6 @@ chai.use(chaiHttp);
 const agent = chai.request.agent(server);
 
 describe('Video Management', () => {
-   let studentCookie;
-   let adminCookie;
-   let defaultAdminCookie;
 
    before('Nuke and preparation', (done) => {
 
@@ -28,12 +24,12 @@ describe('Video Management', () => {
          'name': 'CSC437',
          'description': 'Web Dev',
          'term': 'W18'
-      }
+      };
 
       let topic1 = {
          'name': 'First topic',
          'sectionId': 1,
-      }
+      };
 
       agent.post('/api/Session')
          .send({email: 'admin@example.com', password: 'password'})
@@ -43,12 +39,18 @@ describe('Video Management', () => {
             agent
                .delete('/api/DB')
                .end((err, res) => {
-                  connection.query('insert into Section set ?', section437);
-                  connection.query('insert into Topic set ?', topic1);
                   res.should.have.status(200);
-                  done();
+                  connection.query('insert into Section set ?', section437);
+                  connection.query('insert into Topic set ?', topic1, function() {
+                     done();
+                  });
                });
          });
+   });
+
+   after('close mysql connection', (done) => {
+      connection.end();
+      done();
    });
 
    describe('Register and log in as a student', () => {
@@ -108,7 +110,7 @@ describe('Video Management', () => {
             'link': 'http://example.com',
             'topicId': 1,
             'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
-         }
+         };
 
          agent
             .post('/api/Video')
@@ -133,11 +135,6 @@ describe('Video Management', () => {
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.be.empty;
-               res.should.have.cookie('SPAuth');
-
-               // save cookie for getting Session by cookie
-               studentCookie = res.header.location.replace('/Session/', '');
-
                done();
             });
       });
@@ -149,7 +146,7 @@ describe('Video Management', () => {
             'link': 'http://example.com',
             'topicId': 1,
             'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
-         }
+         };
 
          agent
             .post('/api/Video')
@@ -169,7 +166,7 @@ describe('Video Management', () => {
             'link': 'http://example.com',
             'topicId': 1,
             'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
-         }
+         };
 
          agent
             .post('/api/Video')
@@ -215,7 +212,7 @@ describe('Video Management', () => {
             'name': 'video1UpdatedName',
             'link': 'http://example.com/updated',
             'dueDate': new Date().toISOString().slice(0, 19).replace('T', ' ')
-         }
+         };
 
          agent
             .put('/api/Video/1')
@@ -234,7 +231,7 @@ describe('Video Management', () => {
             .end((err, res) => {
                res.should.have.status(200);
                res.body.should.have.property('id', 1);
-               res.body.should.have.property('name', 'video1UpdatedName')
+               res.body.should.have.property('name', 'video1UpdatedName');
                res.body.should.have.property('link', 'http://example.com/updated');
                done();
             });

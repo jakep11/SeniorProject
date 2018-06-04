@@ -15,11 +15,17 @@
     padding: 0 20px 0 20px;
 }
 
+.enrollment-row {
+    border-bottom: 2px solid rgb(0,166,255);
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 20px;
+}
+
 .cd-sidebar-container h2{
-   padding: 20px;
+   padding: 20px 20px 5px;
    display: flex;
    font-weight: bolder;
-   border-bottom: 2px solid rgb(0,166,255);
 }
 
 .cd-main-body {

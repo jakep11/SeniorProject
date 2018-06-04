@@ -13,7 +13,7 @@ export default class CourseSidebar extends Component {
       const topicRows = [];
       
       this.props.topics.forEach((topic, i) => {
-         let anchor = "#" + topic;
+         let anchor = "#" + topic.name;
          topicRows.push(
             <a href={anchor} key={i}>{topic}</a>
          );
@@ -21,7 +21,9 @@ export default class CourseSidebar extends Component {
    
       return(
          <div className="cd-sidebar-wrapper">
-            {topicRows}
+            {this.props.topics.map((t, idx) => (
+               <a href={'#' + t.name} key={idx}>{t.name}</a>
+            ))}
          </div>
       )
    }

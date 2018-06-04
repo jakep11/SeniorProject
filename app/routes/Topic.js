@@ -19,12 +19,10 @@ router.get('/', (req, res) => {
          if (vld.check(isLoggedIn, Tags.noLogin, null, cb))
             cnn.chkQry(query, null, cb);
       },
-
       function checkResults(topicResults, fields, cb) {
          res.json(topicResults);
-         cb(null);
+         cb();
       }
-
    ], 
    function callback(err) {
       cnn.release();
@@ -67,7 +65,7 @@ router.post('/', (req, res) => {
 
       function finalizeResponse(insertResult, fields, cb) { // finalize response
          res.location(router.baseURL + '/' + insertResult.insertId).end();
-         cb(null);
+         cb();
       }
       
    ], 
@@ -88,7 +86,7 @@ router.get('/:id', (req, res) => {
       function checkTopicExists(cb) { // validate input and check section exists
          if (isNaN(topicId)) { // query sectionId is not a number
             res.status(400).end();
-            cb(true);
+            cb();
          }
          else if (vld.check(isLoggedIn, Tags.noLogin, null, cb)) { // is logged in
             cnn.chkQry(getTopicQuery, [topicId], cb);
@@ -101,12 +99,9 @@ router.get('/:id', (req, res) => {
          }
          else {
             res.status(404).end();
-            return;
          }
-
-         cb(null);
+         cb();
       }
-      
    ], 
    function callback(err) {
       cnn.release();
@@ -172,7 +167,7 @@ router.delete('/:id', (req, res) => {
       function checkTopicExists(cb) { // validate input and check section exists
          if (isNaN(topicId)) { // query sectionId is not a number
             res.status(400).end();
-            cb(true);
+            cb();
          }
          else if (vld.checkAdmin(cb)) { // is admin
             cnn.chkQry(getTopicQuery, [topicId], cb);
@@ -185,6 +180,7 @@ router.delete('/:id', (req, res) => {
          }
          else {
             res.status(404).end();
+            cnn.release();
             return;
          }
       },
