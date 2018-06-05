@@ -83,9 +83,19 @@ export default class Courses extends Component {
       });
 
       console.log('courses: ', courses);
-      let filteredCourses = courses
-         /* Filter by search query */
-         .filter((c) => c.name.toLowerCase().includes(this.props.Courses.searchQuery.toLowerCase()))
+      let filteredByName = courses
+      /* Filter name by search query */
+         .filter((c) => c.name.toLowerCase()
+            .includes(this.props.Courses.searchQuery.toLowerCase()));
+
+      let filteredByDescription = courses
+      /* Filter description by search query */
+         .filter((c) => c.description.toLowerCase()
+            .includes(this.props.Courses.searchQuery.toLowerCase()));
+
+      /* Join the two sets */
+      let filteredCourses =
+         [...new Set([...filteredByName, ...filteredByDescription])]
          /* Filter by enrolled only if given */
          .filter((c) => this.props.Courses.onlyEnrolled ? c.userIsEnrolled || false : true)
          /* Sort by given order */

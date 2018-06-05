@@ -17,14 +17,31 @@ export default class CourseDetail extends Component {
 
       let courseId = +this.props.location.pathname.split('/').slice(-1)[0];
       let course = this.props.Courses.sections.find((s) => s.id === courseId);
-      console.log('course: ', course);
+      console.log('props: ', this.props);
 
-      api.getTopics(courseId)
-         .then((topics) => {
+      Promise.all([
+         api.getUserProgress(this.props.User.info.id),
+         api.getTopics(courseId)
+      ])
+         .then(([progress, topics]) => {
             // this.setState({ topics });
+            console.log('progress:', progress);
+            let progressMap = {};
+            // progress.forEach((p) => progressMap[p.activityType + '.' + p.activityId] = p.whenComplete != null)
+            progress.forEach((p) => progressMap[p.activityType + '.' + p.activityId] = true)
+            console.log('progressMap: ', progressMap);
 
             let promises = topics.map((t) =>
-               api.getActivities(t.id).then((activities) => ({ ...t, activities }))
+               api.getActivities(t.id)
+                  .then((activities) => {
+                     console.log('activities: ', activities);
+                     let activitiesWithProgress = {
+                        videos: activities.videos.map((e) => ({...e, isDone: progressMap['1.' + e.id], activityType: 1, test: '1.' + e.id})),
+                        exercises: activities.exercises.map((e) => ({...e, isDone: progressMap['2.' + e.id], activityType: 2, test: '2.' + e.id})),
+                        documents: activities.documents.map((e) => ({...e, isDone: progressMap['3.' + e.id], activityType: 3, test: '3.' + e.id})),
+                     }
+                     return { ...t, activities: activitiesWithProgress }
+                  })
             );
 
             return Promise.all(promises);
@@ -60,8 +77,11 @@ export default class CourseDetail extends Component {
                { videos.map((v, idx) => (
                   <Activity title={v.name}
                             key={idx}
+                            done={v.isDone}
+                            activity={v}
                             type="video"
                             right={"Due: " + v.dueDate.substring(0, 10)}
+                            {...this.props}
                             content={
                                <Video videoId={v.link}/>
                             } />
@@ -74,8 +94,11 @@ export default class CourseDetail extends Component {
                   .map((e, idx) => (
                   <Activity title={e.name}
                             type="problems"
+                            activity={e}
+                            done={e.isDone}
                             key={idx}
                             right={"Due: " + e.dueDate.substring(0, 10)}
+                            {...this.props}
                             content={
                                <Exercise exercise={e} {...this.props}/>
                             }
@@ -87,8 +110,11 @@ export default class CourseDetail extends Component {
                { documents.map((d, idx) => (
                   <Activity title={d.name}
                             key={idx}
+                            done={d.isDone}
+                            activity={d}
                             type="form"
                             right={"Due: " + d.dueDate.substring(0, 10)}
+                            {...this.props}
                             content={
                                <Document 
                                  name={d.name} 
