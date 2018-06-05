@@ -314,7 +314,7 @@ describe('Progress Management', () => {
                   res.should.have.status(400);
                   res.body[0].should.have.property('tag', 'missingField');
                   res.body[0].should.have.property('params');
-                  res.body[0].params[0].should.equal('userId');
+                  res.body[0].params[0].should.equal('grade');
                
                   done();
                });

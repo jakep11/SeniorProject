@@ -64,6 +64,7 @@ router.put('/:userId', function (req, res) {
             if (vld.hasOnlyFields(body, vldFields, cb) &&
                vld.chain(body.activityId, Tags.missingField, ['activityId'])
                   .chain(body.activityType, Tags.missingField, ['activityType'])
+                  .chain(body.grade, Tags.missingField, ['grade'])
                   .chain(typeof (body.grade) !== 'undefined', Tags.missingField, ['grade'])
                   .chain(body.grade >= 0, Tags.badValue, ['grade'])
                   .chain(body.activityId > 0, Tags.badValue, ['activityId'])
