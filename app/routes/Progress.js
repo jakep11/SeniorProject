@@ -17,7 +17,8 @@ router.get('/:userId', function (req, res) {
 
    async.waterfall([
       function (cb) {
-         if (vld.check(req.session, Tags.noLogin, null, cb)) {
+         if (vld.check(req.session, Tags.noLogin, null, cb) &&
+          vld.checkPrsOK(userId)) {
             cnn.chkQry('SELECT * FROM User WHERE id = ?', [userId], cb);
          }
       },
@@ -40,7 +41,7 @@ router.get('/:userId', function (req, res) {
 });
 
 /* PUT -- 
- * Updates the specified exercise. 
+ * Updates the progress for a user. 
  * Can update name, question, answer, type, points, topicId.
  */
 router.put('/:userId', function (req, res) {
@@ -52,7 +53,8 @@ router.put('/:userId', function (req, res) {
 
    async.waterfall([
       function (cb) {
-         if (vld.check(req.session, Tags.noLogin, null, cb)) {
+         if (vld.check(req.session, Tags.noLogin, null, cb) &&
+          vld.checkAdmin(cb)) {
             cnn.chkQry('SELECT * FROM User WHERE id = ?', [userId], cb);
          }
       },
@@ -62,6 +64,7 @@ router.put('/:userId', function (req, res) {
             if (vld.hasOnlyFields(body, vldFields, cb) &&
                vld.chain(body.activityId, Tags.missingField, ['activityId'])
                   .chain(body.activityType, Tags.missingField, ['activityType'])
+                  .chain(body.grade, Tags.missingField, ['grade'])
                   .chain(typeof (body.grade) !== 'undefined', Tags.missingField, ['grade'])
                   .chain(body.grade >= 0, Tags.badValue, ['grade'])
                   .chain(body.activityId > 0, Tags.badValue, ['activityId'])

@@ -130,6 +130,12 @@ app.delete('/api/DB', function(req, res) {
    req.cnn.release();
 });
 
+//Gets any bad api routes and returns 404
+app.use('/api/*', function(req, res) {
+   res.status(404).end();
+   req.cnn.release();
+})
+
 // Gets any routes that don't match 
 app.get('/*', function (req, res) {
    console.log("CLIENT SIDE PATH");
