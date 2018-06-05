@@ -44,7 +44,7 @@ router.post('/', function(req, res) {
    async.waterfall([
       function(cb) {
          if (vld.checkAdmin(cb) &&
-            vld.hasFields(body, ['name', 'contentPath'], cb))
+            vld.hasFields(body, ['name', 'contentPath', 'topicId'], cb))
             cnn.chkQry('SELECT * FROM Document WHERE Name = ?', [body.name], cb); 
       },
       function(existingDoc, fields, cb) {
