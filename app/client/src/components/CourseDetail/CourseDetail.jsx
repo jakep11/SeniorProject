@@ -61,7 +61,7 @@ export default class CourseDetail extends Component {
                   <Activity title={v.name}
                             key={idx}
                             type="video"
-                            right="5 minutes, 31 seconds"
+                            right={"Due: " + v.dueDate.substring(0, 10)}
                             content={
                                <Video videoId={v.link}/>
                             } />
@@ -75,7 +75,7 @@ export default class CourseDetail extends Component {
                   <Activity title={e.name}
                             type="problems"
                             key={idx}
-                            right="1 problem"
+                            right={"Due: " + e.dueDate.substring(0, 10)}
                             content={
                                <Exercise exercise={e} {...this.props}/>
                             }
@@ -88,9 +88,13 @@ export default class CourseDetail extends Component {
                   <Activity title={d.name}
                             key={idx}
                             type="form"
-                            right="321 Words"
+                            right={"Due: " + d.dueDate.substring(0, 10)}
                             content={
-                               <Document />
+                               <Document 
+                                 name={d.name} 
+                                 path={d.contentPath} 
+                                 {...this.props}
+                              />
                             } />
                ))}
             </div>
@@ -134,7 +138,9 @@ export default class CourseDetail extends Component {
                <div className="cd-sidebar-container">
                   <h2>{this.state.course.description}</h2>
                   <div className="enrollment-row">
-
+                     <Link className= "enrollment-row-link" to={'/Courses'}>
+                        {"<- Return to Courses"}
+                     </Link>
 
                      { isEnrolled &&
                      <div className="cd-unenroll">
@@ -159,7 +165,9 @@ export default class CourseDetail extends Component {
                      }
 
                   </div>
-                  <CourseSidebar title="Topics" topics={topics} {...this.props}/>
+                  <div className="cd-sidebar-body">
+                     <CourseSidebar title="Topics" topics={topics} {...this.props}/>
+                  </div>
                </div>
 
                <div className="cd-main-body">

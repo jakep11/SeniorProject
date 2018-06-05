@@ -15,11 +15,19 @@
     padding: 0 20px 0 20px;
 }
 
+.cd-sidebar-body {
+   padding: 10px;
+}
+
 .enrollment-row {
     border-bottom: 2px solid rgb(0,166,255);
     display: flex;
-    justify-content: flex-end;
-    padding: 0 20px;
+    justify-content: space-between;
+    padding: 0 20px 10px 20px;
+}
+
+.enrollment-row-link {
+   transform: translateY(20%); 
 }
 
 .cd-sidebar-container h2{

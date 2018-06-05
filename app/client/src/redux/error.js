@@ -36,7 +36,7 @@ export default function Error(state = initialState, action) {
 /* Action Creators */
 export const setError = (message, cb) => {
    return (dispatch, prevState) => {
-      dispatch({ type: SET_ERROR, message });
+      dispatch({ type: SET_ERROR, message: message, style: 'danger' });
       cb && cb();
    };
 };
