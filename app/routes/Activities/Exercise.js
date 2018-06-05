@@ -163,7 +163,7 @@ router.put('/:exerciseId/Grade', function(req, res) {
          else if (vld.check(body.answer, Tags.missingValue, ['answer'], cb)) {
             var correct = false;
             // Use trim to get rid of extra whitespace at end of answer string.
-            if (body.answer.trim() === exerciseArr[0].answer.trim()) {
+            if (body.answer.trim().toLowerCase() === exerciseArr[0].answer.trim().toLowerCase()) {
                correct = true;
             } 
             res.json({isCorrect : correct});

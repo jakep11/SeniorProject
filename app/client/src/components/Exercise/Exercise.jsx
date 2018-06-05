@@ -18,6 +18,8 @@ export default class Exercise extends Component {
    }   
    
    submit() {
+      if (this.state.answer === "") return;
+   
       api.modifyExerciseGrade(this.props.exercise.id, {answer: this.state.answer})
          .then((res) => {
             console.log('res:', res);

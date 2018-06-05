@@ -5,10 +5,7 @@ export const SET_ERROR = 'SET_ERROR';
 export const CLEAR_ERROR = 'CLEAR_ERROR';
 
 
-const initialState = {
-   message: '',
-   style: 'danger'
-};
+const initialState = {};
 
 /* Reducer */
 export default function Error(state = initialState, action) {
@@ -36,7 +33,7 @@ export default function Error(state = initialState, action) {
 /* Action Creators */
 export const setError = (message, cb) => {
    return (dispatch, prevState) => {
-      dispatch({ type: SET_ERROR, message });
+      dispatch({ type: SET_ERROR, message: message, style: 'danger' });
       cb && cb();
    };
 };

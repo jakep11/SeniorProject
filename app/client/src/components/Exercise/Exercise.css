@@ -4,11 +4,12 @@
 
 .exercise-question {
    text-align: center;
+   width: auto;
    padding-bottom: 10px;
 }
 
 .exercise-border {
-   width: 400px;
+   width: auto;
    border-bottom: 2px solid rgb(0,166,255);
 }
 
