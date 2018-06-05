@@ -33,17 +33,16 @@ export default class Document extends Component {
          .catch(error => this.props.setError(error));
    }
    
-   download(path, name, getFile) {
+   download(path, name) {
       let dbx = new Dropbox({accessToken: 
          "zPeJP5gTISAAAAAAAAAADVkN_MPT3KJDbmUW6XSVxnnIKCK0eiiePxwGgIp73Nag"
       });
      
       let fullPath = path + name;
-      console.log("This? ", this);
       
       dbx.sharingListSharedLinks({
          "path" : fullPath
-      }).then(function(data0) {
+      }).then((data0) => {
          if (data0.links.length === 0) {
             dbx.sharingCreateSharedLinkWithSettings({
                "path": fullPath,
@@ -51,11 +50,12 @@ export default class Document extends Component {
                   "requested_visibility": "public"
                }
             }).then(data => {
-               getFile(data.url);
+               this.getFile(data.url);
             })
             .catch(error => this.props.setError(error));
          } else {
-            getFile(data0.links[0].url);
+            console.log("This??", this);
+            this.getFile(data0.links[0].url);
          }
       })
    }
@@ -67,7 +67,7 @@ export default class Document extends Component {
          <span className="document-wrapper">
             {this.props.name} &nbsp;
             <button type="button" onClick={() => 
-               this.download(this.props.path, this.props.name, this.getFile)}>
+               this.download(this.props.path, this.props.name)}>
                   Download
                </button>            
          </span>
