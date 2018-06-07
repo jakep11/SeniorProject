@@ -274,11 +274,36 @@ describe('Enrollment Management', () => {
                   done();
                });
          });
+
+         // post duplicate exercise
+         it('should return 400 and dupExercise tag', (done) => {
+            agent.post('/api/Exercise')
+               .send({'name': 'Ex2', 'question': 'Test?', 'answer': 'right', 'type': 'Free-response', 'points': 10, 'topicId': 1})
+               .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body[0].should.have.property('tag', 'dupExercise');
+                  done();
+               });
+         });
       });
 
       describe('/GET with admin AU', () => {
          it('should return 2 exercises', (done) => {
             agent.get('/api/Exercise')
+               .end((err, res) => {
+                  res.should.have.status(200);
+                  res.body.should.be.a('array');
+                  res.body.should.have.lengthOf(2);
+                  res.body[0].should.not.have.property('answer');
+                  res.body[1].should.not.have.property('answer');
+                  done();
+               });
+         });
+      });
+
+      describe('/GET?topicId with admin AU', () => {
+         it('should return 2 exercises', (done) => {
+            agent.get('/api/Exercise?topicId=1')
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
@@ -333,11 +358,32 @@ describe('Enrollment Management', () => {
          });
       });
 
+      describe('/PUT/:id invalid with admin AU', () => {
+         it('should return 404', (done) => {
+            agent.put('/api/Exercise/999')
+               .send({'name': 'testing', 'answer': 'right', 'points': 5})
+               .end((err, res) => {
+                  res.should.have.status(404);
+                  done();
+               });
+         });
+      });
+
       describe('/DELETE/:id with admin AU', () => {
          it('should return 200 and remove the exercise', (done) => {
             agent.delete('/api/Exercise/2')
                .end((err, res) => {
                   res.should.have.status(200);
+                  done();
+               });
+         });
+      });
+
+      describe('/DELETE/:id invalid with admin AU', () => {
+         it('should return 200 and remove the exercise', (done) => {
+            agent.delete('/api/Exercise/999')
+               .end((err, res) => {
+                  res.should.have.status(404);
                   done();
                });
          });
@@ -360,6 +406,30 @@ describe('Enrollment Management', () => {
                .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.have.property('isCorrect', true);
+                  done();
+               });
+         });
+      });
+
+      describe('/PUT/:id/Grade no answer with admin AU', () => {
+         it('should return 200 and isCorrect property false', (done) => {
+            agent.put('/api/Exercise/1/Grade')
+               .send({})
+               .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body[0].should.have.property('tag', 'missingField');
+                  res.body[0].params[0].should.be.eql('answer');
+                  done();
+               });
+         });
+      });
+
+      describe('/PUT/:id/Grade invalid with admin AU', () => {
+         it('should return 200 and isCorrect property false', (done) => {
+            agent.put('/api/Exercise/999/Grade')
+               .send({'answer': 'wrong'})
+               .end((err, res) => {
+                  res.should.have.status(404);
                   done();
                });
          });

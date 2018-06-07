@@ -24,6 +24,7 @@ Validator.Tags = {
    dupEnrollment: 'dupEnrollment',  // Duplicate enrollment
    dupVideoLink: 'dupVideoLink',    // Duplicate Video link
    dupSection: 'dupSection',        // Duplicate section
+   dupExercise: 'dupExercise',      // Duplicate exercise
    forbiddenField: 'forbiddenField',// Forbidden field supplied as a parameter
    queryFailed: 'queryFailed',      // Query failed in the database
    dupTopic: 'dupTopic',            // Duplicate topic
