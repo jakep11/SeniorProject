@@ -27,8 +27,8 @@ export default class CourseDetail extends Component {
             // this.setState({ topics });
             console.log('progress:', progress);
             let progressMap = {};
-            // progress.forEach((p) => progressMap[p.activityType + '.' + p.activityId] = p.whenComplete != null)
-            progress.forEach((p) => progressMap[p.activityType + '.' + p.activityId] = true)
+            progress.forEach((p) => progressMap[p.activityType + '.' + p.activityId] = p.whenComplete != null)
+            // progress.forEach((p) => progressMap[p.activityType + '.' + p.activityId] = true)
             console.log('progressMap: ', progressMap);
 
             let promises = topics.map((t) =>
@@ -39,7 +39,7 @@ export default class CourseDetail extends Component {
                         videos: activities.videos.map((e) => ({...e, isDone: progressMap['1.' + e.id], activityType: 1, test: '1.' + e.id})),
                         exercises: activities.exercises.map((e) => ({...e, isDone: progressMap['2.' + e.id], activityType: 2, test: '2.' + e.id})),
                         documents: activities.documents.map((e) => ({...e, isDone: progressMap['3.' + e.id], activityType: 3, test: '3.' + e.id})),
-                     }
+                     };
                      return { ...t, activities: activitiesWithProgress }
                   })
             );
@@ -61,6 +61,10 @@ export default class CourseDetail extends Component {
 
    renderActivities(activities) {
 
+      let courseId = +this.props.location.pathname.split('/').slice(-1)[0];
+      let course = this.props.Courses.sections.find((s) => s.id === courseId);
+      let isEnrolled = this.props.User.enrolled.find((id) => id === course.id) != null;
+
       console.log('activities: ', activities);
       let videos = activities.videos;
       let documents = activities.documents;
@@ -78,6 +82,7 @@ export default class CourseDetail extends Component {
                   <Activity title={v.name}
                             key={idx}
                             done={v.isDone}
+                            userIsEnrolled={isEnrolled}
                             activity={v}
                             type="video"
                             right={"Due: " + v.dueDate.substring(0, 10)}
@@ -96,6 +101,7 @@ export default class CourseDetail extends Component {
                             type="problems"
                             activity={e}
                             done={e.isDone}
+                            userIsEnrolled={isEnrolled}
                             key={idx}
                             right={"Due: " + e.dueDate.substring(0, 10)}
                             {...this.props}
@@ -110,6 +116,7 @@ export default class CourseDetail extends Component {
                { documents.map((d, idx) => (
                   <Activity title={d.name}
                             key={idx}
+                            userIsEnrolled={isEnrolled}
                             done={d.isDone}
                             activity={d}
                             type="form"

@@ -18,7 +18,7 @@ export default class Activity extends Component {
             <div className="act-bar-wrapper"
                  onClick={() => {
                     /* If this is a video, update progress */
-                    if (this.props.type === 'video' && !this.state.showContent) {
+                    if (this.props.type === 'video' && !this.state.showContent && this.props.userIsEnrolled) {
                        let body = {
                           activityId: this.props.activity.id,
                           activityType: this.props.activity.activityType,
