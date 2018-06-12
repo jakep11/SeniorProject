@@ -63,7 +63,10 @@ export default class CourseDetail extends Component {
 
       let courseId = +this.props.location.pathname.split('/').slice(-1)[0];
       let course = this.props.Courses.sections.find((s) => s.id === courseId);
-      let isEnrolled = this.props.User.enrolled.find((id) => id === course.id) != null;
+      
+      let isEnrolled = false;
+      if (!this.props.User.info.role)
+         isEnrolled = this.props.User.enrolled.find((id) => id === course.id) != null;
 
       console.log('activities: ', activities);
       let videos = activities.videos;
@@ -158,7 +161,12 @@ export default class CourseDetail extends Component {
 
       let courseId = +this.props.location.pathname.split('/').slice(-1)[0];
       let course = this.props.Courses.sections.find((s) => s.id === courseId);
-      let isEnrolled = this.props.User.enrolled.find((id) => id === course.id) != null;
+      
+      let isAdmin = this.props.User.info.role
+      let isEnrolled = false;
+      
+      if (!isAdmin)
+         isEnrolled = this.props.User.enrolled.find((id) => id === course.id) != null;
 
       console.log('isEnrolled: ', isEnrolled)
 
@@ -175,7 +183,7 @@ export default class CourseDetail extends Component {
                         {"<- Return to Courses"}
                      </Link>
 
-                     { isEnrolled &&
+                     { !isAdmin && isEnrolled &&
                      <div className="cd-unenroll">
                         <Button
                            onClick={(e) => {
@@ -186,7 +194,7 @@ export default class CourseDetail extends Component {
                      </div>
                      }
 
-                     { !isEnrolled &&
+                     { !isAdmin && !isEnrolled &&
                      <div className="cb-enroll">
                         <Button
                            onClick={(e) => {

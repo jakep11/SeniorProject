@@ -3,6 +3,7 @@ import { withRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import React, { Component } from 'react';
 import Home from '../Home/Home';
+import Dashboard from '../Dashboard/Dashboard';
 import Courses from '../Courses/Courses';
 import Navbar from '../Navbar/Navbar';
 import Settings from '../Settings/Settings';
@@ -19,24 +20,27 @@ export default class LoggedIn extends Component {
    }
 
    render() {
-
       if (!this.props.User.isLoggedIn) {
          console.log('User is not logged in; sending to /login');
          this.props.history.push("/login")
          return null;
       }
+      
+      let renderHome = (this.props.User.info.role) ? 
+         <Dashboard {...this.props} /> :
+         <Home {...this.props} />
 
       return (
          <div className="page-wrapper">
             <Navbar {...this.props} />
 
             <Switch>
-               <Route exact path="/home" render={() => <Home {...this.props} />} />
+               <Route exact path="/home" render={() => (renderHome)} />
                {/*<Route exact path="/courses" component={Courses} />*/}
                <Route exact path="/courses" render={() => <Courses {...this.props} />} />
                <Route path="/courses/:courseId" render={() => <CourseDetail {...this.props} />} />
                <Route exact path="/settings" render={() => <Settings {...this.props} />}/>
-               <Route exact path="/about" component={About} />
+               {/*<Route exact path="/about" component={About} />*/}
                <Redirect exact from="/" to="/home" />
                <Route path="*" component={NotFound} />
             </Switch>

@@ -33,7 +33,10 @@ export default class Courses extends Component {
    }
 
    renderCourse(course, idx) {
-      let isEnrolled = this.props.User.enrolled.find((id) => id === course.id) == null;
+      let isEnrolled = false;
+      if (!this.props.User.info.role)
+         isEnrolled = this.props.User.enrolled.find((id) => id === course.id) == null;
+         
       return (
          <Link key={course.id} to={`/courses/${course.id}`} className='cs-course-link'>
             <CourseBlock course={course}
