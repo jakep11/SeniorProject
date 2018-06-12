@@ -55,8 +55,8 @@ router.put('/:userId', function (req, res) {
       function (cb) {
          if (vld.check(req.session, Tags.noLogin, null, cb) &&
           (vld.check(req.session.isAdmin() || 
-          body.activityType === 1 || 
-          body.activityType === 3, Tags.noPermission, null, cb))) {
+          ((body.activityType === 1 || 
+          body.activityType === 3) && req.session.id === userId), Tags.noPermission, null, cb))) {
             cnn.chkQry('SELECT * FROM User WHERE id = ?', [userId], cb);
          }
       },
