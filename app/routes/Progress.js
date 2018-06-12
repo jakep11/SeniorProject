@@ -28,7 +28,7 @@ router.get('/:userId', function (req, res) {
          }
          else {
             res.status(404).end();
-            cb();
+            cnn.release();
          }
       },
       function (progressArr, fields, cb) {
@@ -54,7 +54,9 @@ router.put('/:userId', function (req, res) {
    async.waterfall([
       function (cb) {
          if (vld.check(req.session, Tags.noLogin, null, cb) &&
-          vld.checkAdmin(cb)) {
+          (vld.check(req.session.isAdmin() || 
+          body.activityType === 1 || 
+          body.activityType === 3, Tags.noPermission, null, cb))) {
             cnn.chkQry('SELECT * FROM User WHERE id = ?', [userId], cb);
          }
       },
