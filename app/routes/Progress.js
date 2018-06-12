@@ -48,7 +48,7 @@ router.put('/:userId', function (req, res) {
    let vld = req.validator;
    let body = req.body;
    let cnn = req.cnn;
-   let userId = req.params.userId;
+   let userId = parseInt(req.params.userId);
    let vldFields = ['activityId', 'activityType', 'grade']
 
    async.waterfall([
