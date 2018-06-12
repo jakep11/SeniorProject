@@ -18,7 +18,7 @@ class Main extends Component {
    renderNotLoggedIn() {
       return (
          <nav className="navbar">
-            <div className="navbar-left"> 
+            <div className="navbar-left">
                <Link to={'/about'} className={this.props.location.pathname.includes('/about') ? 'active navbar-el': 'navbar-el'}>
                   <div>About</div>
                </Link>

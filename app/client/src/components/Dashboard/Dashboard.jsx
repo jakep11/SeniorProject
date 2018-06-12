@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import * as api from "../../api";
+
 import './Dashboard.css';
 
 export default class Dashboard extends Component {
@@ -7,6 +9,24 @@ export default class Dashboard extends Component {
       super(props);
       
       console.log(this.props.User);
+      
+      api.getUsers()
+         .then(users => {
+            console.log("All users:", users);
+            let students = users.filter(user => user.role === 0);
+            console.log("Students:", students);
+            let progressMap = students.map(student => 
+               api.getUserProgress(student.id)
+                  .then(progress => progress)
+            )
+            return Promise.all(progressMap);
+         })
+         .then(progress => {
+            console.log(progress);
+            this.setState({ progress });
+         })
+     
+      this.state = { progress: [] };
    }
    
    render() {

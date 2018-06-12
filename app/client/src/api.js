@@ -180,6 +180,26 @@ export function modifyUser(userId, body) {
 }
 
 /**
+ * Get all users
+ * @param {String} email,
+ * @returns {Promise}
+ */
+export function getUsers(email) {
+   let endpoint = 'User';
+   
+   if (email)
+      endpoint += `?email=${email}`;
+      
+   console.log("getUsers endpoint:", endpoint);
+   
+   return get(endpoint)
+      .then(res => {
+         return res.ok ? res.json() : createErrorPromise(res);
+      })
+      .then(res => res);
+}
+
+/**
  * Gets a section's topics
  * @param {Integer} sectionId    // optional argument
  * @returns {Promise}

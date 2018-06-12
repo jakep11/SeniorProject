@@ -14,7 +14,7 @@ export default class About extends Component {
          <div>
             <Navbar {...this.props} />
             <div className="help-wrapper">
-               <h1>About</h1>
+               <h1>About PolyEducate</h1>
                <div>
                   This application is built as a senior project by 6 Cal Poly students.
                   The goal of the application is to provide an online learning platform that 
