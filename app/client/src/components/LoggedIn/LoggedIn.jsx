@@ -31,6 +31,7 @@ export default class LoggedIn extends Component {
 
       return (
          <div className="page-wrapper">
+            
             <Navbar {...this.props} />
 
             <Switch>

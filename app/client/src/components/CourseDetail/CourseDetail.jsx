@@ -1,14 +1,17 @@
 
 import React, { Component } from 'react';
-import './CourseDetail.css';
 import { Link } from "react-router-dom";
 import Video from '../Video/Video';
 import Exercise from '../Exercise/Exercise';
 import Document from '../Document/Document';
 import Activity from '../Activity/Activity';
 import CourseSidebar from '../CourseSidebar/CourseSidebar';
-import {Button} from "react-bootstrap";
+import InputDialog from '../InputDialog/InputDialog';
+import {Button, ListGroup, ListGroupItem, Label} from "react-bootstrap";
 import * as api from "../../api";
+
+import './CourseDetail.css';
+
 
 export default class CourseDetail extends Component {
    
@@ -29,7 +32,7 @@ export default class CourseDetail extends Component {
             let progressMap = {};
             progress.forEach((p) => progressMap[p.activityType + '.' + p.activityId] = p.whenComplete != null)
             // progress.forEach((p) => progressMap[p.activityType + '.' + p.activityId] = true)
-            console.log('progressMap: ', progressMap);
+            // console.log('progressMap: ', progressMap);
 
             let promises = topics.map((t) =>
                api.getActivities(t.id)
@@ -54,9 +57,28 @@ export default class CourseDetail extends Component {
 
       this.state = {
          course,
-         topics: []
+         topics: [],
+         editTopic: false,
+         topicId: -1
       };
-
+   
+   }
+   
+   editTopic(newTitle, topicId) {
+      let updateName = ((newName) => 
+         this.state.topics.forEach((topic) => {
+            if (topicId === topic.id) 
+               topic.name = newName;
+         })
+      );
+      
+      
+      if (!newTitle)
+         return;
+         
+      console.log("Editing topic, newTitle:", newTitle, ", topicId:", topicId);
+      let what = this.props.modifyTopic(topicId, newTitle, updateName(newTitle));
+      console.log("WHAT:", what);
    }
 
    renderActivities(activities) {
@@ -68,14 +90,14 @@ export default class CourseDetail extends Component {
       if (!this.props.User.info.role)
          isEnrolled = this.props.User.enrolled.find((id) => id === course.id) != null;
 
-      console.log('activities: ', activities);
+      //console.log('activities: ', activities);
       let videos = activities.videos;
       let documents = activities.documents;
       let exercises = activities.exercises;
 
-      console.log('videos:', videos);
-      console.log('documents:', documents);
-      console.log('exercises:', exercises);
+      //console.log('videos:', videos);
+      //console.log('documents:', documents);
+      //console.log('exercises:', exercises);
 
       return (
          <div>
@@ -139,14 +161,19 @@ export default class CourseDetail extends Component {
       );
    }
 
+   
 
    renderTopics(topics) {
 
       return topics.map((t) => (
          <div className="cd-topic-container" key={t.id}>
-
-            <h3 id={t.name}>{t.name}</h3>
-
+            <div className="edit-topic-wrapper">
+               <h3 id={t.name}>{t.name}</h3>
+               <Button className="edit-icon" onClick={() => {this.setState({editTopic: true, topicId: t.id})}}>
+                  <i className="fas fa-pencil-alt"></i> 
+               </Button>
+            </div>
+            
             { this.renderActivities(t.activities) }
 
          </div>
@@ -171,53 +198,68 @@ export default class CourseDetail extends Component {
       console.log('isEnrolled: ', isEnrolled)
 
       return (
+         <div>
+            <div className="cd-wrapper">
 
-         <div className="cd-wrapper">
+               <div className="cd-main-wrapper">
 
-            <div className="cd-main-wrapper">
+                  <div className="cd-sidebar-container">
+                     <h2>{this.state.course.description}</h2>
+                     <div className="enrollment-row">
+                        <Link className= "enrollment-row-link" to={'/Courses'}>
+                           {"<- Return to Courses"}
+                        </Link>
 
-               <div className="cd-sidebar-container">
-                  <h2>{this.state.course.description}</h2>
-                  <div className="enrollment-row">
-                     <Link className= "enrollment-row-link" to={'/Courses'}>
-                        {"<- Return to Courses"}
-                     </Link>
+                        { !isAdmin && isEnrolled &&
+                        <div className="cd-unenroll">
+                           <Button
+                              onClick={(e) => {
+                                 this.props.unenrollInCourse(this.state.course.id);
+                                 e.stopPropagation();
+                                 e.preventDefault();
+                              }}>Drop</Button>
+                        </div>
+                        }
 
-                     { !isAdmin && isEnrolled &&
-                     <div className="cd-unenroll">
-                        <Button
-                           onClick={(e) => {
-                              this.props.unenrollInCourse(this.state.course.id);
-                              e.stopPropagation();
-                              e.preventDefault();
-                           }}>Drop</Button>
+                        { !isAdmin && !isEnrolled &&
+                        <div className="cb-enroll">
+                           <Button
+                              onClick={(e) => {
+                                 this.props.enrollInCourse(this.state.course.id);
+                                 e.stopPropagation();
+                                 e.preventDefault();
+                              }}>Enroll</Button>
+                        </div>
+                        }
+
                      </div>
-                     }
-
-                     { !isAdmin && !isEnrolled &&
-                     <div className="cb-enroll">
-                        <Button
-                           onClick={(e) => {
-                              this.props.enrollInCourse(this.state.course.id);
-                              e.stopPropagation();
-                              e.preventDefault();
-                           }}>Enroll</Button>
+                     <div className="cd-sidebar-body">
+                        <CourseSidebar title="Topics" topics={topics} {...this.props}/>
                      </div>
-                     }
+                  </div>
 
+                  <div className="cd-main-body">
+
+                     { this.renderTopics(topics) }
                   </div>
-                  <div className="cd-sidebar-body">
-                     <CourseSidebar title="Topics" topics={topics} {...this.props}/>
-                  </div>
+                  
                </div>
 
-               <div className="cd-main-body">
-
-                  { this.renderTopics(topics) }
-               </div>
-               
             </div>
-
+            
+            <InputDialog
+               show={this.state.editTopic}
+               title="Edit Topic"
+               placeholder="Enter new topic title"
+               buttons={['Edit', 'Cancel']}
+               onClose={(answer, input) => {
+                  this.setState({editTopic: false});
+                  if (answer === 'Edit') {
+                     this.editTopic(input, this.state.topicId);
+                  }
+              }}
+            />
+            
          </div>
       )
 

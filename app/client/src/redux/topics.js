@@ -7,6 +7,7 @@ const ADD_TOPICS_EXERCISES = 'ADD_TOPICS_EXERCISES';
 const ADD_TOPICS_VIDEOS = 'ADD_TOPICS_VIDEOS';
 //const ADD_ACTIVITIES = 'ADD_ACTIVITIES';
 const TOGGLE_ACTIVITY = 'TOGGLE_ACTIVITY';
+const MODIFY_TOPIC = 'MODIFY_TOPIC';
 
 const initialState = {
    topics: {
@@ -67,6 +68,8 @@ export default function Topics(state = initialState, action) {
       return {
          
       }
+   case MODIFY_TOPIC:
+      return action.name;
 
    default:
       return state;
@@ -172,6 +175,16 @@ export function addTopics(sectionId, cb) {
    };
 }
 
+export function modifyTopic(topicId, newName, cb) {
+   return (dispatch, prevState) => {
+      api.modifyTopic(topicId, {name : newName})
+         .then(() => { if (cb) cb(); })
+         .catch(error => {
+            console.log("Modify topic error: " + error)
+         });
+   };
+}
+
 export function toggleActivity() {
 
 }
@@ -182,5 +195,6 @@ export const actionCreators = {
    addDocuments,
    addExercises,
    addVideos,
-   toggleActivity
+   toggleActivity,
+   modifyTopic
 };
