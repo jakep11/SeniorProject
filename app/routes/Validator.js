@@ -28,7 +28,8 @@ Validator.Tags = {
    forbiddenField: 'forbiddenField',// Forbidden field supplied as a parameter
    queryFailed: 'queryFailed',      // Query failed in the database
    dupTopic: 'dupTopic',            // Duplicate topic
-   progressNotFound: 'progressNotFound'
+   progressNotFound: 'progressNotFound',
+   resetTokenExpired: 'resetTokenExpired' // The token generated for a password reset has expired
 };
 
 // Check |test|.  If false, add an error with tag and possibly empty array

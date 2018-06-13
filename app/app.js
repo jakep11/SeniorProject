@@ -45,18 +45,19 @@ app.use(Session.router);
 app.get('/', function (req, res) {
    console.log("Home page");
    res.sendFile(path.join(__dirname, 'public', 'index.html'));
- });
+});
 
- app.get('/login', function (req, res) {
+app.get('/login', function (req, res) {
    console.log("Login page");
    res.sendFile(path.join(__dirname, 'public', 'index.html'));
- });
+});
 
 // Check general login.  If OK, add Validator to |req| and continue processing,
 // otherwise respond immediately with 401 and noLogin error tag.
 app.use(function (req, res, next) {
    if (req.session || (req.method === 'POST' &&
-      (req.path === '/api/User' || req.path === '/api/Session'))) {
+      (req.path === '/api/User' || req.path === '/api/Session' || req.path === '/api/User/forgotpassword') ||
+      ((req.method === 'GET' || req.method === 'POST') && req.path.startsWith('/api/User/resetpassword/')))) {
       req.validator = new Validator(req, res);
       next();
    } 
