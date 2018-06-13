@@ -28,7 +28,7 @@ router.get('/', function (req, res) {
          ' like concat(?, "%"))', [au, reqEmail], handler);
    }
    else if (!reqEmail && req.session.isAdmin()) {
-      req.cnn.chkQry('select id, firstName, lastName, email, role from User', handler);
+      req.cnn.chkQry('select id, firstName, lastName, email, role from User', null, handler);
    }
    else { //No request email and not an admin
       req.cnn.chkQry('select id, firstName, lastName, email, role from User where id = ?', [au],
