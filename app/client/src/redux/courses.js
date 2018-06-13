@@ -14,11 +14,11 @@ const initialState = {
    sections: [],
    filter: {
       cpe: false,
-      csc: true,
-      ee: true,
+      csc: false,
+      ee: false,
    },
    showProgress: true,
-   onlyEnrolled: true,
+   onlyEnrolled: false,
    searchQuery: '',
    sortOrder: 'ASC'
 };
