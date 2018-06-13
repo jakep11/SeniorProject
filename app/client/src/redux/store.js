@@ -1,6 +1,4 @@
 import { createStore, applyMiddleware } from 'redux';
-import { createEpicMiddleware } from 'redux-observable';
-// import { syncHistoryWithStore} from 'react-router-redux';
 import { createBrowserHistory } from 'history';
 // import the root reducer
 import persistState from 'redux-localstorage'

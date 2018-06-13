@@ -1,8 +1,6 @@
 
 import React, { Component } from 'react';
-import {Checkbox, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
 import CourseBlock from "../CourseBlock/CourseBlock";
-import Sydebar from "../Sidebar/Sidebar";
 import './Courses.css';
 import { Link } from "react-router-dom";
 import CoursesFilterSidebar from "../CoursesFilterSidebar/CoursesFilterSidebar";
@@ -36,7 +34,9 @@ export default class Courses extends Component {
       let isEnrolled = false;
       if (!this.props.User.info.role)
          isEnrolled = this.props.User.enrolled.find((id) => id === course.id) == null;
-         
+
+      console.log('isEnrolled: ', isEnrolled);
+
       return (
          <Link key={course.id} to={`/courses/${course.id}`} className='cs-course-link'>
             <CourseBlock course={course}
@@ -100,7 +100,9 @@ export default class Courses extends Component {
       let filteredCourses =
          [...new Set([...filteredByName, ...filteredByDescription])]
          /* Filter by enrolled only if given */
-         .filter((c) => this.props.Courses.onlyEnrolled ? c.userIsEnrolled || false : true)
+         .filter((c) => this.props.Courses.onlyEnrolled ?
+            /* If user is enrolled, the course id will be in the props User.enrolled array */
+            this.props.User.enrolled.find((id) => id === c.id) == null : true)
          /* Sort by given order */
          .sort((c1, c2) => {
             let mult = this.props.Courses.sortOrder === 'ASC' ? 1 : -1;
@@ -135,6 +137,8 @@ export default class Courses extends Component {
             }
          });
 
+      console.log('filteredCoursesByName:', filteredByName);
+      console.log('filteredCoursesByDesc:', filteredByDescription);
          console.log('filteredCourses:', filteredCourses);
 
       return (

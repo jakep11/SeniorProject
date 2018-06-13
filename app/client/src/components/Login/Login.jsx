@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Modal, Button } from 'react-bootstrap';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import Navbar from '../Navbar/Navbar';
 import ConfDialog from '../ConfDialog/ConfDialog';
 import './Login.css';
@@ -8,11 +8,14 @@ import './Login.css';
 export default class Login extends Component {
    constructor(props) {
       super(props);
+      // this.state = {
+      //    username: 'userB@example.com',
+      //    password: 'passwordB'
+      // };
+
       this.state = {
-         // username: 'admin@example.com',
-         // password: 'password'
-         username: 'userB@example.com',
-         password: 'passwordB'
+         username: '',
+         password: ''
       };
 
       if (this.props.User.isLoggedIn) {

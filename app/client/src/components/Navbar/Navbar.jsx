@@ -1,14 +1,9 @@
 
 import './Navbar.css';
 import React, { Component } from 'react';
-import {DropdownButton, MenuItem} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 class Main extends Component {
-
-   constructor(props) {
-      super(props);
-   }
 
    logout() {
       console.log(this.props);

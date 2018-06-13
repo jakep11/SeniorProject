@@ -1,7 +1,7 @@
 
 import './CourseBlock.css';
 import React, { Component } from 'react';
-import { Line, Circle } from 'rc-progress';
+import { Line } from 'rc-progress';
 import {Button} from "react-bootstrap";
 
 export default class CourseBlock extends Component {

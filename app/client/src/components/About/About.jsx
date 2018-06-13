@@ -1,15 +1,14 @@
 
 import React, { Component } from 'react';
-import { Panel } from 'react-bootstrap';
 import Navbar from '../Navbar/Navbar';
 import './About.css';
 
 export default class About extends Component {
-   constructor(props) {
-      super(props);
-   }
 
    render() {
+
+      let blank = '_blank';
+
       return (
          <div>
             <Navbar {...this.props} />
@@ -22,7 +21,7 @@ export default class About extends Component {
                </div>
                <div>
                   If you find an issue with the application, please report it&nbsp;
-                  <a target="_blank" href="https://github.com/jakep11/SeniorProject/issues/new">
+                  <a target={blank} href="https://github.com/jakep11/SeniorProject/issues/new">
                      here
                   </a>. 
                </div>

@@ -2,14 +2,11 @@
 import {
    Checkbox,
    FormGroup,
-   FormControl,
-   ControlLabel,
    ToggleButton,
    ToggleButtonGroup,
-   ButtonToolbar, Button
+   ButtonToolbar
 } from 'react-bootstrap';
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
 
 export default class CoursesFilterSidebar extends Component {
 
