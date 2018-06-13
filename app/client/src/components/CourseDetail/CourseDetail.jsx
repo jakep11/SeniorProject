@@ -70,15 +70,12 @@ export default class CourseDetail extends Component {
             if (topicId === topic.id) 
                topic.name = newName;
          })
-      );
-      
+      );    
       
       if (!newTitle)
          return;
          
-      console.log("Editing topic, newTitle:", newTitle, ", topicId:", topicId);
       let what = this.props.modifyTopic(topicId, newTitle, updateName(newTitle));
-      console.log("WHAT:", what);
    }
 
    renderActivities(activities) {
@@ -164,15 +161,25 @@ export default class CourseDetail extends Component {
    
 
    renderTopics(topics) {
-
+      let isAdmin = this.props.User.info.role;
+      
       return topics.map((t) => (
          <div className="cd-topic-container" key={t.id}>
-            <div className="edit-topic-wrapper">
-               <h3 id={t.name}>{t.name}</h3>
-               <Button className="edit-icon" onClick={() => {this.setState({editTopic: true, topicId: t.id})}}>
-                  <i className="fas fa-pencil-alt"></i> 
-               </Button>
-            </div>
+            {(() => {
+               if (isAdmin) 
+                  return <div className="edit-topic-wrapper">
+                     <h3 id={t.name}>{t.name}</h3>
+                     <Button className="edit-icon" onClick={() => {
+                        this.setState({editTopic: true, topicId: t.id});
+                     }}>
+                     <i className="fas fa-pencil-alt"></i> 
+                     </Button>
+                  </div>
+               else
+                  return <h3 id={t.name}>{t.name}</h3>
+            })()}
+         
+            
             
             { this.renderActivities(t.activities) }
 
