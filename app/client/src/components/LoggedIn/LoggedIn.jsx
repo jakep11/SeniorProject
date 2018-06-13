@@ -1,5 +1,5 @@
 
-import { withRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import React, { Component } from 'react';
 import Home from '../Home/Home';
@@ -7,7 +7,6 @@ import Dashboard from '../Dashboard/Dashboard';
 import Courses from '../Courses/Courses';
 import Navbar from '../Navbar/Navbar';
 import Settings from '../Settings/Settings';
-import About from '../About/About';
 import NotFound from '../NotFound/NotFound';
 import './LoggedIn.css';
 import CourseDetail from "../CourseDetail/CourseDetail";
