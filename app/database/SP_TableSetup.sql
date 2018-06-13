@@ -106,3 +106,12 @@ CREATE TABLE Progress (
 insert into User (firstName, lastName, email, passHash, termsAccepted, role)
    VALUES ("Joe", "Admin", "admin@example.com", 
    "$2a$10$Nq2f5SyrbQL2R0e9E.cU2OSjqqORgnwwsY1vBvVhV.SGlfzpfYvyi", NOW(), 1);
+
+CREATE TABLE PasswordReset (
+   id INT AUTO_INCREMENT,
+   userId INT NOT NULL UNIQUE,
+   token VARCHAR(255) NOT NULL UNIQUE,
+   expires DATETIME, 
+   PRIMARY KEY (id),
+   FOREIGN KEY (userId) REFERENCES User(id) on delete cascade
+);
