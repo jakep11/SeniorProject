@@ -47,9 +47,6 @@ export default class Login extends Component {
                   <input type="password" placeholder="Password" name="password" onKeyUp={this.handleChange} />
                   <button type="button" onClick={() => this.submit()}>Submit</button>
                </div>
-               <div className="login-footer">
-                  <a href='/forgot'>Forgot password?</a>
-               </div>
             </div>
             
             <ConfDialog
