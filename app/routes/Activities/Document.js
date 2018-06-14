@@ -2,6 +2,7 @@ var Express = require('express');
 var Tags = require('../Validator.js').Tags;
 var router = Express.Router({caseSensitive: true});
 var async = require('async');
+var progress = require('./progressUpdate.js');
 
 router.baseURL = '/Document';
 
@@ -54,6 +55,9 @@ router.post('/', function(req, res) {
       },
       function(insRes, fields, cb) {
          res.location(router.baseURL + '/' + insRes.insertId).end();
+         if(insRes.affectedRows) {
+            progress.updateProgsInsert(cnn, "Document", body);
+         }
          cb();
       }
    ], function(err) {
@@ -113,6 +117,9 @@ router.put('/:documentId', function(req, res) {
       },
       function(putResult, fields, cb) {
          res.status(200).end();
+         if(putResult.affectedRows && body.topicId) {
+            progress.updateProgsUpdate(cnn, "Document", documentId, body.topicId);
+         }
          cb();
       }
    ], function(err) {
@@ -145,6 +152,9 @@ router.delete('/:documentId', function(req, res) {
       },
       function(delResult, fields, cb) {
          res.status(200).end();
+         if(delResult.affectedRows) {
+            progress.updateProgsDelete(cnn, "Document", documentId)
+         }
          cb();
       }
    ], function (err) {

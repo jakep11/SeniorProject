@@ -2,6 +2,7 @@ var Express = require('express');
 var Tags = require('../Validator.js').Tags;
 var router = Express.Router({caseSensitive: true});
 var async = require('async');
+var progress = require('./progressUpdate.js');
 
 router.baseURL = '/Exercise';
 
@@ -52,6 +53,9 @@ router.post('/', function(req, res) {
       },
       function(insRes, fields, cb) {
          res.location(router.baseURL + '/' + insRes.insertId).end();
+         if(insRes.affectedRows) {
+            progress.updateProgsInsert(cnn, "Exercise", body);
+         }
          cb();
       }
    ], function() {
@@ -105,8 +109,12 @@ router.put('/:exerciseId', function(req, res) {
             return;
          }
       }
-   ], function() {
+   ], function(result, fields, cb) {
       res.status(200).end();
+      if(result.affectedRows && body.topicId) {
+         progress.updateProgsUpdate(cnn, "Exercise", exerciseId, body.topicId);
+      }
+
       cnn.release();
    });
 });
@@ -133,8 +141,11 @@ router.delete('/:exerciseId', function(req, res) {
             return;
          }
       }
-   ], function () {
+   ], function (delResult, fields, cb) {
       res.status(200).end();
+      if(delResult.affectedRows) {
+            progress.updateProgsDelete(cnn, "Exercise", exerciseId)
+      }
       cnn.release();
    });
 });
