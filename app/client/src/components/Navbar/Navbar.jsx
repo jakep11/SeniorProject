@@ -1,14 +1,9 @@
 
 import './Navbar.css';
 import React, { Component } from 'react';
-import {DropdownButton, MenuItem} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 class Main extends Component {
-
-   constructor(props) {
-      super(props);
-   }
 
    logout() {
       console.log(this.props);
@@ -18,7 +13,11 @@ class Main extends Component {
    renderNotLoggedIn() {
       return (
          <nav className="navbar">
-            <div className="navbar-left"> </div>
+            <div className="navbar-left">
+               <Link to={'/about'} className={this.props.location.pathname.includes('/about') ? 'active navbar-el': 'navbar-el'}>
+                  <div>About</div>
+               </Link>
+            </div>
             <div className="navbar-right">
                <Link to={'/login'} className={this.props.location.pathname.includes('/login') ? 'active navbar-el': 'navbar-el'}>
                   <div>Login</div>
@@ -32,7 +31,6 @@ class Main extends Component {
    }
    
    renderLoggedIn() {
-      console.log("PROPS:", this.props);
       let loggedInDisplayName =
          <div className="navbar-el display-name">{this.props.User.info.email} &nbsp;
             <a href="" onClick={() => this.logout()}>

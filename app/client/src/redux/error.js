@@ -1,11 +1,11 @@
-import * as api from '../api';
-
 /* Actions */
 export const SET_ERROR = 'SET_ERROR';
 export const CLEAR_ERROR = 'CLEAR_ERROR';
 
 
-const initialState = {};
+const initialState = {
+   message: ''
+};
 
 /* Reducer */
 export default function Error(state = initialState, action) {

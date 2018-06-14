@@ -28,7 +28,7 @@ router.get('/:userId', function (req, res) {
          }
          else {
             res.status(404).end();
-            cb();
+            cnn.release();
          }
       },
       function (progressArr, fields, cb) {
@@ -48,13 +48,15 @@ router.put('/:userId', function (req, res) {
    let vld = req.validator;
    let body = req.body;
    let cnn = req.cnn;
-   let userId = req.params.userId;
+   let userId = parseInt(req.params.userId);
    let vldFields = ['activityId', 'activityType', 'grade']
 
    async.waterfall([
       function (cb) {
          if (vld.check(req.session, Tags.noLogin, null, cb) &&
-          vld.checkAdmin(cb)) {
+          (vld.check(req.session.isAdmin() || 
+          ((body.activityType === 1 || 
+          body.activityType === 3) && req.session.id === userId), Tags.noPermission, null, cb))) {
             cnn.chkQry('SELECT * FROM User WHERE id = ?', [userId], cb);
          }
       },
@@ -69,6 +71,7 @@ router.put('/:userId', function (req, res) {
                   .chain(body.grade >= 0, Tags.badValue, ['grade'])
                   .chain(body.activityId > 0, Tags.badValue, ['activityId'])
                   .check(actT === 1 || actT === 2 || actT === 3, Tags.badValue, ['activityType'], cb)) {
+                  console.log("User:", userId, "Activity id:", body.activityId, "Activity type:", body.activityType);
                cnn.chkQry('SELECT * from Progress WHERE userId = ? AND activityId = ? AND activityType = ?',
                   [userId, body.activityId, body.activityType], cb);
             }

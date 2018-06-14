@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem, Modal, Button, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
+import { ListGroup, ListGroupItem, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import Navbar from '../Navbar/Navbar';
 import ConfDialog from '../ConfDialog/ConfDialog';
 import './SignUp.css';

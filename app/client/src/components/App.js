@@ -8,6 +8,7 @@ import { actionCreators as courseActionCreators } from '../redux/courses';
 import { actionCreators as topicActionCreators } from '../redux/topics';
 import { actionCreators as errorActionCreators } from '../redux/error';
 import React from 'react';
+import About from './About/About'
 import Login from './Login/Login'
 import SignUp from './SignUp/SignUp'
 import LoggedIn from './LoggedIn/LoggedIn'
@@ -40,6 +41,7 @@ const App = withRouter(connect(
 function AppComponent(props) {
    return (
       <Switch>
+         <Route exact path="/about" render={() => <About {...props} />} />
          <Route exact path="/login" render={() => <Login {...props} />} />
          <Route exact path="/signup" render={() => <SignUp {...props} />} />
          <Route path="" render={() => <LoggedIn {...props} />} />

@@ -1,0 +1,29 @@
+.modal-dialog {
+  top: 30%;
+  transform: translateY(-30%);
+}
+
+.modal-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between!important;
+    height: 75px;
+}
+
+.modal-left {
+   display: flex;
+   align-items: stretch;
+   justify-content: flex-end;
+   
+   color: darkred;
+}
+
+.modal-right {
+   display: flex;
+   align-items: stretch;
+   justify-content: flex-end;
+}
+
+.modal-button {
+   padding-left: 5px;
+}

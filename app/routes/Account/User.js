@@ -3,6 +3,9 @@ var Tags = require('../Validator.js').Tags;
 var router = Express.Router({ caseSensitive: true });
 var async = require('async');
 var bcrypt = require('bcrypt');
+var crypto = require('crypto');
+var nodemailer = require('nodemailer');
+var mailer = require('../Mailer.js');
 const saltRounds = 10;
 
 router.baseURL = '/User';
@@ -25,7 +28,7 @@ router.get('/', function (req, res) {
          ' like concat(?, "%"))', [au, reqEmail], handler);
    }
    else if (!reqEmail && req.session.isAdmin()) {
-      req.cnn.chkQry('select id, firstName, lastName, email, role from User', handler);
+      req.cnn.chkQry('select id, firstName, lastName, email, role from User', null, handler);
    }
    else { //No request email and not an admin
       req.cnn.chkQry('select id, firstName, lastName, email, role from User where id = ?', [au],
@@ -156,6 +159,134 @@ router.delete('/:id', function (req, res) {
       res.status(403).end();
       req.cnn.release();
    }
+});
+
+router.post('/forgotpassword', function (req, res) {
+   let vld = req.validator;
+   let email = req.body.email;
+   let cnn = req.cnn;
+   let userId;
+   let token;
+
+   async.waterfall([
+      function(cb) {
+         if (vld.hasFields(req.body, ['email'], cb)) {
+            cnn.chkQry('SELECT id FROM User WHERE email = ?', [email], cb);
+         }
+      },
+      function(qRes, fields, cb) {
+         if (vld.check(qRes.length, Tags.notFound, ['email'], cb)) {
+            userId = qRes[0].id;
+            cnn.chkQry('DELETE from PasswordReset WHERE userId = ?', [userId], cb);
+         }
+      },
+      function(qRes, fields, cb) {      
+         crypto.randomBytes(20, function(err, buf) {
+            token = buf.toString('hex');
+            cb(err);
+         });         
+      },
+      function(cb) {
+         if (vld.check(token, Tags.badValue, null, cb)) {
+            let expires = new Date(Date.now() + 3600000); // 1 hour expiration
+            cnn.chkQry('INSERT into PasswordReset (userId, token, expires) values (?, ?, ?)', 
+               [userId, bcrypt.hashSync(token, saltRounds), expires], cb);
+         }
+      },
+      function(qRes, fields, cb) {
+         let message = {
+            from: 'passwordreset@polyeducate.com',
+            to: email,
+            subject: 'Reset Password',
+            text: 'You are receiving this email because you have requested to reset your password for this account.\n' +
+                  'Please use the link below to reset your password.\n\n' + 
+                  'http://' + req.headers.host + '/resetpassword/' + token + '\n\n' +
+                  'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+         };
+
+         mailer.sendMail(message, cb);         
+      },
+      function(info, cb) {
+         if (info) {
+            console.log('Message sent: %s', info.messageId);
+            // Preview only available when sending through an Ethereal account
+            console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+         }
+         cb();
+      }
+   ], function(err) {
+      if (!err)
+         res.status(200).end();
+      cnn.release();
+   });
+});
+
+router.get('/resetpassword/:token', function(req, res) {
+   let token = req.params.token;
+   let vld = req.validator;
+   let cnn = req.cnn;
+
+   async.waterfall([
+      function (cb) {
+         cnn.chkQry('select * from PasswordReset', null, cb);
+      },
+      function (resetArr, fields, cb) {
+         let found = null;
+
+         for (let reset of resetArr) {
+            if (bcrypt.compareSync(token, reset.token)) {
+               found = reset;
+               break;
+            }
+         }
+
+         cb(null, found);
+      },
+      function (found, cb) {
+         if (!found)
+            res.status(404).end();
+         else if (vld.check(new Date() < found.expires, Tags.resetTokenExpired, null, null)) {
+            delete found.token;
+            res.json(found);
+         }
+
+         cb();
+      }
+   ], function () {
+      cnn.release();
+   });
+});
+
+router.post('/resetpassword/:token', function(req, res) {
+   let token = req.params.token;
+   let vld = req.validator;
+   let cnn = req.cnn;
+   let body = req.body;
+
+   async.waterfall([
+      function (cb) {
+         cnn.chkQry('select * from PasswordReset where userId = ?', [body.userId], cb);
+      },
+      function (resetArr, fields, cb) {
+         if (!resetArr.length)
+            res.status(404).end();
+         else if (vld.check(new Date() < resetArr[0].expires, Tags.resetTokenExpired, null, cb) &&
+            vld.check(bcrypt.compareSync(token, resetArr[0].token), Tags.badValue, ['token'], cb) &&
+            vld.hasFields(body, ['userId', 'password'], cb) &&
+            vld.hasOnlyFields(body, ['userId', 'password'], cb) &&
+            vld.check(body.password, Tags.badValue, ['password'], cb)) {
+            let passHash = bcrypt.hashSync(body.password, saltRounds);
+            cnn.chkQry('UPDATE User SET passHash = ? WHERE id = ?', [passHash, body.userId], cb);
+         }
+      },
+      function (qRes, fields, cb) {
+         cnn.chkQry('DELETE FROM PasswordReset WHERE userId = ?', [body.userId], cb);
+      }
+   ], function (err) {
+      if (!err)
+         res.status(200).end();
+      cnn.release();
+   });
 });
 
 

@@ -2,7 +2,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 import { ConnectedRouter } from 'react-router-redux'
 import { history } from './redux/store';
 
@@ -13,6 +12,7 @@ import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css'; // Bootstrap
 import './index.css'; // Our own main stylesheet
 
+// eslint-disable-next-line
 import Rx from 'rxjs/Rx';
 import 'rxjs/add/observable/of';
 
