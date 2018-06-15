@@ -1,15 +1,18 @@
-
-
 .act-wrapper {
     padding: 5px 0;
+    display: flex;
+    flex-direction: row;
+    margin: 0 10px;
 }
+
 .act-bar-wrapper {
     position: relative;
     display: flex;
-    /*width: 500px;*/
+
+    width: stretch;
     align-items: center;
     min-height: 50px;
-    margin: 0 15px;
+    margin: 0 10px;
 }
 
 .act-icon {
@@ -46,4 +49,8 @@
     display: flex;
     justify-content: center;
     padding: 5px 15px;
+}
+
+.activity-edit-icon {
+
 }
