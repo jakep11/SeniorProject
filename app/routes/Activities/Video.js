@@ -2,6 +2,7 @@ const Express = require('express');
 const router = Express.Router({caseSensitive: true});
 const async = require('async');
 const Tags = require('../Validator.js').Tags;
+const progress = require('./progressUpdate.js');
 
 router.baseURL = '/Video';
 
@@ -54,6 +55,9 @@ router.post('/', (req, res) => {
       },
       function(result, fields, cb) {
          res.location(router.baseURL + '/' + result.insertId).end();
+         if(result.affectedRows) {
+            progress.updateProgsInsert(cnn, "Video", body);
+         }
          cb();
       }
    ],
@@ -103,7 +107,7 @@ router.put('/:id', (req, res) => {
             res.status(404).end();
             cb();
          }
-         else if(vld.hasOnlyFields(body, ['name','link', 'dueDate'], cb) &&
+         else if(vld.hasOnlyFields(body, ['name','link', 'dueDate', 'topicId'], cb) &&
           (vld.check(body.name, Tags.missingField, ['name'], cb) || 
           vld.check(body.link, Tags.missingField, ['link'], cb))){
             cnn.chkQry('UPDATE Video SET ? WHERE Id = ?', [body, id], cb);
@@ -111,6 +115,9 @@ router.put('/:id', (req, res) => {
       }, 
       function(result, fields, cb) {
          res.status(200).end();
+         if(result.affectedRows && body.topicId) {
+            progress.updateProgsUpdate(cnn, "Video", id, body.topicId);
+         }
          cb();
       }
    ], function(err) {
@@ -139,6 +146,9 @@ router.delete('/:id', (req, res) => {
    	},
       function(delResult, fields, cb) {
          res.status(200).end();
+         if(delResult.affectedRows) {
+            progress.updateProgsDelete(cnn, "Video", id)
+         }
          cb();
       }
    ], 

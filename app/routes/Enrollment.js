@@ -2,6 +2,7 @@ const Express = require('express');
 const router = Express.Router({caseSensitive: true});
 const async = require('async');
 const Tags = require('./Validator.js').Tags;
+const progress = require('./Activities/progressUpdate.js');
 
 router.baseURL = '/Enrollment';
 
@@ -76,6 +77,9 @@ router.post('/', (req, res) => {
       },
       function(result, fields, cb) {
          res.location(router.baseURL + '/' + result.insertId).end();
+         if(result.affectedRows) {
+            progress.updateProgsEnrollment(cnn, body);
+         }
          cb();
       }
    ], 
